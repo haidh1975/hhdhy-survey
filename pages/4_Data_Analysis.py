@@ -7,6 +7,7 @@ import plotly.express as px
 import plotly.graph_objects as go
 from utils.data_analysis import calculate_statistics
 from utils.visualization import create_chart
+from utils.advanced_analysis import calculate_cronbach_alpha, perform_efa, perform_regression, simple_cfa_evaluation
 
 st.set_page_config(
     page_title="Data Analysis",
@@ -695,6 +696,500 @@ else:
                 
                 st.markdown("---")
 
+        # Advanced Analysis Tab
+        st.subheader("Phân tích nâng cao")
+        
+        # Create tabs for different advanced analysis methods
+        adv_tab1, adv_tab2, adv_tab3, adv_tab4 = st.tabs([
+            "Cronbach's Alpha", 
+            "Phân tích nhân tố (EFA)", 
+            "Hồi quy đa biến",
+            "Phân tích nhân tố khẳng định (CFA)"
+        ])
+        
+        # Find numeric questions for advanced analysis
+        numeric_questions = []
+        for i, question in enumerate(questions):
+            question_id = question.get("id", str(i))
+            column_name = question_id
+            
+            # Check if column exists
+            if column_name not in df.columns:
+                column_name = f"q_{i}"
+                if column_name not in df.columns:
+                    continue
+            
+            # Check if data is numeric or can be converted to numeric
+            if df[column_name].dtype in [np.int64, np.float64]:
+                numeric_questions.append({
+                    "index": i,
+                    "id": question_id,
+                    "text": question["question_text"],
+                    "column": column_name
+                })
+            else:
+                # Try to convert to numeric
+                try:
+                    numeric_values = pd.to_numeric(df[column_name], errors='coerce')
+                    if not numeric_values.isna().all():  # If not all values are NaN
+                        numeric_questions.append({
+                            "index": i,
+                            "id": question_id,
+                            "text": question["question_text"],
+                            "column": column_name,
+                            "needs_conversion": True
+                        })
+                except:
+                    pass
+        
+        # Create a clean dataframe with only numeric columns for analysis
+        numeric_df = pd.DataFrame()
+        for q in numeric_questions:
+            col_name = q["column"]
+            if q.get("needs_conversion", False):
+                numeric_df[col_name] = pd.to_numeric(df[col_name], errors='coerce')
+            else:
+                numeric_df[col_name] = df[col_name]
+        
+        # 1. Cronbach's Alpha Tab
+        with adv_tab1:
+            st.subheader("Phân tích độ tin cậy - Cronbach's Alpha")
+            st.write("""
+            Cronbach's Alpha là hệ số đo lường độ tin cậy nhất quán nội bộ của một tập hợp các biến. 
+            Giá trị Alpha > 0.7 được coi là có độ tin cậy tốt.
+            """)
+            
+            # Allow user to select a group of questions for reliability analysis
+            if len(numeric_questions) >= 2:
+                selected_reliability_qs = st.multiselect(
+                    "Chọn các biến để phân tích độ tin cậy",
+                    options=[q["column"] for q in numeric_questions],
+                    format_func=lambda col: next((q["text"] for q in numeric_questions if q["column"] == col), col),
+                    default=[q["column"] for q in numeric_questions[:min(5, len(numeric_questions))]]
+                )
+                
+                if selected_reliability_qs and len(selected_reliability_qs) >= 2:
+                    # Perform Cronbach's Alpha analysis
+                    reliability_results = calculate_cronbach_alpha(numeric_df, selected_reliability_qs)
+                    
+                    if reliability_results.get("success", False) and reliability_results.get("alpha") is not None:
+                        # Display the results
+                        alpha_value = reliability_results["alpha"]
+                        alpha_color = "green" if alpha_value >= 0.7 else "orange" if alpha_value >= 0.6 else "red"
+                        
+                        st.markdown(f"""
+                        ### Kết quả phân tích:
+                        - **Hệ số Cronbach's Alpha**: <span style='color:{alpha_color}'>{alpha_value:.3f}</span>
+                        - **Số lượng biến**: {reliability_results['n_items']}
+                        - **Số lượng quan sát hợp lệ**: {reliability_results['n_cases']}
+                        """, unsafe_allow_html=True)
+                        
+                        # Display item statistics
+                        if "item_stats" in reliability_results:
+                            st.subheader("Thống kê theo từng biến")
+                            
+                            item_stats_df = pd.DataFrame(reliability_results["item_stats"])
+                            # Map column names back to question text
+                            item_stats_df["item"] = item_stats_df["item"].apply(
+                                lambda col: next((q["text"] for q in numeric_questions if q["column"] == col), col)
+                            )
+                            # Rename columns for display
+                            item_stats_df.columns = ["Biến", "Tương quan biến-tổng", "Alpha nếu loại biến"]
+                            
+                            st.dataframe(item_stats_df)
+                            
+                            # Insights
+                            low_correlations = item_stats_df[item_stats_df["Tương quan biến-tổng"] < 0.3]
+                            if not low_correlations.empty:
+                                st.warning(f"""
+                                **Lưu ý**: Các biến sau có tương quan biến-tổng thấp (<0.3) và có thể xem xét loại bỏ:
+                                {', '.join(low_correlations['Biến'].tolist())}
+                                """)
+                            
+                            improve_items = item_stats_df[item_stats_df["Alpha nếu loại biến"] > alpha_value]
+                            if not improve_items.empty:
+                                st.info(f"""
+                                **Gợi ý cải thiện**: Loại bỏ các biến sau có thể cải thiện độ tin cậy:
+                                {', '.join(improve_items['Biến'].tolist())}
+                                """)
+                    else:
+                        st.error(f"Không thể tính toán Cronbach's Alpha: {reliability_results.get('error', 'Lỗi không xác định')}")
+                else:
+                    st.info("Vui lòng chọn ít nhất 2 biến để tính toán Cronbach's Alpha.")
+            else:
+                st.warning("Cần ít nhất 2 biến số để thực hiện phân tích độ tin cậy.")
+        
+        # 2. Exploratory Factor Analysis (EFA) Tab
+        with adv_tab2:
+            st.subheader("Phân tích nhân tố khám phá (EFA)")
+            st.write("""
+            Phân tích nhân tố khám phá (EFA) giúp xác định cấu trúc tiềm ẩn giữa các biến và nhóm chúng thành các nhân tố.
+            """)
+            
+            if len(numeric_questions) >= 3:
+                selected_efa_qs = st.multiselect(
+                    "Chọn các biến để phân tích nhân tố",
+                    options=[q["column"] for q in numeric_questions],
+                    format_func=lambda col: next((q["text"] for q in numeric_questions if q["column"] == col), col),
+                    default=[q["column"] for q in numeric_questions[:min(5, len(numeric_questions))]]
+                )
+                
+                if selected_efa_qs and len(selected_efa_qs) >= 3:
+                    col1, col2 = st.columns(2)
+                    
+                    with col1:
+                        rotation_method = st.selectbox(
+                            "Phương pháp xoay nhân tố",
+                            options=["varimax", "promax", "oblimin", "quartimax"],
+                            index=0
+                        )
+                    
+                    with col2:
+                        n_factors = st.number_input(
+                            "Số lượng nhân tố (để trống để tự động xác định)",
+                            min_value=0,
+                            max_value=len(selected_efa_qs)-1,
+                            value=0
+                        )
+                    
+                    # Run EFA
+                    n_factors_param = None if n_factors == 0 else n_factors
+                    efa_results = perform_efa(
+                        numeric_df, 
+                        selected_efa_qs, 
+                        n_factors=n_factors_param, 
+                        rotation=rotation_method
+                    )
+                    
+                    if efa_results.get("success", False):
+                        # Display warnings if any
+                        if efa_results.get("warning"):
+                            st.warning(efa_results["warning"])
+                        
+                        # Show results
+                        st.subheader("Kết quả phân tích nhân tố")
+                        
+                        # Display KMO and Bartlett's test
+                        col1, col2 = st.columns(2)
+                        with col1:
+                            kmo = efa_results.get("kmo", 0)
+                            kmo_color = "green" if kmo >= 0.7 else "orange" if kmo >= 0.5 else "red"
+                            st.markdown(f"**Chỉ số KMO**: <span style='color:{kmo_color}'>{kmo:.3f}</span>", unsafe_allow_html=True)
+                        
+                        with col2:
+                            p_value = efa_results.get("bartlett_p_value", 1)
+                            p_color = "green" if p_value < 0.05 else "red"
+                            st.markdown(f"**Bartlett's Test p-value**: <span style='color:{p_color}'>{p_value:.4f}</span>", unsafe_allow_html=True)
+                        
+                        # Display eigenvalues
+                        eigenvalues = efa_results.get("eigenvalues", [])
+                        if eigenvalues:
+                            fig = px.line(
+                                x=list(range(1, len(eigenvalues)+1)),
+                                y=eigenvalues,
+                                markers=True,
+                                title="Scree Plot",
+                                labels={"x": "Số nhân tố", "y": "Eigenvalue"}
+                            )
+                            fig.add_hline(y=1.0, line_dash="dash", line_color="red")
+                            st.plotly_chart(fig, use_container_width=True, key="scree_plot")
+                        
+                        # Show variance explained
+                        n_factors_found = efa_results.get("n_factors", 0)
+                        explained_var = efa_results.get("explained_variance", [])
+                        cumulative_var = efa_results.get("cumulative_variance", [])
+                        
+                        if explained_var and n_factors_found > 0:
+                            var_df = pd.DataFrame({
+                                "Nhân tố": [f"Nhân tố {i+1}" for i in range(n_factors_found)],
+                                "Phương sai giải thích (%)": [v*100 for v in explained_var[:n_factors_found]],
+                                "Phương sai tích lũy (%)": [v*100 for v in cumulative_var[:n_factors_found]]
+                            })
+                            
+                            st.dataframe(var_df)
+                            
+                            last_cumulative = cumulative_var[n_factors_found-1] * 100
+                            st.info(f"Các nhân tố đã trích xuất giải thích được **{last_cumulative:.1f}%** tổng phương sai của dữ liệu.")
+                        
+                        # Display factor loadings
+                        st.subheader("Hệ số tải nhân tố")
+                        
+                        # Convert loadings dictionary to DataFrame
+                        loadings = efa_results.get("loadings", {})
+                        if loadings:
+                            # Create a loading matrix dataframe
+                            loadings_df = pd.DataFrame(loadings)
+                            
+                            # Map row indices (variable names) to question texts
+                            loadings_df.index = [
+                                next((q["text"] for q in numeric_questions if q["column"] == idx), idx)
+                                for idx in loadings_df.index
+                            ]
+                            
+                            # Format the dataframe with conditional formatting
+                            def highlight_max(s):
+                                is_max = s == s.abs().max()
+                                return ['font-weight: bold' if v else '' for v in is_max]
+                            
+                            st.dataframe(loadings_df.style.format("{:.3f}").apply(highlight_max, axis=1))
+                        
+                        # Display factor groups
+                        st.subheader("Phân nhóm biến theo nhân tố")
+                        factor_groups = efa_results.get("factor_groups", {})
+                        
+                        for factor, variables in factor_groups.items():
+                            with st.expander(f"{factor}"):
+                                group_df = pd.DataFrame(variables)
+                                # Map variable names to question texts
+                                group_df["variable"] = group_df["variable"].apply(
+                                    lambda col: next((q["text"] for q in numeric_questions if q["column"] == col), col)
+                                )
+                                group_df.columns = ["Biến", "Hệ số tải"]
+                                st.dataframe(group_df.style.format({"Hệ số tải": "{:.3f}"}))
+                    else:
+                        st.error(f"Không thể thực hiện phân tích nhân tố: {efa_results.get('error', 'Lỗi không xác định')}")
+                else:
+                    st.info("Vui lòng chọn ít nhất 3 biến để thực hiện phân tích nhân tố.")
+            else:
+                st.warning("Cần ít nhất 3 biến số để thực hiện phân tích nhân tố.")
+        
+        # 3. Regression Analysis Tab
+        with adv_tab3:
+            st.subheader("Phân tích hồi quy đa biến")
+            st.write("""
+            Phân tích hồi quy giúp xác định mối quan hệ giữa một biến phụ thuộc và nhiều biến độc lập.
+            """)
+            
+            if len(numeric_questions) >= 2:
+                col1, col2 = st.columns([1, 2])
+                
+                with col1:
+                    dependent_var = st.selectbox(
+                        "Chọn biến phụ thuộc (Y)",
+                        options=[q["column"] for q in numeric_questions],
+                        format_func=lambda col: next((q["text"] for q in numeric_questions if q["column"] == col), col)
+                    )
+                
+                with col2:
+                    independent_vars = st.multiselect(
+                        "Chọn các biến độc lập (X)",
+                        options=[q["column"] for q in numeric_questions if q["column"] != dependent_var],
+                        format_func=lambda col: next((q["text"] for q in numeric_questions if q["column"] == col), col),
+                        default=[q["column"] for q in numeric_questions if q["column"] != dependent_var][:min(3, len(numeric_questions)-1)]
+                    )
+                
+                if dependent_var and independent_vars:
+                    # Run regression analysis
+                    reg_results = perform_regression(numeric_df, dependent_var, independent_vars)
+                    
+                    if reg_results.get("success", False):
+                        # Display model summary
+                        st.subheader("Tóm tắt mô hình")
+                        model_summary = reg_results["model_summary"]
+                        
+                        # Display R-squared and Adjusted R-squared
+                        col1, col2, col3 = st.columns(3)
+                        with col1:
+                            r2_color = "green" if model_summary["r_squared"] > 0.5 else "orange" if model_summary["r_squared"] > 0.3 else "red"
+                            st.markdown(f"**R²**: <span style='color:{r2_color}'>{model_summary['r_squared']:.3f}</span>", unsafe_allow_html=True)
+                        
+                        with col2:
+                            adj_r2_color = "green" if model_summary["adj_r_squared"] > 0.5 else "orange" if model_summary["adj_r_squared"] > 0.3 else "red"
+                            st.markdown(f"**Adjusted R²**: <span style='color:{adj_r2_color}'>{model_summary['adj_r_squared']:.3f}</span>", unsafe_allow_html=True)
+                        
+                        with col3:
+                            f_color = "green" if model_summary["f_pvalue"] < 0.05 else "red"
+                            st.markdown(f"**F-statistic p-value**: <span style='color:{f_color}'>{model_summary['f_pvalue']:.4f}</span>", unsafe_allow_html=True)
+                        
+                        # Display regression equation
+                        st.subheader("Phương trình hồi quy")
+                        st.markdown(f"**{model_summary['equation']}**")
+                        
+                        # Display coefficients
+                        st.subheader("Hệ số hồi quy")
+                        variables = reg_results["variables"]
+                        var_df = pd.DataFrame(variables)
+                        
+                        # Map variable names to question texts for display
+                        var_df["variable"] = var_df["variable"].apply(
+                            lambda v: v if v == "Hằng số" else next(
+                                (q["text"] for q in numeric_questions if q["column"] == v), v
+                            )
+                        )
+                        
+                        # Rename columns for display
+                        var_df.columns = [
+                            "Biến", "Hệ số", "Độ lệch chuẩn", "t-value", "p-value", 
+                            "Có ý nghĩa thống kê", "VIF" if "vif" in var_df.columns else None
+                        ]
+                        
+                        # Filter out None columns
+                        var_df = var_df.loc[:, var_df.columns.notnull()]
+                        
+                        # Add significance markers
+                        var_df["Có ý nghĩa thống kê"] = var_df["p-value"].apply(
+                            lambda p: "✓" if p < 0.05 else "✗"
+                        )
+                        
+                        st.dataframe(var_df.style.format({
+                            "Hệ số": "{:.3f}",
+                            "Độ lệch chuẩn": "{:.3f}",
+                            "t-value": "{:.3f}",
+                            "p-value": "{:.4f}",
+                            "VIF": "{:.2f}" if "VIF" in var_df.columns else None
+                        }))
+                        
+                        # Display assumption tests
+                        if "assumptions" in reg_results:
+                            st.subheader("Kiểm định giả định")
+                            assumptions = reg_results["assumptions"]
+                            
+                            # Multicollinearity
+                            if "multicollinearity" in assumptions:
+                                multicollinearity = assumptions["multicollinearity"]
+                                multi_color = "red" if multicollinearity else "green"
+                                st.markdown(f"**Đa cộng tuyến**: <span style='color:{multi_color}'>{'Có vấn đề (VIF > 10)' if multicollinearity else 'Không có vấn đề'}</span>", unsafe_allow_html=True)
+                            
+                            # Durbin-Watson test
+                            if "durbin_watson" in assumptions:
+                                dw = assumptions["durbin_watson"]
+                                dw_color = "green" if 1.5 < dw < 2.5 else "orange" if (1 < dw <= 1.5) or (2.5 <= dw < 3) else "red"
+                                st.markdown(f"**Durbin-Watson**: <span style='color:{dw_color}'>{dw:.3f}</span> (lý tưởng: 2.0)", unsafe_allow_html=True)
+                    else:
+                        st.error(f"Không thể thực hiện phân tích hồi quy: {reg_results.get('error', 'Lỗi không xác định')}")
+                else:
+                    st.info("Vui lòng chọn biến phụ thuộc và ít nhất một biến độc lập.")
+            else:
+                st.warning("Cần ít nhất 2 biến số để thực hiện phân tích hồi quy.")
+        
+        # 4. Confirmatory Factor Analysis (CFA) Tab
+        with adv_tab4:
+            st.subheader("Phân tích nhân tố khẳng định (CFA)")
+            st.write("""
+            Phân tích nhân tố khẳng định (CFA) kiểm định các mô hình lý thuyết về mối quan hệ giữa các biến quan sát và các nhân tố tiềm ẩn.
+            """)
+            
+            st.info("""
+            **Phân tích nhân tố khẳng định đơn giản**
+            
+            Chức năng này cung cấp đánh giá cơ bản cho mô hình CFA được xác định trước. Để phân tích CFA đầy đủ,
+            bạn nên sử dụng phần mềm chuyên dụng như AMOS, Mplus, hoặc lavaan (R).
+            """)
+            
+            if len(numeric_questions) >= 3:
+                # Let users define factor structure
+                st.subheader("Xác định cấu trúc nhân tố")
+                
+                # Allow users to add factors
+                if "cfa_factors" not in st.session_state:
+                    st.session_state.cfa_factors = {"Factor 1": []}
+                
+                # Display current factor structure
+                factors_to_remove = []
+                for factor in st.session_state.cfa_factors:
+                    with st.expander(f"Nhân tố: {factor}", expanded=True):
+                        # Allow renaming the factor
+                        new_name = st.text_input(f"Tên nhân tố", value=factor, key=f"name_{factor}")
+                        
+                        # Select variables for this factor
+                        selected_vars = st.multiselect(
+                            "Chọn các biến quan sát",
+                            options=[q["column"] for q in numeric_questions],
+                            format_func=lambda col: next((q["text"] for q in numeric_questions if q["column"] == col), col),
+                            default=st.session_state.cfa_factors[factor],
+                            key=f"vars_{factor}"
+                        )
+                        
+                        # Update session state
+                        if new_name != factor:
+                            st.session_state.cfa_factors[new_name] = selected_vars
+                            factors_to_remove.append(factor)
+                        else:
+                            st.session_state.cfa_factors[factor] = selected_vars
+                        
+                        # Option to remove factor
+                        if st.button("Xóa nhân tố này", key=f"remove_{factor}"):
+                            factors_to_remove.append(factor)
+                
+                # Remove factors marked for removal
+                for factor in factors_to_remove:
+                    if factor in st.session_state.cfa_factors:
+                        del st.session_state.cfa_factors[factor]
+                
+                # Add new factor button
+                if st.button("Thêm nhân tố mới"):
+                    # Find next available factor number
+                    factor_nums = [int(f.split()[-1]) for f in st.session_state.cfa_factors.keys() if f.startswith("Factor ")]
+                    next_num = max(factor_nums) + 1 if factor_nums else 1
+                    st.session_state.cfa_factors[f"Factor {next_num}"] = []
+                    st.rerun()
+                
+                # Run CFA analysis button
+                if st.button("Thực hiện phân tích CFA"):
+                    # Clean empty factors
+                    factor_structure = {k: v for k, v in st.session_state.cfa_factors.items() if v}
+                    
+                    if factor_structure and all(len(vars) >= 2 for vars in factor_structure.values()):
+                        # Run CFA analysis
+                        cfa_results = simple_cfa_evaluation(numeric_df, factor_structure)
+                        
+                        if cfa_results.get("success", False):
+                            st.subheader("Kết quả đánh giá CFA")
+                            
+                            # Overall evaluation
+                            st.markdown("### Đánh giá tổng thể mô hình")
+                            overall = cfa_results.get("overall_evaluation", {})
+                            
+                            convergent = overall.get("convergent_validity", False)
+                            discriminant = overall.get("discriminant_validity", False)
+                            
+                            col1, col2 = st.columns(2)
+                            with col1:
+                                conv_color = "green" if convergent else "red"
+                                st.markdown(f"**Độ giá trị hội tụ**: <span style='color:{conv_color}'>{'Đạt' if convergent else 'Không đạt'}</span>", unsafe_allow_html=True)
+                            
+                            with col2:
+                                disc_color = "green" if discriminant else "red"
+                                st.markdown(f"**Độ giá trị phân biệt**: <span style='color:{disc_color}'>{'Đạt' if discriminant else 'Không đạt'}</span>", unsafe_allow_html=True)
+                            
+                            # Factor statistics
+                            st.markdown("### Thống kê theo nhân tố")
+                            factor_stats = cfa_results.get("factor_stats", {})
+                            
+                            for factor, stats in factor_stats.items():
+                                with st.expander(f"Nhân tố: {factor}"):
+                                    variables = stats.get("variables", [])
+                                    var_texts = [next((q["text"] for q in numeric_questions if q["column"] == v), v) for v in variables]
+                                    
+                                    st.markdown(f"**Biến quan sát**: {', '.join(var_texts)}")
+                                    
+                                    # Display reliability
+                                    reliability = stats.get("reliability")
+                                    if reliability is not None:
+                                        rel_color = "green" if reliability > 0.7 else "orange" if reliability > 0.6 else "red"
+                                        st.markdown(f"**Độ tin cậy (Cronbach's Alpha)**: <span style='color:{rel_color}'>{reliability:.3f}</span>", unsafe_allow_html=True)
+                                    
+                                    # Display average correlation
+                                    avg_corr = stats.get("avg_correlation")
+                                    if avg_corr is not None:
+                                        corr_color = "green" if avg_corr > 0.5 else "orange" if avg_corr > 0.3 else "red"
+                                        st.markdown(f"**Tương quan trung bình**: <span style='color:{corr_color}'>{avg_corr:.3f}</span>", unsafe_allow_html=True)
+                                    
+                                    # Display cross-loadings
+                                    cross_loadings = stats.get("cross_loadings", {})
+                                    if cross_loadings:
+                                        st.markdown("**Tương quan với các nhân tố khác**:")
+                                        for other_factor, cross_loading in cross_loadings.items():
+                                            if cross_loading is not None:
+                                                cross_color = "red" if cross_loading > 0.3 else "green"
+                                                st.markdown(f"- {other_factor}: <span style='color:{cross_color}'>{cross_loading:.3f}</span>", unsafe_allow_html=True)
+                        else:
+                            st.error(f"Không thể thực hiện phân tích CFA: {cfa_results.get('error', 'Lỗi không xác định')}")
+                    else:
+                        st.warning("Mỗi nhân tố cần ít nhất 2 biến quan sát để thực hiện phân tích CFA.")
+            else:
+                st.warning("Cần ít nhất 3 biến số để thực hiện phân tích CFA.")
+        
         # Cross-question analysis
         st.subheader("Cross-Question Analysis")
         
