@@ -80,7 +80,7 @@ else:
         st.subheader("Question Analysis")
         
         # Create tabs for different visualization methods
-        tab1, tab2, tab3, tab4 = st.tabs(["Charts", "Statistics", "Comparisons", "Response Breakdown"])
+        tab1, tab2, tab3, tab4, tab5 = st.tabs(["Charts", "Statistics", "Comparisons", "Summary Table", "Response Breakdown"])
         
         with tab1:
             # Select questions to visualize
@@ -505,7 +505,74 @@ else:
                 st.info("No statistical data available.")
         
         with tab4:
+            # Summary Table - show variables, mean, and standard deviation
+            st.subheader("Bảng Thống Kê Tóm Tắt")
+            
+            # Create a dataframe to hold summary statistics
+            summary_data = []
+            
+            # Process each question to get statistics
+            for i, question in enumerate(questions):
+                question_id = question.get("id", str(i))
+                question_text = question["question_text"]
+                question_type = question["type"]
+                
+                # Check if column exists
+                column_name = question_id
+                if column_name not in df.columns:
+                    column_name = f"q_{i}"
+                    if column_name not in df.columns:
+                        continue
+                
+                # Skip non-numeric columns or try to convert
+                if df[column_name].dtype not in [np.int64, np.float64]:
+                    # Try to convert to numeric if possible
+                    try:
+                        numeric_values = pd.to_numeric(df[column_name], errors='coerce')
+                        if numeric_values.isna().all():  # If all values are NaN after conversion
+                            continue
+                        # Create temporary dataframe with numeric values for statistics calculation
+                        temp_df = df.copy()
+                        temp_df[column_name] = numeric_values
+                    except:
+                        continue
+                else:
+                    temp_df = df
+                
+                # Calculate statistics
+                mean_value = temp_df[column_name].mean()
+                std_value = temp_df[column_name].std()
+                min_value = temp_df[column_name].min()
+                max_value = temp_df[column_name].max()
+                
+                # Add to summary data
+                summary_data.append({
+                    "Biến số": question_text,
+                    "Giá trị trung bình": f"{mean_value:.2f}",
+                    "Độ lệch chuẩn": f"{std_value:.2f}",
+                    "Giá trị nhỏ nhất": f"{min_value:.2f}",
+                    "Giá trị lớn nhất": f"{max_value:.2f}"
+                })
+            
+            # Create dataframe from summary data
+            if summary_data:
+                summary_df = pd.DataFrame(summary_data)
+                st.dataframe(summary_df, use_container_width=True)
+                
+                # Option to download the summary table as CSV
+                csv = summary_df.to_csv(index=False).encode('utf-8')
+                st.download_button(
+                    label="Tải xuống bảng thống kê (CSV)",
+                    data=csv,
+                    file_name="survey_statistics_summary.csv",
+                    mime="text/csv",
+                )
+            else:
+                st.info("Không có biến số nào có thể tính toán thống kê.")
+        
+        with tab5:
             # Response breakdown - show raw counts and percentages
+            st.subheader("Phân tích chi tiết dữ liệu")
             for i, question in enumerate(questions):
                 question_id = question.get("id", str(i))
                 question_text = question["question_text"]
