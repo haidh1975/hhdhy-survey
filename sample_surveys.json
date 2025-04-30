@@ -1,7 +1,7 @@
 {
   "5ac792fa-33c7-4fa6-948f-66851f863ff2": {
-    "title": "Khảo sát về động lực làm việc của nhân viên",
-    "description": "Khảo sát này thu thập thông tin về các yếu tố ảnh hưởng đến động lực làm việc và kết quả công việc của nhân viên",
+    "title": "Khảo sát được tạo từ dữ liệu mẫu",
+    "description": "Khảo sát này được tạo tự động từ file Excel 'Data 30-4-2025.xlsx'",
     "created_date": "2025-04-30 11:00:38",
     "questions": [
       {
