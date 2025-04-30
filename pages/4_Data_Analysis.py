@@ -80,7 +80,7 @@ else:
         st.subheader("Question Analysis")
         
         # Create tabs for different visualization methods
-        tab1, tab2, tab3 = st.tabs(["Charts", "Statistics", "Response Breakdown"])
+        tab1, tab2, tab3, tab4 = st.tabs(["Charts", "Statistics", "Comparisons", "Response Breakdown"])
         
         with tab1:
             # Select questions to visualize
@@ -292,6 +292,182 @@ else:
             else:
                 st.info("Select questions to visualize them.")
         
+        with tab3:
+            # Comparison tab - compare two questions
+            st.subheader("Question Comparisons")
+            st.write("Select two questions to compare their relationships and correlations.")
+            
+            # Get questions that can be compared (multiple choice, scale, number)
+            comparable_questions = []
+            
+            for i, question in enumerate(questions):
+                question_id = question.get("id", str(i))
+                column_name = question_id
+                
+                # Check if column exists
+                if column_name not in df.columns:
+                    column_name = f"q_{i}"
+                    if column_name not in df.columns:
+                        continue
+                
+                # Only include certain question types that make sense to compare
+                if question["type"] in ["multiple_choice", "dropdown", "likert_scale", "number"]:
+                    comparable_questions.append({
+                        "index": i,
+                        "id": question_id,
+                        "text": question["question_text"],
+                        "type": question["type"],
+                        "column": column_name
+                    })
+            
+            if len(comparable_questions) >= 2:
+                # Create two columns for selecting questions
+                col1, col2 = st.columns(2)
+                
+                with col1:
+                    q1_index = st.selectbox(
+                        "First Question",
+                        options=range(len(comparable_questions)),
+                        format_func=lambda i: comparable_questions[i]["text"],
+                        key="q1_compare"
+                    )
+                
+                with col2:
+                    q2_index = st.selectbox(
+                        "Second Question",
+                        options=range(len(comparable_questions)),
+                        format_func=lambda i: comparable_questions[i]["text"],
+                        key="q2_compare",
+                        index=min(1, len(comparable_questions)-1)  # Default to second question
+                    )
+                
+                # Get selected questions
+                q1 = comparable_questions[q1_index]
+                q2 = comparable_questions[q2_index]
+                
+                # Check if same question is selected twice
+                if q1["index"] == q2["index"]:
+                    st.warning("Please select two different questions to compare.")
+                else:
+                    st.subheader(f"Comparing: {q1['text']} vs {q2['text']}")
+                    
+                    # Determine chart type based on question types
+                    q1_type = q1["type"]
+                    q2_type = q2["type"]
+                    
+                    # Create different comparison visualizations based on question types
+                    if q1_type in ["multiple_choice", "dropdown"] and q2_type in ["multiple_choice", "dropdown"]:
+                        # Create contingency table
+                        try:
+                            # Create cross-tabulation
+                            crosstab = pd.crosstab(
+                                df[q1["column"]], 
+                                df[q2["column"]], 
+                                normalize='index'
+                            ) * 100
+                            
+                            # Create heatmap
+                            fig = px.imshow(
+                                crosstab,
+                                labels=dict(x=q2["text"], y=q1["text"], color="Percentage (%)"),
+                                color_continuous_scale="Blues",
+                                text_auto='.1f'
+                            )
+                            st.plotly_chart(fig, use_container_width=True)
+                            
+                            st.write("The heatmap shows the percentage distribution of responses across both questions.")
+                            
+                            # Add the raw contingency table
+                            raw_counts = pd.crosstab(df[q1["column"]], df[q2["column"]])
+                            st.subheader("Response Counts")
+                            st.dataframe(raw_counts)
+                            
+                        except Exception as e:
+                            st.error(f"Error creating comparison: {e}")
+                    
+                    elif (q1_type in ["likert_scale", "number"] and q2_type in ["likert_scale", "number"]):
+                        try:
+                            # Check if data is numeric
+                            if df[q1["column"]].dtype in [np.int64, np.float64] and df[q2["column"]].dtype in [np.int64, np.float64]:
+                                # Create scatter plot
+                                fig = px.scatter(
+                                    df,
+                                    x=q1["column"],
+                                    y=q2["column"],
+                                    trendline="ols",
+                                    labels={q1["column"]: q1["text"], q2["column"]: q2["text"]},
+                                    title=f"Correlation between {q1['text']} and {q2['text']}"
+                                )
+                                st.plotly_chart(fig, use_container_width=True)
+                                
+                                # Calculate correlation coefficient
+                                correlation = df[q1["column"]].corr(df[q2["column"]])
+                                st.metric("Correlation Coefficient", f"{correlation:.2f}")
+                                
+                                if abs(correlation) < 0.3:
+                                    st.write("There is a weak correlation between these two variables.")
+                                elif abs(correlation) < 0.7:
+                                    st.write("There is a moderate correlation between these two variables.")
+                                else:
+                                    st.write("There is a strong correlation between these two variables.")
+                            else:
+                                st.warning("One or both selected columns contain non-numeric data.")
+                        except Exception as e:
+                            st.error(f"Error creating comparison: {e}")
+                    
+                    elif (q1_type in ["multiple_choice", "dropdown"] and q2_type in ["likert_scale", "number"]):
+                        try:
+                            # Check if second question is numeric
+                            if df[q2["column"]].dtype in [np.int64, np.float64]:
+                                # Create box plot
+                                fig = px.box(
+                                    df,
+                                    x=q1["column"],
+                                    y=q2["column"],
+                                    labels={q1["column"]: q1["text"], q2["column"]: q2["text"]},
+                                    title=f"Distribution of {q2['text']} by {q1['text']}"
+                                )
+                                st.plotly_chart(fig, use_container_width=True)
+                                
+                                # Add group statistics
+                                grouped_stats = df.groupby(q1["column"])[q2["column"]].agg(['mean', 'median', 'std', 'count']).reset_index()
+                                grouped_stats = grouped_stats.round(2)
+                                st.subheader("Group Statistics")
+                                st.dataframe(grouped_stats)
+                            else:
+                                st.warning("The second selected column contains non-numeric data.")
+                        except Exception as e:
+                            st.error(f"Error creating comparison: {e}")
+                    
+                    elif (q1_type in ["likert_scale", "number"] and q2_type in ["multiple_choice", "dropdown"]):
+                        try:
+                            # Check if first question is numeric
+                            if df[q1["column"]].dtype in [np.int64, np.float64]:
+                                # Create box plot
+                                fig = px.box(
+                                    df,
+                                    x=q2["column"],
+                                    y=q1["column"],
+                                    labels={q2["column"]: q2["text"], q1["column"]: q1["text"]},
+                                    title=f"Distribution of {q1['text']} by {q2['text']}"
+                                )
+                                st.plotly_chart(fig, use_container_width=True)
+                                
+                                # Add group statistics
+                                grouped_stats = df.groupby(q2["column"])[q1["column"]].agg(['mean', 'median', 'std', 'count']).reset_index()
+                                grouped_stats = grouped_stats.round(2)
+                                st.subheader("Group Statistics")
+                                st.dataframe(grouped_stats)
+                            else:
+                                st.warning("The first selected column contains non-numeric data.")
+                        except Exception as e:
+                            st.error(f"Error creating comparison: {e}")
+                    
+                    else:
+                        st.info("Comparison between these question types is not supported.")
+            else:
+                st.info("Need at least two comparable questions (multiple choice, scale, or number) to generate comparisons.")
+                
         with tab2:
             # Calculating statistics for each question
             st.subheader("Question Statistics")
@@ -328,7 +504,7 @@ else:
             else:
                 st.info("No statistical data available.")
         
-        with tab3:
+        with tab4:
             # Response breakdown - show raw counts and percentages
             for i, question in enumerate(questions):
                 question_id = question.get("id", str(i))

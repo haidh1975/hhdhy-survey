@@ -1,23 +1,299 @@
 {
-  "ccd31c59-3512-406d-9d29-008cc9c0462d": {
-    "title": "ABC",
-    "description": "ffgdsgdgdf",
+  "b783624c-5b0d-4f4d-8df6-d82688345587": {
+    "title": "Business Performance and Customer Behavior Survey",
+    "description": "This survey collects information about business performance and customer behavior to understand market trends and improve services.",
+    "created_date": "2025-04-30 10:46:56",
     "questions": [
       {
-        "type": "text",
-        "question_text": "Tu\u1ed5i",
+        "id": "q1",
+        "question_text": "What is your business type?",
+        "type": "multiple_choice",
+        "options": [
+          "Retail",
+          "Manufacturing",
+          "Services",
+          "Technology",
+          "Healthcare",
+          "Education",
+          "Other"
+        ],
         "required": true
       },
       {
+        "id": "q2",
+        "question_text": "How many employees work at your company?",
         "type": "multiple_choice",
-        "question_text": "Gi\u1edbi t\u00ednh",
-        "required": false,
         "options": [
-          "Nam",
-          "N\u1eef"
-        ]
+          "1-10",
+          "11-50",
+          "51-200",
+          "201-500",
+          "501-1000",
+          "1000+"
+        ],
+        "required": true
+      },
+      {
+        "id": "q3",
+        "question_text": "What was your company's annual revenue in the last fiscal year?",
+        "type": "multiple_choice",
+        "options": [
+          "Less than $100,000",
+          "$100,000-$500,000",
+          "$500,001-$1 million",
+          "$1 million-$5 million",
+          "$5 million-$10 million",
+          "More than $10 million"
+        ],
+        "required": true
+      },
+      {
+        "id": "q4",
+        "question_text": "How has your business performed compared to last year?",
+        "type": "likert_scale",
+        "scale_min": 1,
+        "scale_max": 5,
+        "scale_labels": [
+          "Much worse",
+          "Slightly worse",
+          "About the same",
+          "Slightly better",
+          "Much better"
+        ],
+        "required": true
+      },
+      {
+        "id": "q5",
+        "question_text": "Which customer acquisition channels are most effective for your business? (Select all that apply)",
+        "type": "checkbox",
+        "options": [
+          "Social Media",
+          "Email Marketing",
+          "Search Engine Marketing",
+          "Content Marketing",
+          "Referrals",
+          "Traditional Advertising",
+          "Trade Shows",
+          "Other"
+        ],
+        "required": true
+      },
+      {
+        "id": "q6",
+        "question_text": "What is your average customer acquisition cost?",
+        "type": "multiple_choice",
+        "options": [
+          "Less than $10",
+          "$10-$50",
+          "$51-$100",
+          "$101-$500",
+          "$501-$1000",
+          "More than $1000"
+        ],
+        "required": false
+      },
+      {
+        "id": "q7",
+        "question_text": "What is your customer retention rate?",
+        "type": "multiple_choice",
+        "options": [
+          "Less than 20%",
+          "21-40%",
+          "41-60%",
+          "61-80%",
+          "81-100%"
+        ],
+        "required": false
+      },
+      {
+        "id": "q8",
+        "question_text": "Rate the impact of the following factors on your customer buying decisions:",
+        "type": "likert_scale",
+        "scale_min": 1,
+        "scale_max": 5,
+        "scale_labels": [
+          "No impact",
+          "Low impact",
+          "Moderate impact",
+          "High impact",
+          "Very high impact"
+        ],
+        "required": true
+      },
+      {
+        "id": "q9",
+        "question_text": "What challenges is your business currently facing? (Select all that apply)",
+        "type": "checkbox",
+        "options": [
+          "Finding new customers",
+          "Retaining existing customers",
+          "Price competition",
+          "Market changes",
+          "Technology adoption",
+          "Staffing/HR issues",
+          "Supply chain disruptions",
+          "Regulatory compliance",
+          "Financing/Cash flow"
+        ],
+        "required": true
+      },
+      {
+        "id": "q10",
+        "question_text": "What is your expected business growth rate for the next year?",
+        "type": "multiple_choice",
+        "options": [
+          "Negative growth",
+          "0-5%",
+          "6-10%",
+          "11-20%",
+          "21-50%",
+          "More than 50%"
+        ],
+        "required": true
       }
-    ],
-    "created_date": "2025-04-30 10:37:00"
+    ]
+  },
+  "247893aa-1843-493d-b917-d2b2645cf6e1": {
+    "title": "Customer Satisfaction and Product Feedback Survey",
+    "description": "Help us improve our products and services by sharing your experience and feedback.",
+    "created_date": "2025-04-30 10:46:56",
+    "questions": [
+      {
+        "id": "q1",
+        "question_text": "How did you hear about our products/services?",
+        "type": "multiple_choice",
+        "options": [
+          "Search Engine",
+          "Social Media",
+          "Friend/Family",
+          "Advertisement",
+          "Blog/Article",
+          "Other"
+        ],
+        "required": true
+      },
+      {
+        "id": "q2",
+        "question_text": "How long have you been our customer?",
+        "type": "multiple_choice",
+        "options": [
+          "Less than a month",
+          "1-6 months",
+          "6-12 months",
+          "1-2 years",
+          "More than 2 years"
+        ],
+        "required": true
+      },
+      {
+        "id": "q3",
+        "question_text": "How often do you use our products/services?",
+        "type": "multiple_choice",
+        "options": [
+          "Daily",
+          "Weekly",
+          "Monthly",
+          "Quarterly",
+          "Rarely"
+        ],
+        "required": true
+      },
+      {
+        "id": "q4",
+        "question_text": "How would you rate your overall satisfaction with our products/services?",
+        "type": "likert_scale",
+        "scale_min": 1,
+        "scale_max": 5,
+        "scale_labels": [
+          "Very dissatisfied",
+          "Dissatisfied",
+          "Neutral",
+          "Satisfied",
+          "Very satisfied"
+        ],
+        "required": true
+      },
+      {
+        "id": "q5",
+        "question_text": "What features do you value most in our products/services? (Select all that apply)",
+        "type": "checkbox",
+        "options": [
+          "Quality",
+          "Price",
+          "Customer Service",
+          "User Experience",
+          "Features/Functionality",
+          "Reliability",
+          "Speed",
+          "Other"
+        ],
+        "required": true
+      },
+      {
+        "id": "q6",
+        "question_text": "How likely are you to recommend our products/services to others?",
+        "type": "likert_scale",
+        "scale_min": 0,
+        "scale_max": 10,
+        "scale_labels": [
+          "0 - Not at all likely",
+          "1",
+          "2",
+          "3",
+          "4",
+          "5 - Neutral",
+          "6",
+          "7",
+          "8",
+          "9",
+          "10 - Extremely likely"
+        ],
+        "required": true
+      },
+      {
+        "id": "q7",
+        "question_text": "What improvements would you suggest for our products/services?",
+        "type": "paragraph",
+        "required": false
+      },
+      {
+        "id": "q8",
+        "question_text": "How would you rate our customer service?",
+        "type": "likert_scale",
+        "scale_min": 1,
+        "scale_max": 5,
+        "scale_labels": [
+          "Very poor",
+          "Poor",
+          "Average",
+          "Good",
+          "Excellent"
+        ],
+        "required": false
+      },
+      {
+        "id": "q9",
+        "question_text": "Which of the following competitors have you used? (Select all that apply)",
+        "type": "checkbox",
+        "options": [
+          "Competitor A",
+          "Competitor B",
+          "Competitor C",
+          "Competitor D",
+          "None of the above"
+        ],
+        "required": false
+      },
+      {
+        "id": "q10",
+        "question_text": "May we contact you for follow-up questions?",
+        "type": "multiple_choice",
+        "options": [
+          "Yes",
+          "No"
+        ],
+        "required": true
+      }
+    ]
   }
 }

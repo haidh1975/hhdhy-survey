@@ -1,0 +1,2370 @@
+{
+  "b783624c-5b0d-4f4d-8df6-d82688345587": [
+    {
+      "timestamp": "2025-04-18 10:21:56",
+      "q1": "Other",
+      "q2": "11-50",
+      "q3": "$500,001-$1 million",
+      "q4": 5,
+      "q5": [
+        "Content Marketing",
+        "Email Marketing",
+        "Search Engine Marketing",
+        "Traditional Advertising"
+      ],
+      "q6": "$10-$50",
+      "q7": "21-40%",
+      "q8": 4,
+      "q9": [
+        "Market changes",
+        "Supply chain disruptions",
+        "Retaining existing customers"
+      ],
+      "q10": "21-50%"
+    },
+    {
+      "timestamp": "2025-04-20 02:58:56",
+      "q1": "Retail",
+      "q2": "1-10",
+      "q3": "$500,001-$1 million",
+      "q4": 2,
+      "q5": [
+        "Social Media",
+        "Trade Shows",
+        "Email Marketing",
+        "Traditional Advertising"
+      ],
+      "q6": "$101-$500",
+      "q7": "Less than 20%",
+      "q8": 4,
+      "q9": [
+        "Regulatory compliance",
+        "Retaining existing customers",
+        "Finding new customers",
+        "Staffing/HR issues",
+        "Price competition"
+      ],
+      "q10": "Negative growth"
+    },
+    {
+      "timestamp": "2025-04-23 14:07:56",
+      "q1": "Services",
+      "q2": "1-10",
+      "q3": "Less than $100,000",
+      "q4": 4,
+      "q5": [
+        "Email Marketing",
+        "Social Media",
+        "Traditional Advertising"
+      ],
+      "q6": "$10-$50",
+      "q7": "81-100%",
+      "q8": 4,
+      "q9": [
+        "Retaining existing customers"
+      ],
+      "q10": "6-10%"
+    },
+    {
+      "timestamp": "2025-04-24 01:15:56",
+      "q1": "Retail",
+      "q2": "51-200",
+      "q3": "More than $10 million",
+      "q4": 1,
+      "q5": [
+        "Other",
+        "Email Marketing",
+        "Social Media"
+      ],
+      "q6": "More than $1000",
+      "q7": "61-80%",
+      "q8": 3,
+      "q9": [
+        "Technology adoption",
+        "Staffing/HR issues",
+        "Supply chain disruptions",
+        "Regulatory compliance",
+        "Retaining existing customers"
+      ],
+      "q10": "6-10%"
+    },
+    {
+      "timestamp": "2025-04-25 16:16:56",
+      "q1": "Retail",
+      "q2": "1-10",
+      "q3": "Less than $100,000",
+      "q4": 3,
+      "q5": [
+        "Social Media",
+        "Other",
+        "Content Marketing",
+        "Referrals"
+      ],
+      "q6": "Less than $10",
+      "q7": null,
+      "q8": 2,
+      "q9": [
+        "Market changes"
+      ],
+      "q10": "11-20%"
+    },
+    {
+      "timestamp": "2025-04-29 17:35:56",
+      "q1": "Other",
+      "q2": "11-50",
+      "q3": "$1 million-$5 million",
+      "q4": 5,
+      "q5": [
+        "Content Marketing"
+      ],
+      "q6": "$10-$50",
+      "q7": "61-80%",
+      "q8": 4,
+      "q9": [
+        "Finding new customers",
+        "Price competition"
+      ],
+      "q10": "6-10%"
+    },
+    {
+      "timestamp": "2025-04-01 17:15:56",
+      "q1": "Retail",
+      "q2": "1-10",
+      "q3": "Less than $100,000",
+      "q4": 4,
+      "q5": [
+        "Other",
+        "Referrals"
+      ],
+      "q6": "$51-$100",
+      "q7": null,
+      "q8": 3,
+      "q9": [
+        "Retaining existing customers",
+        "Technology adoption",
+        "Market changes",
+        "Finding new customers"
+      ],
+      "q10": "0-5%"
+    },
+    {
+      "timestamp": "2025-04-28 03:04:56",
+      "q1": "Services",
+      "q2": "11-50",
+      "q3": "$500,001-$1 million",
+      "q4": 5,
+      "q5": [
+        "Traditional Advertising",
+        "Email Marketing",
+        "Other",
+        "Content Marketing"
+      ],
+      "q6": "$101-$500",
+      "q7": "41-60%",
+      "q8": 4,
+      "q9": [
+        "Financing/Cash flow"
+      ],
+      "q10": "Negative growth"
+    },
+    {
+      "timestamp": "2025-04-05 18:49:56",
+      "q1": "Retail",
+      "q2": "1-10",
+      "q3": "$500,001-$1 million",
+      "q4": 4,
+      "q5": [
+        "Other"
+      ],
+      "q6": "Less than $10",
+      "q7": "Less than 20%",
+      "q8": 4,
+      "q9": [
+        "Supply chain disruptions",
+        "Technology adoption",
+        "Finding new customers",
+        "Market changes"
+      ],
+      "q10": "6-10%"
+    },
+    {
+      "timestamp": "2025-04-20 11:39:56",
+      "q1": "Other",
+      "q2": "1-10",
+      "q3": "$500,001-$1 million",
+      "q4": 3,
+      "q5": [
+        "Content Marketing"
+      ],
+      "q6": "Less than $10",
+      "q7": "81-100%",
+      "q8": 1,
+      "q9": [
+        "Technology adoption",
+        "Price competition"
+      ],
+      "q10": "More than 50%"
+    },
+    {
+      "timestamp": "2025-04-13 02:09:56",
+      "q1": "Retail",
+      "q2": "1-10",
+      "q3": "Less than $100,000",
+      "q4": 4,
+      "q5": [
+        "Search Engine Marketing",
+        "Social Media"
+      ],
+      "q6": "$51-$100",
+      "q7": "61-80%",
+      "q8": 4,
+      "q9": [
+        "Staffing/HR issues"
+      ],
+      "q10": "More than 50%"
+    },
+    {
+      "timestamp": "2025-04-22 00:37:56",
+      "q1": "Manufacturing",
+      "q2": "51-200",
+      "q3": "$100,000-$500,000",
+      "q4": 3,
+      "q5": [
+        "Search Engine Marketing",
+        "Content Marketing"
+      ],
+      "q6": "$501-$1000",
+      "q7": "81-100%",
+      "q8": 4,
+      "q9": [
+        "Supply chain disruptions",
+        "Financing/Cash flow",
+        "Price competition",
+        "Staffing/HR issues"
+      ],
+      "q10": "0-5%"
+    },
+    {
+      "timestamp": "2025-03-31 14:33:56",
+      "q1": "Retail",
+      "q2": "51-200",
+      "q3": "$1 million-$5 million",
+      "q4": 3,
+      "q5": [
+        "Trade Shows",
+        "Content Marketing"
+      ],
+      "q6": "$501-$1000",
+      "q7": null,
+      "q8": 3,
+      "q9": [
+        "Finding new customers",
+        "Technology adoption"
+      ],
+      "q10": "6-10%"
+    },
+    {
+      "timestamp": "2025-04-04 11:02:56",
+      "q1": "Technology",
+      "q2": "1-10",
+      "q3": "$100,000-$500,000",
+      "q4": 3,
+      "q5": [
+        "Email Marketing"
+      ],
+      "q6": "$501-$1000",
+      "q7": "61-80%",
+      "q8": 2,
+      "q9": [
+        "Regulatory compliance",
+        "Supply chain disruptions"
+      ],
+      "q10": "21-50%"
+    },
+    {
+      "timestamp": "2025-04-12 09:13:56",
+      "q1": "Technology",
+      "q2": "1-10",
+      "q3": "$500,001-$1 million",
+      "q4": 4,
+      "q5": [
+        "Trade Shows",
+        "Traditional Advertising",
+        "Social Media"
+      ],
+      "q6": "Less than $10",
+      "q7": "Less than 20%",
+      "q8": 1,
+      "q9": [
+        "Financing/Cash flow",
+        "Supply chain disruptions"
+      ],
+      "q10": "0-5%"
+    },
+    {
+      "timestamp": "2025-04-23 16:27:56",
+      "q1": "Retail",
+      "q2": "201-500",
+      "q3": "$100,000-$500,000",
+      "q4": 4,
+      "q5": [
+        "Trade Shows"
+      ],
+      "q6": "$10-$50",
+      "q7": null,
+      "q8": 3,
+      "q9": [
+        "Financing/Cash flow",
+        "Price competition",
+        "Regulatory compliance",
+        "Finding new customers"
+      ],
+      "q10": "11-20%"
+    },
+    {
+      "timestamp": "2025-04-02 15:11:56",
+      "q1": "Manufacturing",
+      "q2": "11-50",
+      "q3": "Less than $100,000",
+      "q4": 1,
+      "q5": [
+        "Content Marketing"
+      ],
+      "q6": null,
+      "q7": "21-40%",
+      "q8": 1,
+      "q9": [
+        "Retaining existing customers"
+      ],
+      "q10": "21-50%"
+    },
+    {
+      "timestamp": "2025-04-05 04:12:56",
+      "q1": "Manufacturing",
+      "q2": "201-500",
+      "q3": "$500,001-$1 million",
+      "q4": 3,
+      "q5": [
+        "Email Marketing",
+        "Other"
+      ],
+      "q6": "$501-$1000",
+      "q7": "61-80%",
+      "q8": 1,
+      "q9": [
+        "Retaining existing customers",
+        "Regulatory compliance",
+        "Market changes",
+        "Staffing/HR issues",
+        "Supply chain disruptions"
+      ],
+      "q10": "More than 50%"
+    },
+    {
+      "timestamp": "2025-04-04 05:08:56",
+      "q1": "Healthcare",
+      "q2": "1-10",
+      "q3": "$500,001-$1 million",
+      "q4": 4,
+      "q5": [
+        "Traditional Advertising"
+      ],
+      "q6": "$51-$100",
+      "q7": "Less than 20%",
+      "q8": 2,
+      "q9": [
+        "Finding new customers",
+        "Regulatory compliance",
+        "Supply chain disruptions",
+        "Retaining existing customers"
+      ],
+      "q10": "More than 50%"
+    },
+    {
+      "timestamp": "2025-04-13 02:00:56",
+      "q1": "Manufacturing",
+      "q2": "201-500",
+      "q3": "$500,001-$1 million",
+      "q4": 4,
+      "q5": [
+        "Trade Shows"
+      ],
+      "q6": "Less than $10",
+      "q7": "21-40%",
+      "q8": 2,
+      "q9": [
+        "Technology adoption",
+        "Financing/Cash flow",
+        "Finding new customers"
+      ],
+      "q10": "More than 50%"
+    },
+    {
+      "timestamp": "2025-04-25 05:30:56",
+      "q1": "Healthcare",
+      "q2": "1-10",
+      "q3": "$100,000-$500,000",
+      "q4": 2,
+      "q5": [
+        "Trade Shows",
+        "Other"
+      ],
+      "q6": "Less than $10",
+      "q7": "81-100%",
+      "q8": 1,
+      "q9": [
+        "Staffing/HR issues"
+      ],
+      "q10": "21-50%"
+    },
+    {
+      "timestamp": "2025-04-05 16:47:56",
+      "q1": "Technology",
+      "q2": "1-10",
+      "q3": "Less than $100,000",
+      "q4": 2,
+      "q5": [
+        "Email Marketing",
+        "Social Media"
+      ],
+      "q6": "More than $1000",
+      "q7": "Less than 20%",
+      "q8": 2,
+      "q9": [
+        "Supply chain disruptions",
+        "Retaining existing customers",
+        "Staffing/HR issues",
+        "Technology adoption",
+        "Market changes"
+      ],
+      "q10": "0-5%"
+    },
+    {
+      "timestamp": "2025-04-07 10:07:56",
+      "q1": "Services",
+      "q2": "11-50",
+      "q3": "$100,000-$500,000",
+      "q4": 4,
+      "q5": [
+        "Email Marketing",
+        "Traditional Advertising"
+      ],
+      "q6": "More than $1000",
+      "q7": "21-40%",
+      "q8": 1,
+      "q9": [
+        "Retaining existing customers",
+        "Finding new customers"
+      ],
+      "q10": "0-5%"
+    },
+    {
+      "timestamp": "2025-04-22 21:42:56",
+      "q1": "Services",
+      "q2": "1-10",
+      "q3": "$500,001-$1 million",
+      "q4": 3,
+      "q5": [
+        "Social Media"
+      ],
+      "q6": "More than $1000",
+      "q7": "61-80%",
+      "q8": 4,
+      "q9": [
+        "Finding new customers"
+      ],
+      "q10": "21-50%"
+    },
+    {
+      "timestamp": "2025-03-31 13:38:56",
+      "q1": "Retail",
+      "q2": "11-50",
+      "q3": "$100,000-$500,000",
+      "q4": 3,
+      "q5": [
+        "Other",
+        "Referrals",
+        "Social Media",
+        "Trade Shows"
+      ],
+      "q6": "$101-$500",
+      "q7": "Less than 20%",
+      "q8": 2,
+      "q9": [
+        "Regulatory compliance",
+        "Market changes",
+        "Supply chain disruptions",
+        "Finding new customers"
+      ],
+      "q10": "0-5%"
+    },
+    {
+      "timestamp": "2025-04-06 02:46:56",
+      "q1": "Retail",
+      "q2": "1-10",
+      "q3": "$500,001-$1 million",
+      "q4": 2,
+      "q5": [
+        "Social Media"
+      ],
+      "q6": "$501-$1000",
+      "q7": "61-80%",
+      "q8": 2,
+      "q9": [
+        "Technology adoption",
+        "Price competition",
+        "Market changes",
+        "Retaining existing customers"
+      ],
+      "q10": "6-10%"
+    },
+    {
+      "timestamp": "2025-04-26 06:49:56",
+      "q1": "Retail",
+      "q2": "1-10",
+      "q3": "$1 million-$5 million",
+      "q4": 2,
+      "q5": [
+        "Trade Shows",
+        "Other"
+      ],
+      "q6": "More than $1000",
+      "q7": "Less than 20%",
+      "q8": 3,
+      "q9": [
+        "Retaining existing customers",
+        "Supply chain disruptions",
+        "Technology adoption",
+        "Regulatory compliance"
+      ],
+      "q10": "6-10%"
+    },
+    {
+      "timestamp": "2025-04-30 08:42:56",
+      "q1": "Services",
+      "q2": "1-10",
+      "q3": "Less than $100,000",
+      "q4": 1,
+      "q5": [
+        "Other"
+      ],
+      "q6": "$101-$500",
+      "q7": "21-40%",
+      "q8": 1,
+      "q9": [
+        "Retaining existing customers",
+        "Regulatory compliance",
+        "Price competition"
+      ],
+      "q10": "0-5%"
+    },
+    {
+      "timestamp": "2025-04-12 20:34:56",
+      "q1": "Retail",
+      "q2": "1-10",
+      "q3": "$500,001-$1 million",
+      "q4": 4,
+      "q5": [
+        "Email Marketing"
+      ],
+      "q6": "$101-$500",
+      "q7": "21-40%",
+      "q8": 3,
+      "q9": [
+        "Staffing/HR issues",
+        "Finding new customers",
+        "Market changes",
+        "Financing/Cash flow"
+      ],
+      "q10": "11-20%"
+    },
+    {
+      "timestamp": "2025-03-30 16:49:56",
+      "q1": "Manufacturing",
+      "q2": "51-200",
+      "q3": "$500,001-$1 million",
+      "q4": 3,
+      "q5": [
+        "Referrals",
+        "Social Media",
+        "Other"
+      ],
+      "q6": "$501-$1000",
+      "q7": "21-40%",
+      "q8": 4,
+      "q9": [
+        "Finding new customers"
+      ],
+      "q10": "0-5%"
+    },
+    {
+      "timestamp": "2025-04-23 18:14:56",
+      "q1": "Manufacturing",
+      "q2": "201-500",
+      "q3": "$500,001-$1 million",
+      "q4": 3,
+      "q5": [
+        "Trade Shows",
+        "Referrals"
+      ],
+      "q6": "$101-$500",
+      "q7": "41-60%",
+      "q8": 1,
+      "q9": [
+        "Financing/Cash flow",
+        "Supply chain disruptions"
+      ],
+      "q10": "More than 50%"
+    },
+    {
+      "timestamp": "2025-04-10 15:30:56",
+      "q1": "Education",
+      "q2": "51-200",
+      "q3": "$1 million-$5 million",
+      "q4": 4,
+      "q5": [
+        "Other"
+      ],
+      "q6": "$10-$50",
+      "q7": "61-80%",
+      "q8": 1,
+      "q9": [
+        "Technology adoption",
+        "Retaining existing customers",
+        "Finding new customers"
+      ],
+      "q10": "0-5%"
+    },
+    {
+      "timestamp": "2025-04-21 07:58:56",
+      "q1": "Services",
+      "q2": "11-50",
+      "q3": "$500,001-$1 million",
+      "q4": 1,
+      "q5": [
+        "Content Marketing",
+        "Social Media"
+      ],
+      "q6": "$51-$100",
+      "q7": null,
+      "q8": 2,
+      "q9": [
+        "Finding new customers",
+        "Supply chain disruptions",
+        "Regulatory compliance",
+        "Financing/Cash flow",
+        "Market changes"
+      ],
+      "q10": "Negative growth"
+    },
+    {
+      "timestamp": "2025-04-04 08:37:56",
+      "q1": "Services",
+      "q2": "1-10",
+      "q3": "$1 million-$5 million",
+      "q4": 3,
+      "q5": [
+        "Search Engine Marketing",
+        "Referrals",
+        "Content Marketing"
+      ],
+      "q6": "$51-$100",
+      "q7": null,
+      "q8": 1,
+      "q9": [
+        "Supply chain disruptions",
+        "Market changes",
+        "Retaining existing customers",
+        "Technology adoption"
+      ],
+      "q10": "11-20%"
+    },
+    {
+      "timestamp": "2025-04-14 16:10:56",
+      "q1": "Technology",
+      "q2": "1-10",
+      "q3": "$500,001-$1 million",
+      "q4": 4,
+      "q5": [
+        "Content Marketing",
+        "Search Engine Marketing",
+        "Email Marketing"
+      ],
+      "q6": "$101-$500",
+      "q7": "41-60%",
+      "q8": 3,
+      "q9": [
+        "Retaining existing customers",
+        "Financing/Cash flow",
+        "Finding new customers"
+      ],
+      "q10": "11-20%"
+    },
+    {
+      "timestamp": "2025-04-20 13:39:56",
+      "q1": "Retail",
+      "q2": "1-10",
+      "q3": "$500,001-$1 million",
+      "q4": 2,
+      "q5": [
+        "Trade Shows",
+        "Social Media",
+        "Other",
+        "Traditional Advertising"
+      ],
+      "q6": "$51-$100",
+      "q7": "Less than 20%",
+      "q8": 4,
+      "q9": [
+        "Supply chain disruptions",
+        "Market changes",
+        "Financing/Cash flow",
+        "Retaining existing customers"
+      ],
+      "q10": "21-50%"
+    },
+    {
+      "timestamp": "2025-04-16 21:38:56",
+      "q1": "Education",
+      "q2": "1-10",
+      "q3": "Less than $100,000",
+      "q4": 2,
+      "q5": [
+        "Email Marketing"
+      ],
+      "q6": "Less than $10",
+      "q7": "81-100%",
+      "q8": 5,
+      "q9": [
+        "Staffing/HR issues",
+        "Price competition"
+      ],
+      "q10": "21-50%"
+    },
+    {
+      "timestamp": "2025-03-31 21:53:56",
+      "q1": "Services",
+      "q2": "201-500",
+      "q3": "$100,000-$500,000",
+      "q4": 2,
+      "q5": [
+        "Email Marketing",
+        "Referrals"
+      ],
+      "q6": "Less than $10",
+      "q7": "61-80%",
+      "q8": 3,
+      "q9": [
+        "Retaining existing customers",
+        "Regulatory compliance",
+        "Price competition"
+      ],
+      "q10": "0-5%"
+    },
+    {
+      "timestamp": "2025-04-06 03:06:56",
+      "q1": "Technology",
+      "q2": "1-10",
+      "q3": "$1 million-$5 million",
+      "q4": 3,
+      "q5": [
+        "Content Marketing",
+        "Social Media",
+        "Email Marketing",
+        "Search Engine Marketing"
+      ],
+      "q6": "$501-$1000",
+      "q7": "41-60%",
+      "q8": 5,
+      "q9": [
+        "Financing/Cash flow",
+        "Supply chain disruptions",
+        "Regulatory compliance",
+        "Technology adoption"
+      ],
+      "q10": "More than 50%"
+    },
+    {
+      "timestamp": "2025-04-24 05:01:56",
+      "q1": "Services",
+      "q2": "1-10",
+      "q3": "$100,000-$500,000",
+      "q4": 1,
+      "q5": [
+        "Search Engine Marketing",
+        "Content Marketing",
+        "Referrals",
+        "Trade Shows"
+      ],
+      "q6": "More than $1000",
+      "q7": "81-100%",
+      "q8": 4,
+      "q9": [
+        "Regulatory compliance",
+        "Financing/Cash flow",
+        "Staffing/HR issues"
+      ],
+      "q10": "6-10%"
+    },
+    {
+      "timestamp": "2025-04-24 02:20:56",
+      "q1": "Retail",
+      "q2": "1-10",
+      "q3": "Less than $100,000",
+      "q4": 3,
+      "q5": [
+        "Referrals",
+        "Email Marketing",
+        "Content Marketing"
+      ],
+      "q6": "$51-$100",
+      "q7": null,
+      "q8": 5,
+      "q9": [
+        "Finding new customers",
+        "Regulatory compliance",
+        "Price competition",
+        "Retaining existing customers"
+      ],
+      "q10": "0-5%"
+    },
+    {
+      "timestamp": "2025-04-03 14:11:56",
+      "q1": "Retail",
+      "q2": "1-10",
+      "q3": "$100,000-$500,000",
+      "q4": 4,
+      "q5": [
+        "Email Marketing",
+        "Referrals",
+        "Traditional Advertising"
+      ],
+      "q6": "$501-$1000",
+      "q7": "41-60%",
+      "q8": 4,
+      "q9": [
+        "Regulatory compliance",
+        "Price competition",
+        "Finding new customers",
+        "Technology adoption"
+      ],
+      "q10": "11-20%"
+    },
+    {
+      "timestamp": "2025-04-05 00:23:56",
+      "q1": "Retail",
+      "q2": "1-10",
+      "q3": "$1 million-$5 million",
+      "q4": 2,
+      "q5": [
+        "Search Engine Marketing",
+        "Traditional Advertising",
+        "Social Media"
+      ],
+      "q6": "$101-$500",
+      "q7": "Less than 20%",
+      "q8": 5,
+      "q9": [
+        "Staffing/HR issues",
+        "Technology adoption",
+        "Finding new customers",
+        "Retaining existing customers"
+      ],
+      "q10": "11-20%"
+    },
+    {
+      "timestamp": "2025-04-21 09:17:56",
+      "q1": "Retail",
+      "q2": "1-10",
+      "q3": "Less than $100,000",
+      "q4": 3,
+      "q5": [
+        "Search Engine Marketing",
+        "Referrals",
+        "Traditional Advertising"
+      ],
+      "q6": "$10-$50",
+      "q7": "81-100%",
+      "q8": 2,
+      "q9": [
+        "Staffing/HR issues"
+      ],
+      "q10": "Negative growth"
+    },
+    {
+      "timestamp": "2025-04-14 00:41:56",
+      "q1": "Manufacturing",
+      "q2": "11-50",
+      "q3": "More than $10 million",
+      "q4": 3,
+      "q5": [
+        "Traditional Advertising",
+        "Content Marketing",
+        "Referrals",
+        "Social Media"
+      ],
+      "q6": "$101-$500",
+      "q7": "81-100%",
+      "q8": 3,
+      "q9": [
+        "Retaining existing customers"
+      ],
+      "q10": "0-5%"
+    },
+    {
+      "timestamp": "2025-04-01 08:57:56",
+      "q1": "Retail",
+      "q2": "201-500",
+      "q3": "$1 million-$5 million",
+      "q4": 3,
+      "q5": [
+        "Other",
+        "Email Marketing",
+        "Referrals",
+        "Social Media"
+      ],
+      "q6": "More than $1000",
+      "q7": "Less than 20%",
+      "q8": 2,
+      "q9": [
+        "Technology adoption",
+        "Staffing/HR issues",
+        "Price competition"
+      ],
+      "q10": "More than 50%"
+    },
+    {
+      "timestamp": "2025-04-23 22:19:56",
+      "q1": "Other",
+      "q2": "1-10",
+      "q3": "$1 million-$5 million",
+      "q4": 2,
+      "q5": [
+        "Other",
+        "Referrals"
+      ],
+      "q6": "More than $1000",
+      "q7": "41-60%",
+      "q8": 1,
+      "q9": [
+        "Retaining existing customers"
+      ],
+      "q10": "0-5%"
+    },
+    {
+      "timestamp": "2025-04-21 06:23:56",
+      "q1": "Retail",
+      "q2": "11-50",
+      "q3": "$100,000-$500,000",
+      "q4": 2,
+      "q5": [
+        "Social Media",
+        "Other",
+        "Traditional Advertising",
+        "Trade Shows"
+      ],
+      "q6": "$501-$1000",
+      "q7": "Less than 20%",
+      "q8": 1,
+      "q9": [
+        "Supply chain disruptions",
+        "Regulatory compliance",
+        "Financing/Cash flow",
+        "Market changes",
+        "Technology adoption"
+      ],
+      "q10": "0-5%"
+    },
+    {
+      "timestamp": "2025-04-20 17:53:56",
+      "q1": "Services",
+      "q2": "501-1000",
+      "q3": "Less than $100,000",
+      "q4": 3,
+      "q5": [
+        "Search Engine Marketing",
+        "Traditional Advertising",
+        "Trade Shows"
+      ],
+      "q6": "$51-$100",
+      "q7": "41-60%",
+      "q8": 4,
+      "q9": [
+        "Retaining existing customers",
+        "Technology adoption",
+        "Finding new customers",
+        "Staffing/HR issues",
+        "Regulatory compliance"
+      ],
+      "q10": "6-10%"
+    },
+    {
+      "timestamp": "2025-04-18 20:51:56",
+      "q1": "Manufacturing",
+      "q2": "501-1000",
+      "q3": "Less than $100,000",
+      "q4": 4,
+      "q5": [
+        "Content Marketing",
+        "Search Engine Marketing"
+      ],
+      "q6": "Less than $10",
+      "q7": "Less than 20%",
+      "q8": 1,
+      "q9": [
+        "Finding new customers",
+        "Financing/Cash flow"
+      ],
+      "q10": "21-50%"
+    }
+  ],
+  "247893aa-1843-493d-b917-d2b2645cf6e1": [
+    {
+      "timestamp": "2025-04-28 02:56:56",
+      "q1": "Search Engine",
+      "q2": "6-12 months",
+      "q3": "Monthly",
+      "q4": 4,
+      "q5": [
+        "User Experience"
+      ],
+      "q6": 8,
+      "q7": null,
+      "q8": 5,
+      "q9": [],
+      "q10": "No"
+    },
+    {
+      "timestamp": "2025-04-29 13:23:56",
+      "q1": "Search Engine",
+      "q2": "1-6 months",
+      "q3": "Weekly",
+      "q4": 5,
+      "q5": [
+        "Price"
+      ],
+      "q6": 10,
+      "q7": "Better documentation and tutorials would help new users.",
+      "q8": 5,
+      "q9": null,
+      "q10": "No"
+    },
+    {
+      "timestamp": "2025-03-17 10:58:56",
+      "q1": "Social Media",
+      "q2": "1-6 months",
+      "q3": "Weekly",
+      "q4": 5,
+      "q5": [
+        "Quality",
+        "Customer Service",
+        "Speed"
+      ],
+      "q6": 7,
+      "q7": "I would like to see more features related to analytics.",
+      "q8": 5,
+      "q9": [
+        "Competitor A",
+        "Competitor C"
+      ],
+      "q10": "No"
+    },
+    {
+      "timestamp": "2025-04-28 18:57:56",
+      "q1": "Other",
+      "q2": "6-12 months",
+      "q3": "Monthly",
+      "q4": 3,
+      "q5": [
+        "User Experience"
+      ],
+      "q6": 5,
+      "q7": "Improve the search functionality.",
+      "q8": 3,
+      "q9": [
+        "None of the above",
+        "Competitor B"
+      ],
+      "q10": "No"
+    },
+    {
+      "timestamp": "2025-04-13 16:51:56",
+      "q1": "Search Engine",
+      "q2": "More than 2 years",
+      "q3": "Monthly",
+      "q4": 3,
+      "q5": [
+        "Other"
+      ],
+      "q6": 5,
+      "q7": null,
+      "q8": 3,
+      "q9": null,
+      "q10": "Yes"
+    },
+    {
+      "timestamp": "2025-03-24 06:26:56",
+      "q1": "Social Media",
+      "q2": "Less than a month",
+      "q3": "Weekly",
+      "q4": 2,
+      "q5": [
+        "Other",
+        "Features/Functionality",
+        "Quality"
+      ],
+      "q6": 3,
+      "q7": "Improve the search functionality.",
+      "q8": 1,
+      "q9": [
+        "None of the above",
+        "Competitor A"
+      ],
+      "q10": "No"
+    },
+    {
+      "timestamp": "2025-04-08 12:05:56",
+      "q1": "Other",
+      "q2": "1-2 years",
+      "q3": "Quarterly",
+      "q4": 4,
+      "q5": [
+        "Other",
+        "Price",
+        "User Experience",
+        "Features/Functionality"
+      ],
+      "q6": 3,
+      "q7": "Better documentation and tutorials would help new users.",
+      "q8": null,
+      "q9": [
+        "Competitor D",
+        "Competitor B"
+      ],
+      "q10": "No"
+    },
+    {
+      "timestamp": "2025-03-19 13:36:56",
+      "q1": "Advertisement",
+      "q2": "Less than a month",
+      "q3": "Monthly",
+      "q4": 4,
+      "q5": [
+        "Customer Service",
+        "Price",
+        "Features/Functionality",
+        "User Experience"
+      ],
+      "q6": 8,
+      "q7": null,
+      "q8": 3,
+      "q9": [
+        "Competitor A",
+        "None of the above",
+        "Competitor B"
+      ],
+      "q10": "No"
+    },
+    {
+      "timestamp": "2025-04-04 08:24:56",
+      "q1": "Friend/Family",
+      "q2": "More than 2 years",
+      "q3": "Monthly",
+      "q4": 4,
+      "q5": [
+        "Quality",
+        "Other"
+      ],
+      "q6": 7,
+      "q7": null,
+      "q8": 5,
+      "q9": [
+        "None of the above",
+        "Competitor A",
+        "Competitor D"
+      ],
+      "q10": "Yes"
+    },
+    {
+      "timestamp": "2025-04-25 19:08:56",
+      "q1": "Search Engine",
+      "q2": "Less than a month",
+      "q3": "Daily",
+      "q4": 5,
+      "q5": [
+        "Customer Service",
+        "Quality",
+        "Speed",
+        "Reliability"
+      ],
+      "q6": 6,
+      "q7": "Improve the search functionality.",
+      "q8": null,
+      "q9": [],
+      "q10": "No"
+    },
+    {
+      "timestamp": "2025-03-26 00:30:56",
+      "q1": "Other",
+      "q2": "1-6 months",
+      "q3": "Monthly",
+      "q4": 3,
+      "q5": [
+        "Price",
+        "Other",
+        "Customer Service"
+      ],
+      "q6": 5,
+      "q7": "Lower prices would make your product more competitive.",
+      "q8": null,
+      "q9": null,
+      "q10": "No"
+    },
+    {
+      "timestamp": "2025-04-02 06:20:56",
+      "q1": "Advertisement",
+      "q2": "6-12 months",
+      "q3": "Daily",
+      "q4": 5,
+      "q5": [
+        "User Experience"
+      ],
+      "q6": 7,
+      "q7": "Improve the search functionality.",
+      "q8": 5,
+      "q9": null,
+      "q10": "No"
+    },
+    {
+      "timestamp": "2025-04-05 16:20:56",
+      "q1": "Search Engine",
+      "q2": "6-12 months",
+      "q3": "Weekly",
+      "q4": 3,
+      "q5": [
+        "Features/Functionality",
+        "User Experience",
+        "Other"
+      ],
+      "q6": 3,
+      "q7": "Faster customer service response times would be helpful.",
+      "q8": 4,
+      "q9": null,
+      "q10": "Yes"
+    },
+    {
+      "timestamp": "2025-03-15 18:21:56",
+      "q1": "Advertisement",
+      "q2": "6-12 months",
+      "q3": "Daily",
+      "q4": 5,
+      "q5": [
+        "Reliability"
+      ],
+      "q6": 10,
+      "q7": "Improve the search functionality.",
+      "q8": 5,
+      "q9": null,
+      "q10": "No"
+    },
+    {
+      "timestamp": "2025-03-23 20:13:56",
+      "q1": "Social Media",
+      "q2": "Less than a month",
+      "q3": "Quarterly",
+      "q4": 3,
+      "q5": [
+        "Other",
+        "Reliability",
+        "Customer Service",
+        "Speed"
+      ],
+      "q6": 4,
+      "q7": "Improve the search functionality.",
+      "q8": 2,
+      "q9": [
+        "Competitor B"
+      ],
+      "q10": "Yes"
+    },
+    {
+      "timestamp": "2025-04-01 21:23:56",
+      "q1": "Search Engine",
+      "q2": "Less than a month",
+      "q3": "Quarterly",
+      "q4": 2,
+      "q5": [
+        "Customer Service",
+        "Other",
+        "Features/Functionality"
+      ],
+      "q6": 0,
+      "q7": null,
+      "q8": 1,
+      "q9": [
+        "Competitor B",
+        "Competitor A"
+      ],
+      "q10": "No"
+    },
+    {
+      "timestamp": "2025-04-15 06:27:56",
+      "q1": "Search Engine",
+      "q2": "6-12 months",
+      "q3": "Daily",
+      "q4": 5,
+      "q5": [
+        "Customer Service",
+        "Price"
+      ],
+      "q6": 10,
+      "q7": "Your product could be more user-friendly.",
+      "q8": null,
+      "q9": [
+        "Competitor D"
+      ],
+      "q10": "No"
+    },
+    {
+      "timestamp": "2025-04-09 01:27:56",
+      "q1": "Social Media",
+      "q2": "Less than a month",
+      "q3": "Daily",
+      "q4": 4,
+      "q5": [
+        "Reliability",
+        "Quality"
+      ],
+      "q6": 8,
+      "q7": null,
+      "q8": 3,
+      "q9": null,
+      "q10": "Yes"
+    },
+    {
+      "timestamp": "2025-04-21 23:42:56",
+      "q1": "Advertisement",
+      "q2": "1-2 years",
+      "q3": "Monthly",
+      "q4": 2,
+      "q5": [
+        "Customer Service",
+        "Other"
+      ],
+      "q6": 1,
+      "q7": "Improve the mobile app experience.",
+      "q8": 3,
+      "q9": [
+        "Competitor A"
+      ],
+      "q10": "Yes"
+    },
+    {
+      "timestamp": "2025-04-04 07:47:56",
+      "q1": "Search Engine",
+      "q2": "6-12 months",
+      "q3": "Weekly",
+      "q4": 5,
+      "q5": [
+        "User Experience",
+        "Quality"
+      ],
+      "q6": 8,
+      "q7": "More customization options would be great.",
+      "q8": 4,
+      "q9": [
+        "Competitor C",
+        "None of the above"
+      ],
+      "q10": "No"
+    },
+    {
+      "timestamp": "2025-03-26 09:57:56",
+      "q1": "Social Media",
+      "q2": "Less than a month",
+      "q3": "Weekly",
+      "q4": 4,
+      "q5": [
+        "Reliability",
+        "Other"
+      ],
+      "q6": 5,
+      "q7": null,
+      "q8": null,
+      "q9": null,
+      "q10": "No"
+    },
+    {
+      "timestamp": "2025-03-25 03:59:56",
+      "q1": "Social Media",
+      "q2": "6-12 months",
+      "q3": "Weekly",
+      "q4": 4,
+      "q5": [
+        "Price",
+        "Reliability",
+        "Quality",
+        "User Experience"
+      ],
+      "q6": 10,
+      "q7": "I would like to see more features related to analytics.",
+      "q8": 4,
+      "q9": [
+        "Competitor B",
+        "None of the above"
+      ],
+      "q10": "No"
+    },
+    {
+      "timestamp": "2025-03-17 03:36:56",
+      "q1": "Friend/Family",
+      "q2": "1-2 years",
+      "q3": "Quarterly",
+      "q4": 3,
+      "q5": [
+        "Price",
+        "User Experience",
+        "Other"
+      ],
+      "q6": 8,
+      "q7": "Faster customer service response times would be helpful.",
+      "q8": 2,
+      "q9": null,
+      "q10": "No"
+    },
+    {
+      "timestamp": "2025-04-13 22:07:56",
+      "q1": "Social Media",
+      "q2": "Less than a month",
+      "q3": "Weekly",
+      "q4": 3,
+      "q5": [
+        "User Experience",
+        "Other"
+      ],
+      "q6": 4,
+      "q7": "I would like to see more features related to analytics.",
+      "q8": 3,
+      "q9": [
+        "Competitor D"
+      ],
+      "q10": "No"
+    },
+    {
+      "timestamp": "2025-04-01 00:26:56",
+      "q1": "Social Media",
+      "q2": "1-2 years",
+      "q3": "Daily",
+      "q4": 4,
+      "q5": [
+        "Quality",
+        "Features/Functionality"
+      ],
+      "q6": 7,
+      "q7": "Faster customer service response times would be helpful.",
+      "q8": 5,
+      "q9": [
+        "None of the above",
+        "Competitor D"
+      ],
+      "q10": "No"
+    },
+    {
+      "timestamp": "2025-04-12 14:34:56",
+      "q1": "Friend/Family",
+      "q2": "Less than a month",
+      "q3": "Monthly",
+      "q4": 3,
+      "q5": [
+        "User Experience",
+        "Speed",
+        "Quality"
+      ],
+      "q6": 4,
+      "q7": "More customization options would be great.",
+      "q8": 2,
+      "q9": null,
+      "q10": "No"
+    },
+    {
+      "timestamp": "2025-04-20 11:33:56",
+      "q1": "Other",
+      "q2": "1-2 years",
+      "q3": "Monthly",
+      "q4": 4,
+      "q5": [
+        "User Experience",
+        "Price"
+      ],
+      "q6": 6,
+      "q7": null,
+      "q8": 3,
+      "q9": [
+        "Competitor B",
+        "Competitor D",
+        "Competitor A"
+      ],
+      "q10": "No"
+    },
+    {
+      "timestamp": "2025-04-04 12:43:56",
+      "q1": "Search Engine",
+      "q2": "1-2 years",
+      "q3": "Weekly",
+      "q4": 2,
+      "q5": [
+        "Speed",
+        "Other",
+        "Features/Functionality",
+        "User Experience"
+      ],
+      "q6": 0,
+      "q7": "Lower prices would make your product more competitive.",
+      "q8": 2,
+      "q9": null,
+      "q10": "Yes"
+    },
+    {
+      "timestamp": "2025-03-19 16:26:56",
+      "q1": "Search Engine",
+      "q2": "1-6 months",
+      "q3": "Daily",
+      "q4": 2,
+      "q5": [
+        "Features/Functionality",
+        "Customer Service"
+      ],
+      "q6": 2,
+      "q7": "Your product could be more user-friendly.",
+      "q8": null,
+      "q9": null,
+      "q10": "No"
+    },
+    {
+      "timestamp": "2025-04-29 23:32:56",
+      "q1": "Advertisement",
+      "q2": "1-6 months",
+      "q3": "Weekly",
+      "q4": 5,
+      "q5": [
+        "Price"
+      ],
+      "q6": 9,
+      "q7": "Better documentation and tutorials would help new users.",
+      "q8": 5,
+      "q9": [
+        "Competitor A",
+        "Competitor D",
+        "Competitor C"
+      ],
+      "q10": "No"
+    },
+    {
+      "timestamp": "2025-04-09 09:34:56",
+      "q1": "Friend/Family",
+      "q2": "6-12 months",
+      "q3": "Weekly",
+      "q4": 4,
+      "q5": [
+        "Speed",
+        "Features/Functionality",
+        "Reliability",
+        "Quality"
+      ],
+      "q6": 9,
+      "q7": "I would like to see more features related to analytics.",
+      "q8": 4,
+      "q9": [
+        "Competitor B",
+        "Competitor C"
+      ],
+      "q10": "Yes"
+    },
+    {
+      "timestamp": "2025-04-17 02:18:56",
+      "q1": "Search Engine",
+      "q2": "Less than a month",
+      "q3": "Daily",
+      "q4": 4,
+      "q5": [
+        "Features/Functionality",
+        "Price",
+        "Reliability",
+        "User Experience"
+      ],
+      "q6": 7,
+      "q7": null,
+      "q8": null,
+      "q9": null,
+      "q10": "Yes"
+    },
+    {
+      "timestamp": "2025-03-30 02:52:56",
+      "q1": "Social Media",
+      "q2": "6-12 months",
+      "q3": "Weekly",
+      "q4": 3,
+      "q5": [
+        "Price"
+      ],
+      "q6": 3,
+      "q7": "Faster customer service response times would be helpful.",
+      "q8": 4,
+      "q9": [
+        "None of the above",
+        "Competitor D",
+        "Competitor A"
+      ],
+      "q10": "No"
+    },
+    {
+      "timestamp": "2025-03-18 12:37:56",
+      "q1": "Friend/Family",
+      "q2": "1-6 months",
+      "q3": "Monthly",
+      "q4": 3,
+      "q5": [
+        "Customer Service",
+        "Other"
+      ],
+      "q6": 5,
+      "q7": "Improve the mobile app experience.",
+      "q8": 2,
+      "q9": [
+        "Competitor C",
+        "Competitor B"
+      ],
+      "q10": "No"
+    },
+    {
+      "timestamp": "2025-03-27 10:20:56",
+      "q1": "Search Engine",
+      "q2": "1-6 months",
+      "q3": "Daily",
+      "q4": 4,
+      "q5": [
+        "Features/Functionality"
+      ],
+      "q6": 6,
+      "q7": "Improve the search functionality.",
+      "q8": 4,
+      "q9": [
+        "Competitor A"
+      ],
+      "q10": "No"
+    },
+    {
+      "timestamp": "2025-03-21 03:32:56",
+      "q1": "Social Media",
+      "q2": "1-2 years",
+      "q3": "Weekly",
+      "q4": 4,
+      "q5": [
+        "Other",
+        "Speed"
+      ],
+      "q6": 8,
+      "q7": "Improve the search functionality.",
+      "q8": null,
+      "q9": [],
+      "q10": "No"
+    },
+    {
+      "timestamp": "2025-03-27 10:01:56",
+      "q1": "Search Engine",
+      "q2": "1-6 months",
+      "q3": "Daily",
+      "q4": 4,
+      "q5": [
+        "Customer Service"
+      ],
+      "q6": 9,
+      "q7": "Lower prices would make your product more competitive.",
+      "q8": 5,
+      "q9": null,
+      "q10": "No"
+    },
+    {
+      "timestamp": "2025-03-31 09:34:56",
+      "q1": "Advertisement",
+      "q2": "1-6 months",
+      "q3": "Weekly",
+      "q4": 4,
+      "q5": [
+        "Speed",
+        "Features/Functionality"
+      ],
+      "q6": 9,
+      "q7": "Improve the search functionality.",
+      "q8": 3,
+      "q9": null,
+      "q10": "No"
+    },
+    {
+      "timestamp": "2025-04-14 16:22:56",
+      "q1": "Other",
+      "q2": "More than 2 years",
+      "q3": "Quarterly",
+      "q4": 4,
+      "q5": [
+        "Reliability",
+        "Quality",
+        "Other",
+        "Features/Functionality"
+      ],
+      "q6": 8,
+      "q7": "More customization options would be great.",
+      "q8": 4,
+      "q9": [],
+      "q10": "Yes"
+    },
+    {
+      "timestamp": "2025-04-09 02:01:56",
+      "q1": "Search Engine",
+      "q2": "1-6 months",
+      "q3": "Weekly",
+      "q4": 2,
+      "q5": [
+        "Customer Service",
+        "Quality"
+      ],
+      "q6": 3,
+      "q7": "I would like to see more features related to analytics.",
+      "q8": 1,
+      "q9": [
+        "Competitor D",
+        "None of the above"
+      ],
+      "q10": "No"
+    },
+    {
+      "timestamp": "2025-04-21 22:52:56",
+      "q1": "Search Engine",
+      "q2": "More than 2 years",
+      "q3": "Quarterly",
+      "q4": 3,
+      "q5": [
+        "Speed",
+        "User Experience"
+      ],
+      "q6": 3,
+      "q7": "I would like to see more features related to analytics.",
+      "q8": 3,
+      "q9": [
+        "Competitor A"
+      ],
+      "q10": "No"
+    },
+    {
+      "timestamp": "2025-03-30 12:41:56",
+      "q1": "Social Media",
+      "q2": "1-2 years",
+      "q3": "Monthly",
+      "q4": 3,
+      "q5": [
+        "Speed"
+      ],
+      "q6": 6,
+      "q7": "Faster customer service response times would be helpful.",
+      "q8": null,
+      "q9": [
+        "None of the above",
+        "Competitor B",
+        "Competitor A"
+      ],
+      "q10": "No"
+    },
+    {
+      "timestamp": "2025-04-25 20:05:56",
+      "q1": "Advertisement",
+      "q2": "6-12 months",
+      "q3": "Weekly",
+      "q4": 2,
+      "q5": [
+        "User Experience",
+        "Quality",
+        "Other"
+      ],
+      "q6": 0,
+      "q7": "Your product could be more user-friendly.",
+      "q8": 3,
+      "q9": [],
+      "q10": "No"
+    },
+    {
+      "timestamp": "2025-04-02 01:06:56",
+      "q1": "Social Media",
+      "q2": "1-6 months",
+      "q3": "Rarely",
+      "q4": 1,
+      "q5": [
+        "Other",
+        "Quality",
+        "Reliability"
+      ],
+      "q6": 1,
+      "q7": null,
+      "q8": 1,
+      "q9": null,
+      "q10": "Yes"
+    },
+    {
+      "timestamp": "2025-04-16 22:59:56",
+      "q1": "Blog/Article",
+      "q2": "1-6 months",
+      "q3": "Monthly",
+      "q4": 5,
+      "q5": [
+        "Price",
+        "Quality",
+        "User Experience"
+      ],
+      "q6": 9,
+      "q7": null,
+      "q8": 5,
+      "q9": [
+        "None of the above",
+        "Competitor A"
+      ],
+      "q10": "No"
+    },
+    {
+      "timestamp": "2025-04-22 16:26:56",
+      "q1": "Friend/Family",
+      "q2": "Less than a month",
+      "q3": "Weekly",
+      "q4": 3,
+      "q5": [
+        "Speed"
+      ],
+      "q6": 5,
+      "q7": null,
+      "q8": 4,
+      "q9": [
+        "Competitor D"
+      ],
+      "q10": "Yes"
+    },
+    {
+      "timestamp": "2025-04-04 12:20:56",
+      "q1": "Social Media",
+      "q2": "Less than a month",
+      "q3": "Monthly",
+      "q4": 4,
+      "q5": [
+        "Speed",
+        "Customer Service",
+        "Other"
+      ],
+      "q6": 7,
+      "q7": "Better documentation and tutorials would help new users.",
+      "q8": null,
+      "q9": [
+        "Competitor D"
+      ],
+      "q10": "No"
+    },
+    {
+      "timestamp": "2025-03-24 07:44:56",
+      "q1": "Search Engine",
+      "q2": "Less than a month",
+      "q3": "Monthly",
+      "q4": 3,
+      "q5": [
+        "Quality",
+        "Reliability"
+      ],
+      "q6": 3,
+      "q7": "Improve the mobile app experience.",
+      "q8": 3,
+      "q9": [],
+      "q10": "No"
+    },
+    {
+      "timestamp": "2025-03-20 08:35:56",
+      "q1": "Friend/Family",
+      "q2": "1-6 months",
+      "q3": "Rarely",
+      "q4": 5,
+      "q5": [
+        "Quality",
+        "Other",
+        "Price",
+        "Reliability"
+      ],
+      "q6": 9,
+      "q7": "More customization options would be great.",
+      "q8": null,
+      "q9": [
+        "Competitor B",
+        "Competitor C"
+      ],
+      "q10": "No"
+    },
+    {
+      "timestamp": "2025-03-16 05:54:56",
+      "q1": "Friend/Family",
+      "q2": "1-2 years",
+      "q3": "Monthly",
+      "q4": 3,
+      "q5": [
+        "Customer Service"
+      ],
+      "q6": 2,
+      "q7": "Lower prices would make your product more competitive.",
+      "q8": 3,
+      "q9": null,
+      "q10": "No"
+    },
+    {
+      "timestamp": "2025-03-27 04:22:56",
+      "q1": "Search Engine",
+      "q2": "1-2 years",
+      "q3": "Daily",
+      "q4": 3,
+      "q5": [
+        "Reliability"
+      ],
+      "q6": 3,
+      "q7": "Improve the mobile app experience.",
+      "q8": 2,
+      "q9": [
+        "Competitor D",
+        "Competitor C",
+        "None of the above"
+      ],
+      "q10": "No"
+    },
+    {
+      "timestamp": "2025-04-19 05:26:56",
+      "q1": "Social Media",
+      "q2": "6-12 months",
+      "q3": "Daily",
+      "q4": 4,
+      "q5": [
+        "Speed",
+        "Customer Service",
+        "Reliability"
+      ],
+      "q6": 9,
+      "q7": "Better documentation and tutorials would help new users.",
+      "q8": 3,
+      "q9": [],
+      "q10": "Yes"
+    },
+    {
+      "timestamp": "2025-04-09 18:42:56",
+      "q1": "Social Media",
+      "q2": "6-12 months",
+      "q3": "Daily",
+      "q4": 3,
+      "q5": [
+        "Customer Service",
+        "Reliability",
+        "Price"
+      ],
+      "q6": 5,
+      "q7": "Lower prices would make your product more competitive.",
+      "q8": null,
+      "q9": [
+        "Competitor C",
+        "Competitor A",
+        "None of the above"
+      ],
+      "q10": "Yes"
+    },
+    {
+      "timestamp": "2025-04-06 23:20:56",
+      "q1": "Friend/Family",
+      "q2": "6-12 months",
+      "q3": "Weekly",
+      "q4": 3,
+      "q5": [
+        "Other",
+        "Speed"
+      ],
+      "q6": 5,
+      "q7": "Better documentation and tutorials would help new users.",
+      "q8": 4,
+      "q9": [
+        "None of the above"
+      ],
+      "q10": "No"
+    },
+    {
+      "timestamp": "2025-03-16 07:16:56",
+      "q1": "Blog/Article",
+      "q2": "6-12 months",
+      "q3": "Monthly",
+      "q4": 2,
+      "q5": [
+        "Features/Functionality"
+      ],
+      "q6": 3,
+      "q7": null,
+      "q8": 2,
+      "q9": null,
+      "q10": "No"
+    },
+    {
+      "timestamp": "2025-03-19 12:40:56",
+      "q1": "Friend/Family",
+      "q2": "Less than a month",
+      "q3": "Quarterly",
+      "q4": 3,
+      "q5": [
+        "Customer Service"
+      ],
+      "q6": 3,
+      "q7": "Your product could be more user-friendly.",
+      "q8": 3,
+      "q9": [],
+      "q10": "Yes"
+    },
+    {
+      "timestamp": "2025-04-17 10:49:56",
+      "q1": "Search Engine",
+      "q2": "1-6 months",
+      "q3": "Weekly",
+      "q4": 4,
+      "q5": [
+        "Quality",
+        "Customer Service",
+        "Speed",
+        "User Experience"
+      ],
+      "q6": 10,
+      "q7": "Better documentation and tutorials would help new users.",
+      "q8": 4,
+      "q9": [
+        "None of the above",
+        "Competitor C"
+      ],
+      "q10": "Yes"
+    },
+    {
+      "timestamp": "2025-04-24 06:04:56",
+      "q1": "Search Engine",
+      "q2": "More than 2 years",
+      "q3": "Weekly",
+      "q4": 2,
+      "q5": [
+        "Speed",
+        "Reliability",
+        "Features/Functionality",
+        "Customer Service"
+      ],
+      "q6": 1,
+      "q7": "Lower prices would make your product more competitive.",
+      "q8": 3,
+      "q9": [
+        "Competitor A",
+        "Competitor C",
+        "Competitor B"
+      ],
+      "q10": "No"
+    },
+    {
+      "timestamp": "2025-04-25 20:53:56",
+      "q1": "Social Media",
+      "q2": "1-2 years",
+      "q3": "Monthly",
+      "q4": 4,
+      "q5": [
+        "Customer Service",
+        "Quality"
+      ],
+      "q6": 8,
+      "q7": "More customization options would be great.",
+      "q8": 3,
+      "q9": [
+        "Competitor A",
+        "None of the above",
+        "Competitor C"
+      ],
+      "q10": "No"
+    },
+    {
+      "timestamp": "2025-04-27 00:14:56",
+      "q1": "Social Media",
+      "q2": "Less than a month",
+      "q3": "Daily",
+      "q4": 1,
+      "q5": [
+        "Features/Functionality",
+        "Other"
+      ],
+      "q6": 1,
+      "q7": "Improve the search functionality.",
+      "q8": 1,
+      "q9": [],
+      "q10": "Yes"
+    },
+    {
+      "timestamp": "2025-04-15 19:34:56",
+      "q1": "Advertisement",
+      "q2": "6-12 months",
+      "q3": "Monthly",
+      "q4": 4,
+      "q5": [
+        "Features/Functionality"
+      ],
+      "q6": 8,
+      "q7": "Better documentation and tutorials would help new users.",
+      "q8": 4,
+      "q9": [
+        "Competitor B",
+        "Competitor A"
+      ],
+      "q10": "No"
+    },
+    {
+      "timestamp": "2025-03-21 15:07:56",
+      "q1": "Friend/Family",
+      "q2": "1-6 months",
+      "q3": "Daily",
+      "q4": 4,
+      "q5": [
+        "Price"
+      ],
+      "q6": 7,
+      "q7": "Your product could be more user-friendly.",
+      "q8": 3,
+      "q9": [
+        "Competitor A",
+        "Competitor D",
+        "Competitor C"
+      ],
+      "q10": "No"
+    },
+    {
+      "timestamp": "2025-04-11 23:05:56",
+      "q1": "Advertisement",
+      "q2": "6-12 months",
+      "q3": "Daily",
+      "q4": 5,
+      "q5": [
+        "Quality",
+        "Customer Service",
+        "Features/Functionality"
+      ],
+      "q6": 6,
+      "q7": "I would like to see more features related to analytics.",
+      "q8": 5,
+      "q9": [],
+      "q10": "No"
+    },
+    {
+      "timestamp": "2025-03-25 10:27:56",
+      "q1": "Advertisement",
+      "q2": "1-6 months",
+      "q3": "Weekly",
+      "q4": 4,
+      "q5": [
+        "User Experience",
+        "Reliability"
+      ],
+      "q6": 6,
+      "q7": "I would like to see more features related to analytics.",
+      "q8": null,
+      "q9": [
+        "Competitor C",
+        "Competitor D",
+        "None of the above"
+      ],
+      "q10": "No"
+    },
+    {
+      "timestamp": "2025-04-12 16:49:56",
+      "q1": "Social Media",
+      "q2": "1-6 months",
+      "q3": "Daily",
+      "q4": 2,
+      "q5": [
+        "Reliability"
+      ],
+      "q6": 1,
+      "q7": "Improve the mobile app experience.",
+      "q8": 1,
+      "q9": [],
+      "q10": "No"
+    },
+    {
+      "timestamp": "2025-04-17 00:20:56",
+      "q1": "Advertisement",
+      "q2": "1-2 years",
+      "q3": "Weekly",
+      "q4": 4,
+      "q5": [
+        "Customer Service"
+      ],
+      "q6": 7,
+      "q7": null,
+      "q8": 5,
+      "q9": [
+        "Competitor B",
+        "Competitor D",
+        "Competitor C"
+      ],
+      "q10": "Yes"
+    },
+    {
+      "timestamp": "2025-04-21 02:52:56",
+      "q1": "Social Media",
+      "q2": "1-6 months",
+      "q3": "Monthly",
+      "q4": 2,
+      "q5": [
+        "Quality"
+      ],
+      "q6": 3,
+      "q7": "Faster customer service response times would be helpful.",
+      "q8": 1,
+      "q9": [],
+      "q10": "Yes"
+    },
+    {
+      "timestamp": "2025-04-21 17:51:56",
+      "q1": "Friend/Family",
+      "q2": "Less than a month",
+      "q3": "Weekly",
+      "q4": 4,
+      "q5": [
+        "User Experience",
+        "Quality"
+      ],
+      "q6": 6,
+      "q7": null,
+      "q8": 5,
+      "q9": null,
+      "q10": "No"
+    },
+    {
+      "timestamp": "2025-04-26 22:45:56",
+      "q1": "Other",
+      "q2": "1-2 years",
+      "q3": "Daily",
+      "q4": 4,
+      "q5": [
+        "Features/Functionality",
+        "Reliability",
+        "Speed"
+      ],
+      "q6": 9,
+      "q7": null,
+      "q8": null,
+      "q9": [
+        "Competitor A"
+      ],
+      "q10": "No"
+    },
+    {
+      "timestamp": "2025-04-29 00:04:56",
+      "q1": "Search Engine",
+      "q2": "1-2 years",
+      "q3": "Daily",
+      "q4": 5,
+      "q5": [
+        "Quality",
+        "Speed",
+        "Features/Functionality"
+      ],
+      "q6": 9,
+      "q7": "Improve the search functionality.",
+      "q8": 5,
+      "q9": [
+        "Competitor D"
+      ],
+      "q10": "Yes"
+    },
+    {
+      "timestamp": "2025-03-16 09:21:56",
+      "q1": "Advertisement",
+      "q2": "1-2 years",
+      "q3": "Monthly",
+      "q4": 3,
+      "q5": [
+        "User Experience",
+        "Quality"
+      ],
+      "q6": 1,
+      "q7": "Improve the mobile app experience.",
+      "q8": 4,
+      "q9": [
+        "Competitor B"
+      ],
+      "q10": "No"
+    },
+    {
+      "timestamp": "2025-04-29 17:06:56",
+      "q1": "Search Engine",
+      "q2": "1-6 months",
+      "q3": "Weekly",
+      "q4": 5,
+      "q5": [
+        "Quality",
+        "Features/Functionality",
+        "Customer Service",
+        "Speed"
+      ],
+      "q6": 6,
+      "q7": null,
+      "q8": 4,
+      "q9": null,
+      "q10": "No"
+    },
+    {
+      "timestamp": "2025-03-27 13:35:56",
+      "q1": "Other",
+      "q2": "1-2 years",
+      "q3": "Weekly",
+      "q4": 4,
+      "q5": [
+        "Quality",
+        "Price",
+        "Customer Service",
+        "User Experience"
+      ],
+      "q6": 7,
+      "q7": "Lower prices would make your product more competitive.",
+      "q8": 4,
+      "q9": null,
+      "q10": "No"
+    },
+    {
+      "timestamp": "2025-04-16 21:27:56",
+      "q1": "Blog/Article",
+      "q2": "1-2 years",
+      "q3": "Weekly",
+      "q4": 4,
+      "q5": [
+        "Price",
+        "Reliability",
+        "Other",
+        "User Experience"
+      ],
+      "q6": 3,
+      "q7": "Lower prices would make your product more competitive.",
+      "q8": 3,
+      "q9": null,
+      "q10": "No"
+    },
+    {
+      "timestamp": "2025-03-27 19:32:56",
+      "q1": "Search Engine",
+      "q2": "Less than a month",
+      "q3": "Monthly",
+      "q4": 3,
+      "q5": [
+        "Speed",
+        "Other",
+        "Features/Functionality"
+      ],
+      "q6": 0,
+      "q7": "Faster customer service response times would be helpful.",
+      "q8": null,
+      "q9": [],
+      "q10": "No"
+    }
+  ]
+}

@@ -235,9 +235,5 @@ if hasattr(st.session_state, 'active_survey_id') and st.session_state.active_sur
                         st.session_state[f'submitted_{survey_id}'] = True
                         st.success("Thank you for your response! Your answers have been recorded.")
                         st.balloons()
-                        # Include a refresh button to clear the form
-                        if st.button("Submit Another Response"):
-                            st.session_state[f'submitted_{survey_id}'] = False
-                            st.rerun()
                     else:
                         st.error("There was an error submitting your response. Please try again.")
