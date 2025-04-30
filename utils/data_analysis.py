@@ -88,9 +88,15 @@ def calculate_statistics(df, column_name, question_type, question=None):
                     # Add label for most common response
                     most_common = stats.get("Most Common Response")
                     if most_common is not None:
-                        label_index = int(most_common) - scale_min
-                        if 0 <= label_index < len(scale_labels):
-                            stats["Most Common Label"] = scale_labels[label_index]
+                        try:
+                            # Xử lý trường hợp '1.0' hoặc '1' bằng cách chuyển về float trước
+                            most_common_float = float(most_common)
+                            label_index = int(most_common_float) - scale_min
+                            if 0 <= label_index < len(scale_labels):
+                                stats["Most Common Label"] = scale_labels[label_index]
+                        except (ValueError, TypeError):
+                            # Bỏ qua nếu không thể chuyển đổi được
+                            pass
     
     elif question_type == "number":
         # For numeric questions
