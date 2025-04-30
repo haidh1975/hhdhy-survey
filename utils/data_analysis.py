@@ -33,7 +33,7 @@ def calculate_statistics(df, column_name, question_type, question=None):
         
         # Most common response
         if not value_counts.empty:
-            stats["Most Common Response"] = value_counts.index[0]
+            stats["Most Common Response"] = str(value_counts.index[0])  # Chuyển đổi sang chuỗi
             stats["Most Common Count"] = int(value_counts.iloc[0])
             stats["Most Common (%)"] = round((value_counts.iloc[0] / non_empty_responses) * 100, 1)
         
@@ -52,7 +52,7 @@ def calculate_statistics(df, column_name, question_type, question=None):
                 
                 # Most common response
                 if not value_counts.empty:
-                    stats["Most Common Response"] = value_counts.index[0]
+                    stats["Most Common Response"] = str(value_counts.index[0])  # Chuyển đổi sang chuỗi
                     stats["Most Common Count"] = int(value_counts.iloc[0])
                     stats["Most Common (%)"] = round((value_counts.iloc[0] / non_empty_responses) * 100, 1)
                 
@@ -74,7 +74,7 @@ def calculate_statistics(df, column_name, question_type, question=None):
             
             # Most common response
             if not value_counts.empty:
-                stats["Most Common Response"] = value_counts.index[0]
+                stats["Most Common Response"] = str(value_counts.index[0])  # Chuyển đổi sang chuỗi
                 stats["Most Common Count"] = int(value_counts.iloc[0])
                 stats["Most Common (%)"] = round((value_counts.iloc[0] / non_empty_responses) * 100, 1)
             

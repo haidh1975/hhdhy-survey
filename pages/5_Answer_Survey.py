@@ -169,6 +169,10 @@ if hasattr(st.session_state, 'active_survey_id') and st.session_state.active_sur
                     scale_min = question.get("scale_min", 1)
                     scale_max = question.get("scale_max", 5)
                     
+                    # Đảm bảo scale_max luôn lớn hơn scale_min ít nhất 1 đơn vị
+                    if scale_max <= scale_min:
+                        scale_max = scale_min + 1
+                    
                     responses[question_id] = st.slider(
                         "Your rating",
                         min_value=scale_min,
