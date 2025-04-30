@@ -145,7 +145,7 @@ else:
                                     title=f"Responses for: {q_text}",
                                     labels={"option": "Option", "count": "Count"}
                                 )
-                                st.plotly_chart(fig, use_container_width=True)
+                                st.plotly_chart(fig, use_container_width=True, key="chart_1")
                                 
                                 # Show percentage
                                 total_responses = len(df)
@@ -171,7 +171,7 @@ else:
                                     title=f"Responses for: {q_text}",
                                     labels={"option": "Option", "count": "Count"}
                                 )
-                                st.plotly_chart(fig, use_container_width=True)
+                                st.plotly_chart(fig, use_container_width=True, key="chart_2")
                             
                             with col2:
                                 # Create pie chart
@@ -182,7 +182,7 @@ else:
                                     title="Distribution"
                                 )
                                 fig.update_traces(textposition='inside', textinfo='percent+label')
-                                st.plotly_chart(fig, use_container_width=True)
+                                st.plotly_chart(fig, use_container_width=True, key="chart_3")
                     
                     elif q_type == "likert_scale":
                         # For Likert scale questions
@@ -211,7 +211,7 @@ else:
                             labels={"count": "Count", "label": "Rating", "rating": "Rating"},
                             orientation='h'
                         )
-                        st.plotly_chart(fig, use_container_width=True)
+                        st.plotly_chart(fig, use_container_width=True, key="chart_4")
                         
                         # Display statistics
                         if df[column_name].dtype in [np.int64, np.float64]:
@@ -235,7 +235,7 @@ else:
                                 nbins=10,
                                 title=f"Distribution for: {q_text}"
                             )
-                            st.plotly_chart(fig, use_container_width=True)
+                            st.plotly_chart(fig, use_container_width=True, key="chart_5")
                             
                             # Display statistics
                             col1, col2, col3, col4 = st.columns(4)
@@ -279,7 +279,7 @@ else:
                                 nbins=20,
                                 title=f"Date Distribution for: {q_text}"
                             )
-                            st.plotly_chart(fig, use_container_width=True)
+                            st.plotly_chart(fig, use_container_width=True, key="chart_6")
                             
                             # Display statistics
                             col1, col2 = st.columns(2)
@@ -373,7 +373,7 @@ else:
                                 color_continuous_scale="Blues",
                                 text_auto='.1f'
                             )
-                            st.plotly_chart(fig, use_container_width=True)
+                            st.plotly_chart(fig, use_container_width=True, key="chart_7")
                             
                             st.write("The heatmap shows the percentage distribution of responses across both questions.")
                             
@@ -398,7 +398,7 @@ else:
                                     labels={q1["column"]: q1["text"], q2["column"]: q2["text"]},
                                     title=f"Correlation between {q1['text']} and {q2['text']}"
                                 )
-                                st.plotly_chart(fig, use_container_width=True)
+                                st.plotly_chart(fig, use_container_width=True, key="chart_8")
                                 
                                 # Calculate correlation coefficient
                                 correlation = df[q1["column"]].corr(df[q2["column"]])
@@ -427,7 +427,7 @@ else:
                                     labels={q1["column"]: q1["text"], q2["column"]: q2["text"]},
                                     title=f"Distribution of {q2['text']} by {q1['text']}"
                                 )
-                                st.plotly_chart(fig, use_container_width=True)
+                                st.plotly_chart(fig, use_container_width=True, key="chart_9")
                                 
                                 # Add group statistics
                                 grouped_stats = df.groupby(q1["column"])[q2["column"]].agg(['mean', 'median', 'std', 'count']).reset_index()
@@ -451,7 +451,7 @@ else:
                                     labels={q2["column"]: q2["text"], q1["column"]: q1["text"]},
                                     title=f"Distribution of {q1['text']} by {q2['text']}"
                                 )
-                                st.plotly_chart(fig, use_container_width=True)
+                                st.plotly_chart(fig, use_container_width=True, key="chart_10")
                                 
                                 # Add group statistics
                                 grouped_stats = df.groupby(q2["column"])[q1["column"]].agg(['mean', 'median', 'std', 'count']).reset_index()
@@ -699,7 +699,7 @@ else:
                         aspect="auto"
                     )
                     fig.update_layout(height=500)
-                    st.plotly_chart(fig, use_container_width=True)
+                    st.plotly_chart(fig, use_container_width=True, key="chart_11")
                     
                     # Also show raw counts
                     st.subheader("Raw Counts")
@@ -716,7 +716,7 @@ else:
                         trendline="ols",
                         title=f"Correlation between {q1['text']} and {q2['text']}"
                     )
-                    st.plotly_chart(fig, use_container_width=True)
+                    st.plotly_chart(fig, use_container_width=True, key="chart_12")
                     
                     # Calculate correlation
                     correlation = df[q1["column"]].corr(df[q2["column"]])
@@ -739,7 +739,7 @@ else:
                         labels={q1["column"]: q1["text"], q2["column"]: q2["text"]},
                         title=f"{q1['text']} by {q2['text']}"
                     )
-                    st.plotly_chart(fig, use_container_width=True)
+                    st.plotly_chart(fig, use_container_width=True, key="chart_13")
                     
                     # Show averages by category
                     grouped = df.groupby(q2["column"])[q1["column"]].agg(['mean', 'count']).reset_index()
@@ -755,7 +755,7 @@ else:
                         labels={q1["column"]: q1["text"], q2["column"]: q2["text"]},
                         title=f"{q2['text']} by {q1['text']}"
                     )
-                    st.plotly_chart(fig, use_container_width=True)
+                    st.plotly_chart(fig, use_container_width=True, key="chart_14")
                     
                     # Show averages by category
                     grouped = df.groupby(q1["column"])[q2["column"]].agg(['mean', 'count']).reset_index()
