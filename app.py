@@ -81,11 +81,28 @@ To use this application effectively:
 
 1. **Create a Survey**: Go to the 'Create Survey' page to design your survey with various question types.
 2. **Distribute Survey**: Share your survey via a unique link from the 'Distribute Survey' page.
-3. **View Responses**: Check all responses received for your surveys on the 'View Responses' page.
-4. **Analyze Data**: Go to the 'Data Analysis' page to visualize and analyze your survey data.
+3. **Answer Survey**: Complete a survey or share it with others to get responses.
+4. **View Responses**: Check all responses received for your surveys on the 'View Responses' page.
+5. **Analyze Data**: Go to the 'Data Analysis' page to visualize and analyze your survey data.
 
 Use the navigation menu on the left to access these features.
 """)
+
+# Quick action buttons
+st.subheader("Quick Actions")
+col1, col2, col3 = st.columns(3)
+
+with col1:
+    if st.button("➕ Create New Survey"):
+        st.switch_page("pages/1_Create_Survey.py")
+
+with col2:
+    if st.button("📝 Answer a Survey"):
+        st.switch_page("pages/5_Answer_Survey.py")
+
+with col3:
+    if st.button("📊 View Analysis"):
+        st.switch_page("pages/4_Data_Analysis.py")
 
 # Footer
 st.markdown("---")

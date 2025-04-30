@@ -55,13 +55,39 @@ else:
     # Survey link
     st.subheader("Survey Link")
     
-    survey_url = f"{st.get_option('browser.serverAddress')}:5000/survey?id={selected_survey_id}"
+    survey_url = f"{st.get_option('browser.serverAddress')}:5000/Answer_Survey?survey={selected_survey_id}"
     st.code(survey_url, language="text")
     
-    st.markdown("#### Preview Survey")
-    if st.button("Preview Survey"):
-        st.session_state.preview_survey_id = selected_survey_id
-        st.rerun()
+    col1, col2, col3 = st.columns(3)
+    
+    with col1:
+        st.markdown("#### Preview Survey")
+        if st.button("Preview Survey"):
+            st.session_state.preview_survey_id = selected_survey_id
+            st.rerun()
+    
+    with col2:
+        st.markdown("#### Open Survey Form")
+        if st.button("Open Survey Form"):
+            st.switch_page("pages/5_Answer_Survey.py")
+            # This will add the survey ID to the query parameters
+            st.query_params.update({"survey": selected_survey_id})
+    
+    with col3:
+        # Create a QR code for the survey
+        import qrcode
+        from PIL import Image
+        import io
+        import base64
+        
+        st.markdown("#### QR Code")
+        img = qrcode.make(survey_url)
+        buffered = io.BytesIO()
+        img.save(buffered, format="PNG")
+        img_str = base64.b64encode(buffered.getvalue()).decode()
+        
+        st.markdown(f'<img src="data:image/png;base64,{img_str}" width="150">', unsafe_allow_html=True)
+        st.markdown("Scan to answer survey")
     
     # Export responses
     st.subheader("Export Responses")

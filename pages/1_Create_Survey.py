@@ -25,6 +25,12 @@ if 'current_survey' not in st.session_state:
         "description": "",
         "questions": []
     }
+elif st.session_state.current_survey is None:
+    st.session_state.current_survey = {
+        "title": "",
+        "description": "",
+        "questions": []
+    }
 
 if 'current_survey_id' not in st.session_state:
     st.session_state.current_survey_id = None
