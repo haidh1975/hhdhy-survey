@@ -15,15 +15,15 @@ ROLES = {
     "admin": {
         "description": "Toàn quyền quản trị hệ thống",
         "permissions": ["create_survey", "edit_survey", "delete_survey", "view_responses", 
-                       "analyze_data", "manage_users", "export_data", "import_data"]
+                       "analyze_data", "manage_users", "export_data", "import_data", "manage_forms"]
     },
     "manager": {
         "description": "Quản lý khảo sát và phân tích",
-        "permissions": ["create_survey", "edit_survey", "view_responses", "analyze_data", "export_data"]
+        "permissions": ["create_survey", "edit_survey", "view_responses", "analyze_data", "export_data", "manage_forms"]
     },
     "editor": {
         "description": "Tạo và chỉnh sửa khảo sát",
-        "permissions": ["create_survey", "edit_survey", "view_responses"]
+        "permissions": ["create_survey", "edit_survey", "view_responses", "manage_forms"]
     },
     "viewer": {
         "description": "Chỉ xem kết quả",
@@ -309,6 +309,10 @@ def get_translation(key, lang=None):
         "create_survey": {
             "vi": "Tạo khảo sát mới",
             "en": "Create new survey"
+        },
+        "manage_forms": {
+            "vi": "Quản lý biểu mẫu",
+            "en": "Manage forms"
         },
         "answer_survey": {
             "vi": "Trả lời khảo sát",

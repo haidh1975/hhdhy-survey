@@ -131,7 +131,7 @@ with st.sidebar:
     if st.button(f"➕ {get_translation('create_survey')}", key="nav_create"):
         st.switch_page("pages/1_Create_Survey.py")
         
-    if st.button(f"📝 {get_translation('answer_survey')}", key="nav_answer"):
+    if st.button(f"📋 {get_translation('manage_forms')}", key="nav_answer"):
         st.switch_page("pages/5_Answer_Survey.py")
         
     if st.button(f"🔗 {get_translation('share_survey')}", key="nav_share"):
@@ -300,7 +300,7 @@ with col1:
 
 with col2:
     st.markdown("<div class='dashboard-card'>", unsafe_allow_html=True)
-    if st.button("📝 Trả Lời Khảo Sát", use_container_width=True):
+    if st.button("📋 Quản lý biểu mẫu", use_container_width=True):
         st.switch_page("pages/5_Answer_Survey.py")
     st.markdown("</div>", unsafe_allow_html=True)
 
