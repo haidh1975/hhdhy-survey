@@ -355,4 +355,4 @@ if not st.session_state.user:
 
 # Footer
 st.markdown("---")
-st.markdown("<div class='footer'>📊 Khảo sát về động lực làm việc của nhân viên - Công cụ tạo biểu mẫu, thu thập dữ liệu và phân tích thống kê</div>", unsafe_allow_html=True)
+st.markdown("<div class='footer'>📊 Khảo sát về Ảnh hưởng của Vốn xã hội, Vốn nhân lực đến phát triển bền vững của doanh nghiệp trên địa bàn tỉnh Hưng Yên - Công cụ tạo biểu mẫu, thu thập dữ liệu và phân tích thống kê</div>", unsafe_allow_html=True)

@@ -162,4 +162,4 @@ Sử dụng menu điều hướng bên trái để truy cập các tính năng n
 
 # Footer
 st.markdown("---")
-st.markdown("📊 Ứng Dụng Khảo Sát - Công cụ tạo biểu mẫu, thu thập dữ liệu và phân tích thống kê")
+st.markdown("📊 Khảo sát về Ảnh hưởng của Vốn xã hội, Vốn nhân lực đến phát triển bền vững của doanh nghiệp trên địa bàn tỉnh Hưng Yên - Công cụ tạo biểu mẫu, thu thập dữ liệu và phân tích thống kê")
