@@ -1,0 +1,3092 @@
+{
+  "5ac792fa-33c7-4fa6-948f-66851f863ff2": {
+    "title": "Khảo sát về động lực làm việc của nhân viên",
+    "description": "Khảo sát này thu thập thông tin về các yếu tố ảnh hưởng đến động lực làm việc và kết quả công việc của nhân viên",
+    "created_date": "2025-04-30 11:00:38",
+    "questions": [
+      {
+        "id": "q1",
+        "question_text": "Start Date",
+        "type": "text",
+        "required": true
+      },
+      {
+        "id": "q2",
+        "question_text": "End Date",
+        "type": "text",
+        "required": true
+      },
+      {
+        "id": "q3",
+        "question_text": "Response Type",
+        "type": "number",
+        "required": true
+      },
+      {
+        "id": "q4",
+        "question_text": "IP Address",
+        "type": "text",
+        "required": true
+      },
+      {
+        "id": "q5",
+        "question_text": "Progress",
+        "type": "number",
+        "required": true
+      },
+      {
+        "id": "q6",
+        "question_text": "Duration (in seconds)",
+        "type": "number",
+        "required": true
+      },
+      {
+        "id": "q7",
+        "question_text": "Finished",
+        "type": "likert_scale",
+        "required": true,
+        "scale_min": 1,
+        "scale_max": 1
+      },
+      {
+        "id": "q8",
+        "question_text": "Recorded Date",
+        "type": "text",
+        "required": true
+      },
+      {
+        "id": "q9",
+        "question_text": "Response ID",
+        "type": "text",
+        "required": true
+      },
+      {
+        "id": "q10",
+        "question_text": "Location Latitude",
+        "type": "number",
+        "required": true
+      },
+      {
+        "id": "q11",
+        "question_text": "Location Longitude",
+        "type": "number",
+        "required": true
+      },
+      {
+        "id": "q12",
+        "question_text": "Distribution Channel",
+        "type": "multiple_choice",
+        "required": true,
+        "options": [
+          "anonymous",
+          "preview",
+          "qr"
+        ]
+      },
+      {
+        "id": "q13",
+        "question_text": "User Language",
+        "type": "multiple_choice",
+        "required": true,
+        "options": [
+          "EN"
+        ]
+      },
+      {
+        "id": "q14",
+        "question_text": "Mã số",
+        "type": "number",
+        "required": true
+      },
+      {
+        "id": "q15",
+        "question_text": "Quận/Huyện/ Thành phố",
+        "type": "text",
+        "required": true
+      },
+      {
+        "id": "q16",
+        "question_text": "Ngày tháng năm",
+        "type": "multiple_choice",
+        "required": true,
+        "options": [
+          "2004-04-08 00:00:00",
+          "2005-05-03 00:00:00",
+          "2006-05-03 00:00:00",
+          "2024-05-03 00:00:00",
+          "2025-03-05 00:00:00",
+          "2025-04-03 00:00:00",
+          "2025-05-03 00:00:00",
+          "2026-04-03 00:00:00",
+          "Ngày 4 tháng 3 năm 2025"
+        ]
+      },
+      {
+        "id": "q17",
+        "question_text": "Giới tính:",
+        "type": "likert_scale",
+        "required": true,
+        "scale_min": 1,
+        "scale_max": 3
+      },
+      {
+        "id": "q18",
+        "question_text": "Tuổi:",
+        "type": "likert_scale",
+        "required": true,
+        "scale_min": 1,
+        "scale_max": 4
+      },
+      {
+        "id": "q19",
+        "question_text": "Trình độ học vấn:",
+        "type": "likert_scale",
+        "required": true,
+        "scale_min": 1,
+        "scale_max": 4
+      },
+      {
+        "id": "q20",
+        "question_text": "Tình trạng hôn nhân:",
+        "type": "likert_scale",
+        "required": true,
+        "scale_min": 1,
+        "scale_max": 4
+      },
+      {
+        "id": "q21",
+        "question_text": "Doanh thu của Công ty hàng năm:",
+        "type": "likert_scale",
+        "required": true,
+        "scale_min": 1,
+        "scale_max": 5,
+        "scale_labels": [
+          "Rất không đồng ý",
+          "Không đồng ý",
+          "Trung lập",
+          "Đồng ý",
+          "Rất đồng ý"
+        ]
+      },
+      {
+        "id": "q22",
+        "question_text": "Phát biểu về Vốn xã hội: - Q6.1 Tôi tin rằng niềm tin lẫn nhau giữa các nhân viên là yếu tố cốt lõi cho sự phát triển doanh nghiệp.",
+        "type": "likert_scale",
+        "required": true,
+        "scale_min": 1,
+        "scale_max": 5,
+        "scale_labels": [
+          "Rất không đồng ý",
+          "Không đồng ý",
+          "Trung lập",
+          "Đồng ý",
+          "Rất đồng ý"
+        ]
+      },
+      {
+        "id": "q23",
+        "question_text": "Phát biểu về Vốn xã hội: - Q6.2 Tôi nhận thức rằng các mối quan hệ đối tác vững chắc giúp tăng cường khả năng cạnh tranh của doanh nghiệp.",
+        "type": "likert_scale",
+        "required": true,
+        "scale_min": 1,
+        "scale_max": 5,
+        "scale_labels": [
+          "Rất không đồng ý",
+          "Không đồng ý",
+          "Trung lập",
+          "Đồng ý",
+          "Rất đồng ý"
+        ]
+      },
+      {
+        "id": "q24",
+        "question_text": "Phát biểu về Vốn xã hội: - Q6.3 Tôi cho rằng xây dựng vốn xã hội là một chiến lược dài hạn quan trọng trong kinh doanh.",
+        "type": "likert_scale",
+        "required": true,
+        "scale_min": 1,
+        "scale_max": 5,
+        "scale_labels": [
+          "Rất không đồng ý",
+          "Không đồng ý",
+          "Trung lập",
+          "Đồng ý",
+          "Rất đồng ý"
+        ]
+      },
+      {
+        "id": "q25",
+        "question_text": "Phát biểu về Vốn xã hội: - Q6.4 Tôi đảm bảo rằng các chính sách của doanh nghiệp thúc đẩy sự minh bạch và công bằng nội bộ.",
+        "type": "likert_scale",
+        "required": true,
+        "scale_min": 1,
+        "scale_max": 5,
+        "scale_labels": [
+          "Rất không đồng ý",
+          "Không đồng ý",
+          "Trung lập",
+          "Đồng ý",
+          "Rất đồng ý"
+        ]
+      },
+      {
+        "id": "q26",
+        "question_text": "Phát biểu về Vốn xã hội: - Q6.5 Tôi thường xuyên tổ chức các hoạt động nhằm tăng cường sự gắn kết giữa các nhân viên.",
+        "type": "likert_scale",
+        "required": true,
+        "scale_min": 1,
+        "scale_max": 5,
+        "scale_labels": [
+          "Rất không đồng ý",
+          "Không đồng ý",
+          "Trung lập",
+          "Đồng ý",
+          "Rất đồng ý"
+        ]
+      },
+      {
+        "id": "q27",
+        "question_text": "Phát biểu về Vốn xã hội: - Q6.6 Tôi khuyến khích nhân viên chia sẻ kiến thức và hợp tác để giải quyết các vấn đề chung.",
+        "type": "likert_scale",
+        "required": true,
+        "scale_min": 1,
+        "scale_max": 5,
+        "scale_labels": [
+          "Rất không đồng ý",
+          "Không đồng ý",
+          "Trung lập",
+          "Đồng ý",
+          "Rất đồng ý"
+        ]
+      },
+      {
+        "id": "q28",
+        "question_text": "Phát biểu về Vốn xã hội: - Q6.7 Tôi tích cực tham gia các hiệp hội doanh nghiệp để mở rộng mạng lưới quan hệ.",
+        "type": "likert_scale",
+        "required": true,
+        "scale_min": 1,
+        "scale_max": 5,
+        "scale_labels": [
+          "Rất không đồng ý",
+          "Không đồng ý",
+          "Trung lập",
+          "Đồng ý",
+          "Rất đồng ý"
+        ]
+      },
+      {
+        "id": "q29",
+        "question_text": "Phát biểu về Vốn xã hội: - Q6.8 Tôi ưu tiên duy trì mối quan hệ chặt chẽ với các khách hàng và đối tác chiến lược.",
+        "type": "likert_scale",
+        "required": true,
+        "scale_min": 1,
+        "scale_max": 5,
+        "scale_labels": [
+          "Rất không đồng ý",
+          "Không đồng ý",
+          "Trung lập",
+          "Đồng ý",
+          "Rất đồng ý"
+        ]
+      },
+      {
+        "id": "q30",
+        "question_text": "Phát biểu về Vốn xã hội: - Q6.9 Tôi thường xuyên tham gia các sự kiện cộng đồng để tăng cường uy tín doanh nghiệp.",
+        "type": "likert_scale",
+        "required": true,
+        "scale_min": 1,
+        "scale_max": 5,
+        "scale_labels": [
+          "Rất không đồng ý",
+          "Không đồng ý",
+          "Trung lập",
+          "Đồng ý",
+          "Rất đồng ý"
+        ]
+      },
+      {
+        "id": "q31",
+        "question_text": "Phát biểu về Vốn xã hội: - Q6.10 Các mối quan hệ xã hội đã giúp tôi tìm kiếm cơ hội kinh doanh mới.",
+        "type": "likert_scale",
+        "required": true,
+        "scale_min": 1,
+        "scale_max": 5,
+        "scale_labels": [
+          "Rất không đồng ý",
+          "Không đồng ý",
+          "Trung lập",
+          "Đồng ý",
+          "Rất đồng ý"
+        ]
+      },
+      {
+        "id": "q32",
+        "question_text": "Phát biểu về Vốn xã hội: - Q6.11 Việc xây dựng niềm tin với đối tác giúp giảm thiểu rủi ro trong kinh doanh.",
+        "type": "likert_scale",
+        "required": true,
+        "scale_min": 1,
+        "scale_max": 5,
+        "scale_labels": [
+          "Rất không đồng ý",
+          "Không đồng ý",
+          "Trung lập",
+          "Đồng ý",
+          "Rất đồng ý"
+        ]
+      },
+      {
+        "id": "q33",
+        "question_text": "Phát biểu về Vốn xã hội: - Q6.12 Các mối quan hệ trong mạng lưới xã hội đã đóng góp tích cực vào sự phát triển bền vững của doanh nghiệp.",
+        "type": "likert_scale",
+        "required": true,
+        "scale_min": 1,
+        "scale_max": 5,
+        "scale_labels": [
+          "Rất không đồng ý",
+          "Không đồng ý",
+          "Trung lập",
+          "Đồng ý",
+          "Rất đồng ý"
+        ]
+      },
+      {
+        "id": "q34",
+        "question_text": "Phát biểu về Vốn xã hội: - Q6.13 Tôi luôn tìm cách mở rộng mạng lưới quan hệ để tạo lợi thế cạnh tranh cho doanh nghiệp.",
+        "type": "likert_scale",
+        "required": true,
+        "scale_min": 1,
+        "scale_max": 5,
+        "scale_labels": [
+          "Rất không đồng ý",
+          "Không đồng ý",
+          "Trung lập",
+          "Đồng ý",
+          "Rất đồng ý"
+        ]
+      },
+      {
+        "id": "q35",
+        "question_text": "Phát biểu về Vốn xã hội: - Q6.14 Tôi sẵn sàng đầu tư thời gian và nguồn lực vào các chương trình xây dựng cộng đồng.",
+        "type": "likert_scale",
+        "required": true,
+        "scale_min": 1,
+        "scale_max": 5,
+        "scale_labels": [
+          "Rất không đồng ý",
+          "Không đồng ý",
+          "Trung lập",
+          "Đồng ý",
+          "Rất đồng ý"
+        ]
+      },
+      {
+        "id": "q36",
+        "question_text": "Phát biểu về Vốn xã hội: - Q6.15 Tôi cam kết phát triển môi trường làm việc minh bạch, tôn trọng và hỗ trợ lẫn nhau.",
+        "type": "likert_scale",
+        "required": true,
+        "scale_min": 1,
+        "scale_max": 5,
+        "scale_labels": [
+          "Rất không đồng ý",
+          "Không đồng ý",
+          "Trung lập",
+          "Đồng ý",
+          "Rất đồng ý"
+        ]
+      },
+      {
+        "id": "q37",
+        "question_text": "Phát biểu về Vốn nhân lực: - Q7.1 Nhân viên của Anh/Chị có tay nghề cao",
+        "type": "likert_scale",
+        "required": true,
+        "scale_min": 1,
+        "scale_max": 5,
+        "scale_labels": [
+          "Rất không đồng ý",
+          "Không đồng ý",
+          "Trung lập",
+          "Đồng ý",
+          "Rất đồng ý"
+        ]
+      },
+      {
+        "id": "q38",
+        "question_text": "Phát biểu về Vốn nhân lực: - Q7.2 Nhân viên của Anh/Chị được coi là tốt nhất trong ngành",
+        "type": "likert_scale",
+        "required": true,
+        "scale_min": 1,
+        "scale_max": 5,
+        "scale_labels": [
+          "Rất không đồng ý",
+          "Không đồng ý",
+          "Trung lập",
+          "Đồng ý",
+          "Rất đồng ý"
+        ]
+      },
+      {
+        "id": "q39",
+        "question_text": "Phát biểu về Vốn nhân lực: - Q7.3 Nhân viên của Anh/Chị sáng tạo và vui vẻ",
+        "type": "likert_scale",
+        "required": true,
+        "scale_min": 2,
+        "scale_max": 5,
+        "scale_labels": [
+          "Rất không đồng ý",
+          "Không đồng ý",
+          "Trung lập",
+          "Đồng ý",
+          "Rất đồng ý"
+        ]
+      },
+      {
+        "id": "q40",
+        "question_text": "Phát biểu về Vốn nhân lực: - Q7.4 Nhân viên của Anh/Chị phát triển ý tưởng và kiến thức mới",
+        "type": "likert_scale",
+        "required": true,
+        "scale_min": 2,
+        "scale_max": 5,
+        "scale_labels": [
+          "Rất không đồng ý",
+          "Không đồng ý",
+          "Trung lập",
+          "Đồng ý",
+          "Rất đồng ý"
+        ]
+      },
+      {
+        "id": "q41",
+        "question_text": "Phát biểu về Vốn nhân lực: - Q7.5 Nhân viên của Anh/Chị có thể phát triển và duy trì mối quan hệ bền chặt với người khác",
+        "type": "likert_scale",
+        "required": true,
+        "scale_min": 3,
+        "scale_max": 5,
+        "scale_labels": [
+          "Rất không đồng ý",
+          "Không đồng ý",
+          "Trung lập",
+          "Đồng ý",
+          "Rất đồng ý"
+        ]
+      },
+      {
+        "id": "q42",
+        "question_text": "Phát biểu về Vốn nhân lực: - Q7.6 Nhân viên của Anh/Chị có hiểu biết đầy đủ về công ty và có thể tích hợp kiến thức tổ chức trên các lĩnh vực khác nhau trong công ty",
+        "type": "likert_scale",
+        "required": true,
+        "scale_min": 1,
+        "scale_max": 5,
+        "scale_labels": [
+          "Rất không đồng ý",
+          "Không đồng ý",
+          "Trung lập",
+          "Đồng ý",
+          "Rất đồng ý"
+        ]
+      },
+      {
+        "id": "q43",
+        "question_text": "Phát biểu về Vốn nhân lực: - Q7.7 Nhân viên của Anh/Chị có kỹ năng hợp tác và làm việc nhóm để đưa ra giải pháp giải quyết vấn đề",
+        "type": "likert_scale",
+        "required": true,
+        "scale_min": 2,
+        "scale_max": 5,
+        "scale_labels": [
+          "Rất không đồng ý",
+          "Không đồng ý",
+          "Trung lập",
+          "Đồng ý",
+          "Rất đồng ý"
+        ]
+      },
+      {
+        "id": "q44",
+        "question_text": "Phát biểu về Vốn nhân lực: - Q7.8 Nhân viên của Anh/Chị chia sẻ thông tin và học hỏi lẫn nhau",
+        "type": "likert_scale",
+        "required": true,
+        "scale_min": 2,
+        "scale_max": 5,
+        "scale_labels": [
+          "Rất không đồng ý",
+          "Không đồng ý",
+          "Trung lập",
+          "Đồng ý",
+          "Rất đồng ý"
+        ]
+      },
+      {
+        "id": "q45",
+        "question_text": "Phát biểu về Vốn nhân lực: - Q7.9 Nhân viên của Anh/Chị tương tác và trao đổi ý tưởng với mọi người từ các bộ phận khác nhau của công ty",
+        "type": "likert_scale",
+        "required": true,
+        "scale_min": 2,
+        "scale_max": 5,
+        "scale_labels": [
+          "Rất không đồng ý",
+          "Không đồng ý",
+          "Trung lập",
+          "Đồng ý",
+          "Rất đồng ý"
+        ]
+      },
+      {
+        "id": "q46",
+        "question_text": "Phát biểu về Vốn nhân lực: - Q7.10 Nhân viên của Anh/Chị hợp tác với khách hàng, nhà cung cấp, đối tác liên minh, v.v., để phát triển các giải pháp",
+        "type": "likert_scale",
+        "required": true,
+        "scale_min": 2,
+        "scale_max": 5,
+        "scale_labels": [
+          "Rất không đồng ý",
+          "Không đồng ý",
+          "Trung lập",
+          "Đồng ý",
+          "Rất đồng ý"
+        ]
+      },
+      {
+        "id": "q47",
+        "question_text": "Phát biểu về Vốn nhân lực: - Q7.11 Nhân viên của Anh/Chị áp dụng kiến thức từ một lĩnh vực của công ty vào giải quyết các vấn đề ở một lĩnh vực khác",
+        "type": "likert_scale",
+        "required": true,
+        "scale_min": 2,
+        "scale_max": 5,
+        "scale_labels": [
+          "Rất không đồng ý",
+          "Không đồng ý",
+          "Trung lập",
+          "Đồng ý",
+          "Rất đồng ý"
+        ]
+      },
+      {
+        "id": "q48",
+        "question_text": "Phát biểu về Vốn nhân lực: - Q7.12 Tổ chức của Anh/Chị lưu giữ kiến thức trong các tài liệu chỉ dẫn và cơ sở dữ liệu",
+        "type": "likert_scale",
+        "required": true,
+        "scale_min": 2,
+        "scale_max": 5,
+        "scale_labels": [
+          "Rất không đồng ý",
+          "Không đồng ý",
+          "Trung lập",
+          "Đồng ý",
+          "Rất đồng ý"
+        ]
+      },
+      {
+        "id": "q49",
+        "question_text": "Phát biểu về Vốn nhân lực: - Q7.13 Tổ chức của Anh/Chị sử dụng bằng sáng chế và giấy phép như một cách để lưu trữ kiến thức",
+        "type": "likert_scale",
+        "required": true,
+        "scale_min": 1,
+        "scale_max": 5,
+        "scale_labels": [
+          "Rất không đồng ý",
+          "Không đồng ý",
+          "Trung lập",
+          "Đồng ý",
+          "Rất đồng ý"
+        ]
+      },
+      {
+        "id": "q50",
+        "question_text": "Phát biểu về Vốn nhân lực: - Q7.14 Tổ chức của Anh/Chị sử dụng văn hóa (câu chuyện, nghi lễ) chứa những ý tưởng có giá trị, cách thức kinh doanh",
+        "type": "likert_scale",
+        "required": true,
+        "scale_min": 2,
+        "scale_max": 5,
+        "scale_labels": [
+          "Rất không đồng ý",
+          "Không đồng ý",
+          "Trung lập",
+          "Đồng ý",
+          "Rất đồng ý"
+        ]
+      },
+      {
+        "id": "q51",
+        "question_text": "Phát biểu về Vốn nhân lực: - Q7.15 Tổ chức của Anh/Chị nhúng nhiều kiến thức và thông tin của mình vào các cấu trúc, hệ thống và quy trình",
+        "type": "likert_scale",
+        "required": true,
+        "scale_min": 2,
+        "scale_max": 5,
+        "scale_labels": [
+          "Rất không đồng ý",
+          "Không đồng ý",
+          "Trung lập",
+          "Đồng ý",
+          "Rất đồng ý"
+        ]
+      },
+      {
+        "id": "q52",
+        "question_text": "Phát biểu về Vốn nhân lực: - Q7.16 Tổ chức của Anh/Chị bảo vệ kiến thức và thông tin chính để tránh mất mát nếu những người chủ chốt rời khỏi tổ chức",
+        "type": "likert_scale",
+        "required": true,
+        "scale_min": 2,
+        "scale_max": 5,
+        "scale_labels": [
+          "Rất không đồng ý",
+          "Không đồng ý",
+          "Trung lập",
+          "Đồng ý",
+          "Rất đồng ý"
+        ]
+      },
+      {
+        "id": "q53",
+        "question_text": "Phát biểu về Vốn nhân lực: - Q7.17 Tổ chức của Anh/Chị có các phương pháp và quy trình làm việc để hỗ trợ các sáng kiến và sản phẩm mới",
+        "type": "likert_scale",
+        "required": true,
+        "scale_min": 1,
+        "scale_max": 5,
+        "scale_labels": [
+          "Rất không đồng ý",
+          "Không đồng ý",
+          "Trung lập",
+          "Đồng ý",
+          "Rất đồng ý"
+        ]
+      },
+      {
+        "id": "q54",
+        "question_text": "Phát biểu về Vốn nhân lực: - Q7.18 Tổ chức của Anh/Chị có các kỹ thuật, cơ chế chia sẻ kiến thức và trao đổi khác",
+        "type": "likert_scale",
+        "required": true,
+        "scale_min": 2,
+        "scale_max": 5,
+        "scale_labels": [
+          "Rất không đồng ý",
+          "Không đồng ý",
+          "Trung lập",
+          "Đồng ý",
+          "Rất đồng ý"
+        ]
+      },
+      {
+        "id": "q55",
+        "question_text": "Phát biểu về Vốn nhân lực: - Q7.19 Chất lượng nguồn thông tin được an toàn.",
+        "type": "likert_scale",
+        "required": true,
+        "scale_min": 1,
+        "scale_max": 5,
+        "scale_labels": [
+          "Rất không đồng ý",
+          "Không đồng ý",
+          "Trung lập",
+          "Đồng ý",
+          "Rất đồng ý"
+        ]
+      },
+      {
+        "id": "q56",
+        "question_text": "Phát biểu về Vốn nhân lực: - Q7.20 Nhân viên được khuyến khích trong việc tiếp nhận thông tin, kiến thức mới",
+        "type": "likert_scale",
+        "required": true,
+        "scale_min": 1,
+        "scale_max": 5,
+        "scale_labels": [
+          "Rất không đồng ý",
+          "Không đồng ý",
+          "Trung lập",
+          "Đồng ý",
+          "Rất đồng ý"
+        ]
+      },
+      {
+        "id": "q57",
+        "question_text": "Phát biểu về Vốn nhân lực: - Q7.21 Đơn vị có những giải pháp trong việc hỗ trợ nhân viên tìm kiếm, sàng lọc thông tin, kiến thức để sáng tạo, đổi mới",
+        "type": "likert_scale",
+        "required": true,
+        "scale_min": 3,
+        "scale_max": 5,
+        "scale_labels": [
+          "Rất không đồng ý",
+          "Không đồng ý",
+          "Trung lập",
+          "Đồng ý",
+          "Rất đồng ý"
+        ]
+      },
+      {
+        "id": "q58",
+        "question_text": "Phát biểu về Vốn nhân lực: - Q7.22 Có biện pháp khai thác kiến thức mới vào việc đổi mới trong đơn vị",
+        "type": "likert_scale",
+        "required": true,
+        "scale_min": 3,
+        "scale_max": 5,
+        "scale_labels": [
+          "Rất không đồng ý",
+          "Không đồng ý",
+          "Trung lập",
+          "Đồng ý",
+          "Rất đồng ý"
+        ]
+      },
+      {
+        "id": "q59",
+        "question_text": "Phát biểu về Vốn nhân lực: - Q7.23 Nhân viên của chúng tôi luôn coi trọng tính ứng dụng của kiến thức mới và có khả năng thực hành cao",
+        "type": "likert_scale",
+        "required": true,
+        "scale_min": 3,
+        "scale_max": 5,
+        "scale_labels": [
+          "Rất không đồng ý",
+          "Không đồng ý",
+          "Trung lập",
+          "Đồng ý",
+          "Rất đồng ý"
+        ]
+      },
+      {
+        "id": "q60",
+        "question_text": "Phát biểu về Vốn nhân lực: - Q7.24 Các giải pháp xử lý thông tin được hấp thụ là khá hữu hiệu",
+        "type": "likert_scale",
+        "required": true,
+        "scale_min": 2,
+        "scale_max": 5,
+        "scale_labels": [
+          "Rất không đồng ý",
+          "Không đồng ý",
+          "Trung lập",
+          "Đồng ý",
+          "Rất đồng ý"
+        ]
+      },
+      {
+        "id": "q61",
+        "question_text": "Phát biểu về Vốn nhân lực: - Q7.25 Thông tin tiếp nhận được xử lý một cách toàn diện trên mọi khía cạnh chuyên môn, chức năng của hoạt động tác nghiệp",
+        "type": "likert_scale",
+        "required": true,
+        "scale_min": 1,
+        "scale_max": 5,
+        "scale_labels": [
+          "Rất không đồng ý",
+          "Không đồng ý",
+          "Trung lập",
+          "Đồng ý",
+          "Rất đồng ý"
+        ]
+      },
+      {
+        "id": "q62",
+        "question_text": "Phát biểu về Vốn nhân lực: - Q7.26 Nhân viên có năng lực chuyển hóa kiến thức thành sản phẩm hay giải pháp hữu ích",
+        "type": "likert_scale",
+        "required": true,
+        "scale_min": 2,
+        "scale_max": 5,
+        "scale_labels": [
+          "Rất không đồng ý",
+          "Không đồng ý",
+          "Trung lập",
+          "Đồng ý",
+          "Rất đồng ý"
+        ]
+      },
+      {
+        "id": "q63",
+        "question_text": "Phát biểu về Vốn nhân lực: - Q7.27 Xây dựng được một cơ chế đảm bảo cho việc tìm kiếm, thu thập, cập nhật và xử lý các văn bản, chính sách mới, nguồn lực và sự trợ giúp khả dụng từ bên ngoài hữu ích đối với hoạt động của DN",
+        "type": "likert_scale",
+        "required": true,
+        "scale_min": 1,
+        "scale_max": 5,
+        "scale_labels": [
+          "Rất không đồng ý",
+          "Không đồng ý",
+          "Trung lập",
+          "Đồng ý",
+          "Rất đồng ý"
+        ]
+      },
+      {
+        "id": "q64",
+        "question_text": "Phát biểu về Vốn nhân lực: - Q7.28 Có những quy định cụ thể bằng văn bản để thuận lợi cho việc vận dụng, khai thác giá trị tiềm năng từ cơ chế, chính sách và sự hỗ trợ từ bên ngoài khả dụng thành các đề án hữu ích có thể thực hiện",
+        "type": "likert_scale",
+        "required": true,
+        "scale_min": 2,
+        "scale_max": 5,
+        "scale_labels": [
+          "Rất không đồng ý",
+          "Không đồng ý",
+          "Trung lập",
+          "Đồng ý",
+          "Rất đồng ý"
+        ]
+      },
+      {
+        "id": "q65",
+        "question_text": "Phát biểu về Vốn nhân lực: - Q7.29 Có những quy định cụ thể về báo cáo kết quả xử lý thông tin được thực hiện một cách nghiêm túc",
+        "type": "likert_scale",
+        "required": true,
+        "scale_min": 2,
+        "scale_max": 5,
+        "scale_labels": [
+          "Rất không đồng ý",
+          "Không đồng ý",
+          "Trung lập",
+          "Đồng ý",
+          "Rất đồng ý"
+        ]
+      },
+      {
+        "id": "q66",
+        "question_text": "Phát biểu về Vốn nhân lực: - Q7.30 Có quy trình cụ thể quy định trách nhiệm, quyền lợi và cách thức phối kết hợp giữa các cá nhân, bộ phận liên quan để tìm kiếm, xử lý và khai thác thông tin về cơ chế, chính sách, sự hỗ trợ, nguồn lực khả dụng, hữu ích",
+        "type": "likert_scale",
+        "required": true,
+        "scale_min": 2,
+        "scale_max": 5,
+        "scale_labels": [
+          "Rất không đồng ý",
+          "Không đồng ý",
+          "Trung lập",
+          "Đồng ý",
+          "Rất đồng ý"
+        ]
+      },
+      {
+        "id": "q67",
+        "question_text": "Phát biểu về Vốn nhân lực: - Q7.31 Có cơ chế cung cấp thông tin mới về môi trường kinh doanh liên quan đến cơ chế, chính sách, sự hỗ trợ, khả năng hiện hữu của DN",
+        "type": "likert_scale",
+        "required": true,
+        "scale_min": 2,
+        "scale_max": 5,
+        "scale_labels": [
+          "Rất không đồng ý",
+          "Không đồng ý",
+          "Trung lập",
+          "Đồng ý",
+          "Rất đồng ý"
+        ]
+      },
+      {
+        "id": "q68",
+        "question_text": "Phát biểu về Vốn nhân lực: - Q7.32 Xây dựng được một cơ chế đảm bảo cho việc tìm kiếm, thu thập, cập nhật và xử lý các văn bản, chính sách mới, nguồn lực và sự trợ giúp khả dụng từ bên ngoài hữu ích đối với hoạt động của DN",
+        "type": "likert_scale",
+        "required": true,
+        "scale_min": 3,
+        "scale_max": 5,
+        "scale_labels": [
+          "Rất không đồng ý",
+          "Không đồng ý",
+          "Trung lập",
+          "Đồng ý",
+          "Rất đồng ý"
+        ]
+      },
+      {
+        "id": "q69",
+        "question_text": "Phát biểu về Phát triển bền vững: - Q8.1 Tôi nhận thức rõ rằng bảo vệ môi trường là trách nhiệm quan trọng của doanh nghiệp.",
+        "type": "likert_scale",
+        "required": true,
+        "scale_min": 3,
+        "scale_max": 5,
+        "scale_labels": [
+          "Rất không đồng ý",
+          "Không đồng ý",
+          "Trung lập",
+          "Đồng ý",
+          "Rất đồng ý"
+        ]
+      },
+      {
+        "id": "q70",
+        "question_text": "Phát biểu về Phát triển bền vững: - Q8.2 Tôi hiểu rằng các hoạt động kinh doanh không bền vững sẽ gây ảnh hưởng tiêu cực đến môi trường.",
+        "type": "likert_scale",
+        "required": true,
+        "scale_min": 1,
+        "scale_max": 5,
+        "scale_labels": [
+          "Rất không đồng ý",
+          "Không đồng ý",
+          "Trung lập",
+          "Đồng ý",
+          "Rất đồng ý"
+        ]
+      },
+      {
+        "id": "q71",
+        "question_text": "Phát biểu về Phát triển bền vững: - Q8.3 Tôi tin rằng bảo vệ môi trường đóng vai trò quan trọng trong việc xây dựng uy tín doanh nghiệp.",
+        "type": "likert_scale",
+        "required": true,
+        "scale_min": 3,
+        "scale_max": 5,
+        "scale_labels": [
+          "Rất không đồng ý",
+          "Không đồng ý",
+          "Trung lập",
+          "Đồng ý",
+          "Rất đồng ý"
+        ]
+      },
+      {
+        "id": "q72",
+        "question_text": "Phát biểu về Phát triển bền vững: - Q8.4 Tôi cam kết áp dụng các giải pháp công nghệ tiên tiến để giảm thiểu ô nhiễm trong hoạt động sản xuất.",
+        "type": "likert_scale",
+        "required": true,
+        "scale_min": 2,
+        "scale_max": 5,
+        "scale_labels": [
+          "Rất không đồng ý",
+          "Không đồng ý",
+          "Trung lập",
+          "Đồng ý",
+          "Rất đồng ý"
+        ]
+      },
+      {
+        "id": "q73",
+        "question_text": "Phát biểu về Phát triển bền vững: - Q8.5 Tôi sẵn sàng đầu tư vào các chương trình bảo tồn tài nguyên thiên nhiên và bảo vệ môi trường.",
+        "type": "likert_scale",
+        "required": true,
+        "scale_min": 3,
+        "scale_max": 5,
+        "scale_labels": [
+          "Rất không đồng ý",
+          "Không đồng ý",
+          "Trung lập",
+          "Đồng ý",
+          "Rất đồng ý"
+        ]
+      },
+      {
+        "id": "q74",
+        "question_text": "Phát biểu về Phát triển bền vững: - Q8.6 Doanh nghiệp của tôi có chính sách rõ ràng về giảm thiểu chất thải và tiết kiệm năng lượng.",
+        "type": "likert_scale",
+        "required": true,
+        "scale_min": 3,
+        "scale_max": 5,
+        "scale_labels": [
+          "Rất không đồng ý",
+          "Không đồng ý",
+          "Trung lập",
+          "Đồng ý",
+          "Rất đồng ý"
+        ]
+      },
+      {
+        "id": "q75",
+        "question_text": "Phát biểu về Phát triển bền vững: - Q8.7 Tôi thường xuyên tham gia các chương trình hoặc sự kiện về bảo vệ môi trường.",
+        "type": "likert_scale",
+        "required": true,
+        "scale_min": 2,
+        "scale_max": 5,
+        "scale_labels": [
+          "Rất không đồng ý",
+          "Không đồng ý",
+          "Trung lập",
+          "Đồng ý",
+          "Rất đồng ý"
+        ]
+      },
+      {
+        "id": "q76",
+        "question_text": "Phát biểu về Phát triển bền vững: - Q8.8 Doanh nghiệp của tôi tích cực hợp tác với cộng đồng để thực hiện các dự án bảo vệ môi trường.",
+        "type": "likert_scale",
+        "required": true,
+        "scale_min": 2,
+        "scale_max": 5,
+        "scale_labels": [
+          "Rất không đồng ý",
+          "Không đồng ý",
+          "Trung lập",
+          "Đồng ý",
+          "Rất đồng ý"
+        ]
+      },
+      {
+        "id": "q77",
+        "question_text": "Phát biểu về Phát triển bền vững: - Q8.9 Tôi đảm bảo rằng doanh nghiệp tuân thủ đầy đủ các quy định pháp luật liên quan đến môi trường.",
+        "type": "likert_scale",
+        "required": true,
+        "scale_min": 3,
+        "scale_max": 5,
+        "scale_labels": [
+          "Rất không đồng ý",
+          "Không đồng ý",
+          "Trung lập",
+          "Đồng ý",
+          "Rất đồng ý"
+        ]
+      },
+      {
+        "id": "q78",
+        "question_text": "Phát biểu về Phát triển bền vững: - Q8.10 Tôi khuyến khích nhân viên trong doanh nghiệp áp dụng các thói quen thân thiện với môi trường.",
+        "type": "likert_scale",
+        "required": true,
+        "scale_min": 3,
+        "scale_max": 5,
+        "scale_labels": [
+          "Rất không đồng ý",
+          "Không đồng ý",
+          "Trung lập",
+          "Đồng ý",
+          "Rất đồng ý"
+        ]
+      },
+      {
+        "id": "q79",
+        "question_text": "Phát biểu về Phát triển bền vững: - Q8.11 Doanh nghiệp của tôi sử dụng các nguyên liệu và sản phẩm thân thiện với môi trường.",
+        "type": "likert_scale",
+        "required": true,
+        "scale_min": 2,
+        "scale_max": 5,
+        "scale_labels": [
+          "Rất không đồng ý",
+          "Không đồng ý",
+          "Trung lập",
+          "Đồng ý",
+          "Rất đồng ý"
+        ]
+      },
+      {
+        "id": "q80",
+        "question_text": "Phát biểu về Phát triển bền vững: - Q8.12 Tôi đảm bảo rằng doanh nghiệp áp dụng các biện pháp quản lý chất thải hiệu quả và an toàn.",
+        "type": "likert_scale",
+        "required": true,
+        "scale_min": 2,
+        "scale_max": 5,
+        "scale_labels": [
+          "Rất không đồng ý",
+          "Không đồng ý",
+          "Trung lập",
+          "Đồng ý",
+          "Rất đồng ý"
+        ]
+      },
+      {
+        "id": "q81",
+        "question_text": "Phát biểu về Phát triển bền vững: - Q8.13 Tôi có kế hoạch mở rộng các chương trình xanh trong hoạt động kinh doanh của doanh nghiệp.",
+        "type": "likert_scale",
+        "required": true,
+        "scale_min": 2,
+        "scale_max": 5,
+        "scale_labels": [
+          "Rất không đồng ý",
+          "Không đồng ý",
+          "Trung lập",
+          "Đồng ý",
+          "Rất đồng ý"
+        ]
+      },
+      {
+        "id": "q82",
+        "question_text": "Phát biểu về Phát triển bền vững: - Q8.14 Tôi sẵn sàng hợp tác với các tổ chức phi chính phủ để thực hiện các dự án bảo vệ môi trường.",
+        "type": "likert_scale",
+        "required": true,
+        "scale_min": 2,
+        "scale_max": 5,
+        "scale_labels": [
+          "Rất không đồng ý",
+          "Không đồng ý",
+          "Trung lập",
+          "Đồng ý",
+          "Rất đồng ý"
+        ]
+      },
+      {
+        "id": "q83",
+        "question_text": "Phát biểu về Phát triển bền vững: - Q8.15 Tôi cam kết xây dựng doanh nghiệp của mình trở thành một hình mẫu về bảo vệ môi trường.",
+        "type": "likert_scale",
+        "required": true,
+        "scale_min": 1,
+        "scale_max": 5,
+        "scale_labels": [
+          "Rất không đồng ý",
+          "Không đồng ý",
+          "Trung lập",
+          "Đồng ý",
+          "Rất đồng ý"
+        ]
+      },
+      {
+        "id": "q84",
+        "question_text": "Phát biểu về Phát triển bền vững: - Q8.16 Tôi tin rằng tăng trưởng kinh tế công bằng là yếu tố quan trọng để xây dựng một xã hội bền vững.",
+        "type": "likert_scale",
+        "required": true,
+        "scale_min": 2,
+        "scale_max": 5,
+        "scale_labels": [
+          "Rất không đồng ý",
+          "Không đồng ý",
+          "Trung lập",
+          "Đồng ý",
+          "Rất đồng ý"
+        ]
+      },
+      {
+        "id": "q85",
+        "question_text": "Phát biểu về Phát triển bền vững: - Q8.17 Tôi nhận thức rõ rằng bất bình đẳng kinh tế có thể ảnh hưởng tiêu cực đến sự phát triển của doanh nghiệp.",
+        "type": "likert_scale",
+        "required": true,
+        "scale_min": 3,
+        "scale_max": 5,
+        "scale_labels": [
+          "Rất không đồng ý",
+          "Không đồng ý",
+          "Trung lập",
+          "Đồng ý",
+          "Rất đồng ý"
+        ]
+      },
+      {
+        "id": "q86",
+        "question_text": "Phát biểu về Phát triển bền vững: - Q8.18 Tôi hiểu rằng tăng trưởng kinh tế công bằng phải đảm bảo lợi ích cho tất cả các nhóm trong xã hội.",
+        "type": "likert_scale",
+        "required": true,
+        "scale_min": 2,
+        "scale_max": 5,
+        "scale_labels": [
+          "Rất không đồng ý",
+          "Không đồng ý",
+          "Trung lập",
+          "Đồng ý",
+          "Rất đồng ý"
+        ]
+      },
+      {
+        "id": "q87",
+        "question_text": "Phát biểu về Phát triển bền vững: - Q8.19 Tôi tin rằng doanh nghiệp cần chủ động đóng góp vào việc giảm chênh lệch thu nhập trong cộng đồng.",
+        "type": "likert_scale",
+        "required": true,
+        "scale_min": 2,
+        "scale_max": 5,
+        "scale_labels": [
+          "Rất không đồng ý",
+          "Không đồng ý",
+          "Trung lập",
+          "Đồng ý",
+          "Rất đồng ý"
+        ]
+      },
+      {
+        "id": "q88",
+        "question_text": "Phát biểu về Phát triển bền vững: - Q8.20 Doanh nghiệp của tôi luôn duy trì các chính sách trả lương công bằng và hợp lý cho nhân viên.",
+        "type": "likert_scale",
+        "required": true,
+        "scale_min": 2,
+        "scale_max": 5,
+        "scale_labels": [
+          "Rất không đồng ý",
+          "Không đồng ý",
+          "Trung lập",
+          "Đồng ý",
+          "Rất đồng ý"
+        ]
+      },
+      {
+        "id": "q89",
+        "question_text": "Phát biểu về Phát triển bền vững: - Q8.21 Tôi ủng hộ việc tạo cơ hội việc làm bình đẳng cho tất cả các nhóm dân cư, bao gồm phụ nữ và người dân tộc thiểu số.",
+        "type": "likert_scale",
+        "required": true,
+        "scale_min": 2,
+        "scale_max": 5,
+        "scale_labels": [
+          "Rất không đồng ý",
+          "Không đồng ý",
+          "Trung lập",
+          "Đồng ý",
+          "Rất đồng ý"
+        ]
+      },
+      {
+        "id": "q90",
+        "question_text": "Phát biểu về Phát triển bền vững: - Q8.22 Doanh nghiệp của tôi luôn tuân thủ các quy định pháp luật về lao động và môi trường.",
+        "type": "likert_scale",
+        "required": true,
+        "scale_min": 2,
+        "scale_max": 5,
+        "scale_labels": [
+          "Rất không đồng ý",
+          "Không đồng ý",
+          "Trung lập",
+          "Đồng ý",
+          "Rất đồng ý"
+        ]
+      },
+      {
+        "id": "q91",
+        "question_text": "Phát biểu về Phát triển bền vững: - Q8.23 Chúng tôi cam kết không tham gia vào các hoạt động gây hại cho cộng đồng và môi trường.",
+        "type": "likert_scale",
+        "required": true,
+        "scale_min": 2,
+        "scale_max": 5,
+        "scale_labels": [
+          "Rất không đồng ý",
+          "Không đồng ý",
+          "Trung lập",
+          "Đồng ý",
+          "Rất đồng ý"
+        ]
+      },
+      {
+        "id": "q92",
+        "question_text": "Phát biểu về Phát triển bền vững: - Q8.24 Doanh nghiệp của tôi ưu tiên hợp tác với các đối tác có cùng cam kết về phát triển bền vững.",
+        "type": "likert_scale",
+        "required": true,
+        "scale_min": 2,
+        "scale_max": 5,
+        "scale_labels": [
+          "Rất không đồng ý",
+          "Không đồng ý",
+          "Trung lập",
+          "Đồng ý",
+          "Rất đồng ý"
+        ]
+      },
+      {
+        "id": "q93",
+        "question_text": "Phát biểu về Phát triển bền vững: - Q8.25 Tôi thường xuyên tham gia vào các chương trình hỗ trợ cộng đồng hoặc từ thiện tại địa phương.",
+        "type": "likert_scale",
+        "required": true,
+        "scale_min": 1,
+        "scale_max": 5,
+        "scale_labels": [
+          "Rất không đồng ý",
+          "Không đồng ý",
+          "Trung lập",
+          "Đồng ý",
+          "Rất đồng ý"
+        ]
+      },
+      {
+        "id": "q94",
+        "question_text": "Phát biểu về Phát triển bền vững: - Q8.26 Doanh nghiệp của tôi đầu tư vào các hoạt động giáo dục và đào tạo để nâng cao chất lượng lao động.",
+        "type": "likert_scale",
+        "required": true,
+        "scale_min": 1,
+        "scale_max": 5,
+        "scale_labels": [
+          "Rất không đồng ý",
+          "Không đồng ý",
+          "Trung lập",
+          "Đồng ý",
+          "Rất đồng ý"
+        ]
+      },
+      {
+        "id": "q95",
+        "question_text": "Phát biểu về Phát triển bền vững: - Q8.27 Tôi đảm bảo rằng mọi quyết định kinh doanh đều cân nhắc đến lợi ích của cộng đồng xung quanh.",
+        "type": "likert_scale",
+        "required": true,
+        "scale_min": 1,
+        "scale_max": 5,
+        "scale_labels": [
+          "Rất không đồng ý",
+          "Không đồng ý",
+          "Trung lập",
+          "Đồng ý",
+          "Rất đồng ý"
+        ]
+      },
+      {
+        "id": "q96",
+        "question_text": "Phát biểu về Phát triển bền vững: - Q8.28 Tôi sẵn sàng áp dụng các chính sách thúc đẩy sự công bằng trong toàn bộ hoạt động doanh nghiệp.",
+        "type": "likert_scale",
+        "required": true,
+        "scale_min": 3,
+        "scale_max": 5,
+        "scale_labels": [
+          "Rất không đồng ý",
+          "Không đồng ý",
+          "Trung lập",
+          "Đồng ý",
+          "Rất đồng ý"
+        ]
+      },
+      {
+        "id": "q97",
+        "question_text": "Phát biểu về Phát triển bền vững: - Q8.29 Doanh nghiệp của tôi cam kết tăng cường hợp tác với các tổ chức chính phủ và phi chính phủ để thúc đẩy tăng trưởng công bằng.",
+        "type": "likert_scale",
+        "required": true,
+        "scale_min": 1,
+        "scale_max": 5,
+        "scale_labels": [
+          "Rất không đồng ý",
+          "Không đồng ý",
+          "Trung lập",
+          "Đồng ý",
+          "Rất đồng ý"
+        ]
+      },
+      {
+        "id": "q98",
+        "question_text": "Phát biểu về Phát triển bền vững: - Q8.30 Tôi đặt mục tiêu xây dựng doanh nghiệp trở thành hình mẫu về thực hiện kinh doanh bền vững và công bằng.",
+        "type": "likert_scale",
+        "required": true,
+        "scale_min": 1,
+        "scale_max": 5,
+        "scale_labels": [
+          "Rất không đồng ý",
+          "Không đồng ý",
+          "Trung lập",
+          "Đồng ý",
+          "Rất đồng ý"
+        ]
+      },
+      {
+        "id": "q99",
+        "question_text": "Phát biểu về Phát triển bền vững: - Q8.31 Tôi tin rằng tôn trọng quyền xã hội và con người là trách nhiệm của mọi doanh nghiệp.",
+        "type": "likert_scale",
+        "required": true,
+        "scale_min": 1,
+        "scale_max": 5,
+        "scale_labels": [
+          "Rất không đồng ý",
+          "Không đồng ý",
+          "Trung lập",
+          "Đồng ý",
+          "Rất đồng ý"
+        ]
+      },
+      {
+        "id": "q100",
+        "question_text": "Phát biểu về Phát triển bền vững: - Q8.32 Tôi nhận thức rằng việc bảo vệ các quyền cơ bản như bình đẳng giới và tự do ngôn luận có ảnh hưởng đến uy tín doanh nghiệp.",
+        "type": "likert_scale",
+        "required": true,
+        "scale_min": 1,
+        "scale_max": 5,
+        "scale_labels": [
+          "Rất không đồng ý",
+          "Không đồng ý",
+          "Trung lập",
+          "Đồng ý",
+          "Rất đồng ý"
+        ]
+      },
+      {
+        "id": "q101",
+        "question_text": "Phát biểu về Phát triển bền vững: - Q8.33 Tôi hiểu rằng sự tiến bộ của các quyền xã hội góp phần tạo môi trường kinh doanh lành mạnh và bền vững.",
+        "type": "likert_scale",
+        "required": true,
+        "scale_min": 1,
+        "scale_max": 5,
+        "scale_labels": [
+          "Rất không đồng ý",
+          "Không đồng ý",
+          "Trung lập",
+          "Đồng ý",
+          "Rất đồng ý"
+        ]
+      },
+      {
+        "id": "q102",
+        "question_text": "Phát biểu về Phát triển bền vững: - Q8.34 Doanh nghiệp của tôi có các chính sách rõ ràng để đảm bảo không có sự phân biệt đối xử trong tuyển dụng.",
+        "type": "likert_scale",
+        "required": true,
+        "scale_min": 1,
+        "scale_max": 5,
+        "scale_labels": [
+          "Rất không đồng ý",
+          "Không đồng ý",
+          "Trung lập",
+          "Đồng ý",
+          "Rất đồng ý"
+        ]
+      },
+      {
+        "id": "q103",
+        "question_text": "Phát biểu về Phát triển bền vững: - Q8.35 Tôi đảm bảo rằng mọi nhân viên đều được đối xử công bằng và có cơ hội phát triển như nhau.",
+        "type": "likert_scale",
+        "required": true,
+        "scale_min": 1,
+        "scale_max": 5,
+        "scale_labels": [
+          "Rất không đồng ý",
+          "Không đồng ý",
+          "Trung lập",
+          "Đồng ý",
+          "Rất đồng ý"
+        ]
+      },
+      {
+        "id": "q104",
+        "question_text": "Phát biểu về Phát triển bền vững: - Q8.36 Tôi cam kết cung cấp môi trường làm việc an toàn và lành mạnh cho tất cả nhân viên.",
+        "type": "likert_scale",
+        "required": true,
+        "scale_min": 1,
+        "scale_max": 5,
+        "scale_labels": [
+          "Rất không đồng ý",
+          "Không đồng ý",
+          "Trung lập",
+          "Đồng ý",
+          "Rất đồng ý"
+        ]
+      },
+      {
+        "id": "q105",
+        "question_text": "Phát biểu về Phát triển bền vững: - Q8.37 Doanh nghiệp của tôi thường xuyên tham gia các chương trình hỗ trợ cộng đồng, đặc biệt là các nhóm yếu thế.",
+        "type": "likert_scale",
+        "required": true,
+        "scale_min": 1,
+        "scale_max": 5,
+        "scale_labels": [
+          "Rất không đồng ý",
+          "Không đồng ý",
+          "Trung lập",
+          "Đồng ý",
+          "Rất đồng ý"
+        ]
+      },
+      {
+        "id": "q106",
+        "question_text": "Phát biểu về Phát triển bền vững: - Q8.38 Tôi đảm bảo rằng các hoạt động kinh doanh không gây ảnh hưởng tiêu cực đến quyền của người lao động hoặc cộng đồng.",
+        "type": "likert_scale",
+        "required": true,
+        "scale_min": 1,
+        "scale_max": 5,
+        "scale_labels": [
+          "Rất không đồng ý",
+          "Không đồng ý",
+          "Trung lập",
+          "Đồng ý",
+          "Rất đồng ý"
+        ]
+      },
+      {
+        "id": "q107",
+        "question_text": "Phát biểu về Phát triển bền vững: - Q8.39 Tôi sẵn sàng hợp tác với các tổ chức phi chính phủ để thúc đẩy nhận thức về quyền con người trong cộng đồng.",
+        "type": "likert_scale",
+        "required": true,
+        "scale_min": 1,
+        "scale_max": 5,
+        "scale_labels": [
+          "Rất không đồng ý",
+          "Không đồng ý",
+          "Trung lập",
+          "Đồng ý",
+          "Rất đồng ý"
+        ]
+      },
+      {
+        "id": "q108",
+        "question_text": "Phát biểu về Phát triển bền vững: - Q8.40 Tôi nhận thấy rằng việc tôn trọng các quyền xã hội giúp tăng cường lòng trung thành của nhân viên.",
+        "type": "likert_scale",
+        "required": true,
+        "scale_min": 1,
+        "scale_max": 5,
+        "scale_labels": [
+          "Rất không đồng ý",
+          "Không đồng ý",
+          "Trung lập",
+          "Đồng ý",
+          "Rất đồng ý"
+        ]
+      },
+      {
+        "id": "q109",
+        "question_text": "Phát biểu về Phát triển bền vững: - Q8.41 Doanh nghiệp của tôi đã xây dựng được lòng tin từ khách hàng nhờ cam kết về quyền con người.",
+        "type": "likert_scale",
+        "required": true,
+        "scale_min": 1,
+        "scale_max": 5,
+        "scale_labels": [
+          "Rất không đồng ý",
+          "Không đồng ý",
+          "Trung lập",
+          "Đồng ý",
+          "Rất đồng ý"
+        ]
+      },
+      {
+        "id": "q110",
+        "question_text": "Phát biểu về Phát triển bền vững: - Q8.42 Tôi tin rằng việc thúc đẩy sự tiến bộ của quyền xã hội giúp doanh nghiệp đạt được lợi thế cạnh tranh bền vững.",
+        "type": "likert_scale",
+        "required": true,
+        "scale_min": 1,
+        "scale_max": 5,
+        "scale_labels": [
+          "Rất không đồng ý",
+          "Không đồng ý",
+          "Trung lập",
+          "Đồng ý",
+          "Rất đồng ý"
+        ]
+      },
+      {
+        "id": "q111",
+        "question_text": "Phát biểu về Phát triển bền vững: - Q8.43 Tôi cam kết áp dụng các chính sách mới nhằm đảm bảo quyền lợi cho tất cả nhân viên và cộng đồng.",
+        "type": "likert_scale",
+        "required": true,
+        "scale_min": 1,
+        "scale_max": 5,
+        "scale_labels": [
+          "Rất không đồng ý",
+          "Không đồng ý",
+          "Trung lập",
+          "Đồng ý",
+          "Rất đồng ý"
+        ]
+      },
+      {
+        "id": "q112",
+        "question_text": "Phát biểu về Phát triển bền vững: - Q8.44 Tôi sẵn lòng tham gia các dự án xã hội nhằm thúc đẩy sự tiến bộ của quyền con người.",
+        "type": "likert_scale",
+        "required": true,
+        "scale_min": 1,
+        "scale_max": 5,
+        "scale_labels": [
+          "Rất không đồng ý",
+          "Không đồng ý",
+          "Trung lập",
+          "Đồng ý",
+          "Rất đồng ý"
+        ]
+      },
+      {
+        "id": "q113",
+        "question_text": "Phát biểu về Phát triển bền vững: - Q8.45 Tôi đặt mục tiêu xây dựng doanh nghiệp trở thành hình mẫu trong việc bảo vệ và thúc đẩy quyền xã hội và con người.",
+        "type": "likert_scale",
+        "required": true,
+        "scale_min": 1,
+        "scale_max": 5,
+        "scale_labels": [
+          "Rất không đồng ý",
+          "Không đồng ý",
+          "Trung lập",
+          "Đồng ý",
+          "Rất đồng ý"
+        ]
+      },
+      {
+        "id": "q114",
+        "question_text": "Phát biểu về Phát triển bền vững: - Q8.46 Tôi nghiên cứu rất nhiều về chia sẻ tri thức",
+        "type": "likert_scale",
+        "required": true,
+        "scale_min": 1,
+        "scale_max": 5,
+        "scale_labels": [
+          "Rất không đồng ý",
+          "Không đồng ý",
+          "Trung lập",
+          "Đồng ý",
+          "Rất đồng ý"
+        ]
+      },
+      {
+        "id": "q115",
+        "question_text": "Phát biểu về Phát triển bền vững: - Q8.47 Tôi có nhiều kinh nghiệm trong việc đào tạo, huấn luyện",
+        "type": "likert_scale",
+        "required": true,
+        "scale_min": 1,
+        "scale_max": 5,
+        "scale_labels": [
+          "Rất không đồng ý",
+          "Không đồng ý",
+          "Trung lập",
+          "Đồng ý",
+          "Rất đồng ý"
+        ]
+      },
+      {
+        "id": "q116",
+        "question_text": "Phát biểu về Phát triển bền vững: - Q8.48 Tôi thu nhận tri thức từ các đơn vị công lập và trung tâm nghiên cứu",
+        "type": "likert_scale",
+        "required": true,
+        "scale_min": 3,
+        "scale_max": 5,
+        "scale_labels": [
+          "Rất không đồng ý",
+          "Không đồng ý",
+          "Trung lập",
+          "Đồng ý",
+          "Rất đồng ý"
+        ]
+      },
+      {
+        "id": "q117",
+        "question_text": "Phát biểu về Phát triển bền vững: - Q8.49 Tôi thu nhận tri thức từ các đối tác bên ngoài",
+        "type": "likert_scale",
+        "required": true,
+        "scale_min": 2,
+        "scale_max": 5,
+        "scale_labels": [
+          "Rất không đồng ý",
+          "Không đồng ý",
+          "Trung lập",
+          "Đồng ý",
+          "Rất đồng ý"
+        ]
+      },
+      {
+        "id": "q118",
+        "question_text": "Phát biểu về Phát triển bền vững: - Q8.50 Tôi thu nhận tri thức từ Internet",
+        "type": "likert_scale",
+        "required": true,
+        "scale_min": 1,
+        "scale_max": 5,
+        "scale_labels": [
+          "Rất không đồng ý",
+          "Không đồng ý",
+          "Trung lập",
+          "Đồng ý",
+          "Rất đồng ý"
+        ]
+      },
+      {
+        "id": "q119",
+        "question_text": "Phát biểu về Phát triển bền vững: - Q8.51 Tôi đã có nhiều trải nghiệm làm việc/học tập ở nước ngoài.",
+        "type": "likert_scale",
+        "required": true,
+        "scale_min": 1,
+        "scale_max": 5,
+        "scale_labels": [
+          "Rất không đồng ý",
+          "Không đồng ý",
+          "Trung lập",
+          "Đồng ý",
+          "Rất đồng ý"
+        ]
+      },
+      {
+        "id": "q120",
+        "question_text": "Phát biểu về Phát triển bền vững: - Q8.52 Tôi thích giao tiếp với người ở nền văn hóa khác.",
+        "type": "likert_scale",
+        "required": true,
+        "scale_min": 2,
+        "scale_max": 5,
+        "scale_labels": [
+          "Rất không đồng ý",
+          "Không đồng ý",
+          "Trung lập",
+          "Đồng ý",
+          "Rất đồng ý"
+        ]
+      },
+      {
+        "id": "q121",
+        "question_text": "Phát biểu về Phát triển bền vững: - Q8.53 Tôi hiểu sự khác biệt về văn hóa khi tương tác với người nước ngoài.",
+        "type": "likert_scale",
+        "required": true,
+        "scale_min": 2,
+        "scale_max": 5,
+        "scale_labels": [
+          "Rất không đồng ý",
+          "Không đồng ý",
+          "Trung lập",
+          "Đồng ý",
+          "Rất đồng ý"
+        ]
+      },
+      {
+        "id": "q122",
+        "question_text": "Phát biểu về Phát triển bền vững: - Q8.54 Tôi thay đổi hành vi khi có tình huống giao thoa văn hóa đòi hỏi.",
+        "type": "likert_scale",
+        "required": true,
+        "scale_min": 1,
+        "scale_max": 5,
+        "scale_labels": [
+          "Rất không đồng ý",
+          "Không đồng ý",
+          "Trung lập",
+          "Đồng ý",
+          "Rất đồng ý"
+        ]
+      },
+      {
+        "id": "q123",
+        "question_text": "Phát biểu về Phát triển bền vững: - Q8.55 Tôi luôn tìm kiếm những điều mới mẻ vì tôi rất thích việc đó.",
+        "type": "likert_scale",
+        "required": true,
+        "scale_min": 1,
+        "scale_max": 5,
+        "scale_labels": [
+          "Rất không đồng ý",
+          "Không đồng ý",
+          "Trung lập",
+          "Đồng ý",
+          "Rất đồng ý"
+        ]
+      },
+      {
+        "id": "q124",
+        "question_text": "Phát biểu về Phát triển bền vững: - Q8.56 Tôi thấy vui khi học hỏi được từ một ai đó.",
+        "type": "likert_scale",
+        "required": true,
+        "scale_min": 1,
+        "scale_max": 5,
+        "scale_labels": [
+          "Rất không đồng ý",
+          "Không đồng ý",
+          "Trung lập",
+          "Đồng ý",
+          "Rất đồng ý"
+        ]
+      },
+      {
+        "id": "q125",
+        "question_text": "Phát biểu về Phát triển bền vững: - Q8.57 Khi học hỏi được một điều mới, đối với tôi đó là một khoảnh khắc rất thú vị.",
+        "type": "likert_scale",
+        "required": true,
+        "scale_min": 1,
+        "scale_max": 5,
+        "scale_labels": [
+          "Rất không đồng ý",
+          "Không đồng ý",
+          "Trung lập",
+          "Đồng ý",
+          "Rất đồng ý"
+        ]
+      },
+      {
+        "id": "q126",
+        "question_text": "Phát biểu về Phát triển bền vững: - Q8.58 Tôi sẵn sàng theo đuổi những nhiệm vụ có tính thách thức mà từ đó tôi có thể học hỏi được những điều mới mẻ.",
+        "type": "likert_scale",
+        "required": true,
+        "scale_min": 2,
+        "scale_max": 5,
+        "scale_labels": [
+          "Rất không đồng ý",
+          "Không đồng ý",
+          "Trung lập",
+          "Đồng ý",
+          "Rất đồng ý"
+        ]
+      },
+      {
+        "id": "q127",
+        "question_text": "Phát biểu về Phát triển bền vững: - Q8.59 Tôi thường xuyên tìm kiếm cơ hội để phát triển kiến thức và kỹ năng mới.",
+        "type": "likert_scale",
+        "required": true,
+        "scale_min": 2,
+        "scale_max": 5,
+        "scale_labels": [
+          "Rất không đồng ý",
+          "Không đồng ý",
+          "Trung lập",
+          "Đồng ý",
+          "Rất đồng ý"
+        ]
+      },
+      {
+        "id": "q128",
+        "question_text": "Phát biểu về Phát triển bền vững: - Q8.60 Tôi sẵn sàng bỏ thêm công sức khi cần thiết để phát triển kỹ năng và kiến thức mới.",
+        "type": "likert_scale",
+        "required": true,
+        "scale_min": 2,
+        "scale_max": 5,
+        "scale_labels": [
+          "Rất không đồng ý",
+          "Không đồng ý",
+          "Trung lập",
+          "Đồng ý",
+          "Rất đồng ý"
+        ]
+      },
+      {
+        "id": "q129",
+        "question_text": "Phát biểu về Phát triển bền vững: - Q8.61 Tôi thích theo đuổi một vấn đề, đặc biệt nếu nó về lĩnh vực tôi không biết nhiều.",
+        "type": "likert_scale",
+        "required": true,
+        "scale_min": 2,
+        "scale_max": 5,
+        "scale_labels": [
+          "Rất không đồng ý",
+          "Không đồng ý",
+          "Trung lập",
+          "Đồng ý",
+          "Rất đồng ý"
+        ]
+      },
+      {
+        "id": "q130",
+        "question_text": "Phát biểu về Phát triển bền vững: - Q8.62 Tôi thích kết nối ý tưởng từ nhiều nguồn khác nhau.",
+        "type": "likert_scale",
+        "required": true,
+        "scale_min": 3,
+        "scale_max": 5,
+        "scale_labels": [
+          "Rất không đồng ý",
+          "Không đồng ý",
+          "Trung lập",
+          "Đồng ý",
+          "Rất đồng ý"
+        ]
+      },
+      {
+        "id": "q131",
+        "question_text": "Phát biểu về Phát triển bền vững: - Q8.63 Tôi thích dành tâm trí cho những thứ như phương thức hoặc giải pháp mới.",
+        "type": "likert_scale",
+        "required": true,
+        "scale_min": 2,
+        "scale_max": 5,
+        "scale_labels": [
+          "Rất không đồng ý",
+          "Không đồng ý",
+          "Trung lập",
+          "Đồng ý",
+          "Rất đồng ý"
+        ]
+      },
+      {
+        "id": "q132",
+        "question_text": "Phát biểu về Phát triển bền vững: - Q8.64 Tôi thích tìm kiếm mối liên hệ giữa những lĩnh vực tách biệt của công việc.",
+        "type": "likert_scale",
+        "required": true,
+        "scale_min": 2,
+        "scale_max": 5,
+        "scale_labels": [
+          "Rất không đồng ý",
+          "Không đồng ý",
+          "Trung lập",
+          "Đồng ý",
+          "Rất đồng ý"
+        ]
+      },
+      {
+        "id": "q133",
+        "question_text": "Phát biểu về Phát triển bền vững: - Q8.65 Khả năng học tập",
+        "type": "likert_scale",
+        "required": true,
+        "scale_min": 1,
+        "scale_max": 5,
+        "scale_labels": [
+          "Rất không đồng ý",
+          "Không đồng ý",
+          "Trung lập",
+          "Đồng ý",
+          "Rất đồng ý"
+        ]
+      },
+      {
+        "id": "q134",
+        "question_text": "Phát biểu về Phát triển bền vững: - Q8.66 Nhân viên có khả năng làm chủ công việc",
+        "type": "likert_scale",
+        "required": true,
+        "scale_min": 2,
+        "scale_max": 5,
+        "scale_labels": [
+          "Rất không đồng ý",
+          "Không đồng ý",
+          "Trung lập",
+          "Đồng ý",
+          "Rất đồng ý"
+        ]
+      },
+      {
+        "id": "q135",
+        "question_text": "Phát biểu về Phát triển bền vững: - Q8.67 Nhân viên có thể học những gì cần cho các công việc mới",
+        "type": "likert_scale",
+        "required": true,
+        "scale_min": 2,
+        "scale_max": 5,
+        "scale_labels": [
+          "Rất không đồng ý",
+          "Không đồng ý",
+          "Trung lập",
+          "Đồng ý",
+          "Rất đồng ý"
+        ]
+      },
+      {
+        "id": "q136",
+        "question_text": "Phát biểu về Phát triển bền vững: - Q8.68 Nhân viên có thể tham chiếu những kinh nghiệm tốt để áp dụng vào công việc của họ",
+        "type": "likert_scale",
+        "required": true,
+        "scale_min": 2,
+        "scale_max": 5,
+        "scale_labels": [
+          "Rất không đồng ý",
+          "Không đồng ý",
+          "Trung lập",
+          "Đồng ý",
+          "Rất đồng ý"
+        ]
+      },
+      {
+        "id": "q137",
+        "question_text": "Phát biểu về Phát triển bền vững: - Q8.69 Thời gian phát triển sản phẩm mới",
+        "type": "likert_scale",
+        "required": true,
+        "scale_min": 1,
+        "scale_max": 5,
+        "scale_labels": [
+          "Rất không đồng ý",
+          "Không đồng ý",
+          "Trung lập",
+          "Đồng ý",
+          "Rất đồng ý"
+        ]
+      },
+      {
+        "id": "q138",
+        "question_text": "Phát biểu về Phát triển bền vững: - Q8.70 Tỉ lệ sản phẩm mới ra thị trường so với đối thủ cạnh tranh",
+        "type": "likert_scale",
+        "required": true,
+        "scale_min": 3,
+        "scale_max": 5,
+        "scale_labels": [
+          "Rất không đồng ý",
+          "Không đồng ý",
+          "Trung lập",
+          "Đồng ý",
+          "Rất đồng ý"
+        ]
+      },
+      {
+        "id": "q139",
+        "question_text": "Phát biểu về Phát triển bền vững: - Q8.71 Bao nhiêu lần mỗi nhân viên đề xuất ý tưởng",
+        "type": "likert_scale",
+        "required": true,
+        "scale_min": 1,
+        "scale_max": 5,
+        "scale_labels": [
+          "Rất không đồng ý",
+          "Không đồng ý",
+          "Trung lập",
+          "Đồng ý",
+          "Rất đồng ý"
+        ]
+      },
+      {
+        "id": "q140",
+        "question_text": "Phát biểu về Phát triển bền vững: - Q8.72 Số cuộc họp tạo ý tưởng mới của mỗi nhân viên tham gia trên tháng",
+        "type": "likert_scale",
+        "required": true,
+        "scale_min": 2,
+        "scale_max": 5,
+        "scale_labels": [
+          "Rất không đồng ý",
+          "Không đồng ý",
+          "Trung lập",
+          "Đồng ý",
+          "Rất đồng ý"
+        ]
+      },
+      {
+        "id": "q141",
+        "question_text": "Phát biểu về Phát triển bền vững: - Q8.73 Số dự án nghiên cứu và phát triển hàng năm",
+        "type": "likert_scale",
+        "required": true,
+        "scale_min": 2,
+        "scale_max": 5,
+        "scale_labels": [
+          "Rất không đồng ý",
+          "Không đồng ý",
+          "Trung lập",
+          "Đồng ý",
+          "Rất đồng ý"
+        ]
+      },
+      {
+        "id": "q142",
+        "question_text": "Phát biểu về Phát triển bền vững: - Q8.74 Số tri thức, ý tưởng, giải pháp mỗi nhân viên tạo ra mỗi tháng",
+        "type": "likert_scale",
+        "required": true,
+        "scale_min": 2,
+        "scale_max": 5,
+        "scale_labels": [
+          "Rất không đồng ý",
+          "Không đồng ý",
+          "Trung lập",
+          "Đồng ý",
+          "Rất đồng ý"
+        ]
+      },
+      {
+        "id": "q143",
+        "question_text": "Phát biểu về Phát triển bền vững: - Q8.75 Số tài sản tri thức tạo ra hàng năm",
+        "type": "likert_scale",
+        "required": true,
+        "scale_min": 2,
+        "scale_max": 5,
+        "scale_labels": [
+          "Rất không đồng ý",
+          "Không đồng ý",
+          "Trung lập",
+          "Đồng ý",
+          "Rất đồng ý"
+        ]
+      },
+      {
+        "id": "q144",
+        "question_text": "Phát biểu về Phát triển bền vững: - Q8.76 Tần suất người dùng sử dụng nguồn tri thức và các bài học kinh nghiệm trong hệ thống quản trị tri thức",
+        "type": "likert_scale",
+        "required": true,
+        "scale_min": 1,
+        "scale_max": 5,
+        "scale_labels": [
+          "Rất không đồng ý",
+          "Không đồng ý",
+          "Trung lập",
+          "Đồng ý",
+          "Rất đồng ý"
+        ]
+      },
+      {
+        "id": "q145",
+        "question_text": "Phát biểu về Phát triển bền vững: - Q8.77 Số lần sử dụng tri thức mới và khả năng chuyển hóa tri thức",
+        "type": "likert_scale",
+        "required": true,
+        "scale_min": 3,
+        "scale_max": 5,
+        "scale_labels": [
+          "Rất không đồng ý",
+          "Không đồng ý",
+          "Trung lập",
+          "Đồng ý",
+          "Rất đồng ý"
+        ]
+      },
+      {
+        "id": "q146",
+        "question_text": "Phát biểu về Phát triển bền vững: - Q8.78 Số vấn đề được giải quyết và số ý tưởng được thực hiện của nhân viên trên tháng",
+        "type": "likert_scale",
+        "required": true,
+        "scale_min": 2,
+        "scale_max": 5,
+        "scale_labels": [
+          "Rất không đồng ý",
+          "Không đồng ý",
+          "Trung lập",
+          "Đồng ý",
+          "Rất đồng ý"
+        ]
+      },
+      {
+        "id": "q147",
+        "question_text": "Phát biểu về Phát triển bền vững: - Q8.79 Số sản phẩm, sáng chế và dịch vụ được tạo ra mỗi năm",
+        "type": "likert_scale",
+        "required": true,
+        "scale_min": 3,
+        "scale_max": 5,
+        "scale_labels": [
+          "Rất không đồng ý",
+          "Không đồng ý",
+          "Trung lập",
+          "Đồng ý",
+          "Rất đồng ý"
+        ]
+      },
+      {
+        "id": "q148",
+        "question_text": "Phát biểu về Phát triển bền vững: - Q8.80 Số lượng tương tác, thảo luận của nhân viên trên những chủ đề quan trọng",
+        "type": "likert_scale",
+        "required": true,
+        "scale_min": 2,
+        "scale_max": 5,
+        "scale_labels": [
+          "Rất không đồng ý",
+          "Không đồng ý",
+          "Trung lập",
+          "Đồng ý",
+          "Rất đồng ý"
+        ]
+      },
+      {
+        "id": "q149",
+        "question_text": "Phát biểu về Phát triển bền vững: - Q8.81 Nhân viên chia sẻ thông tin và tri thức cần thiết cho công việc",
+        "type": "likert_scale",
+        "required": true,
+        "scale_min": 1,
+        "scale_max": 5,
+        "scale_labels": [
+          "Rất không đồng ý",
+          "Không đồng ý",
+          "Trung lập",
+          "Đồng ý",
+          "Rất đồng ý"
+        ]
+      },
+      {
+        "id": "q150",
+        "question_text": "Phát biểu về Phát triển bền vững: - Q8.82 Nhân viên cải tiến hiệu quả công việc bằng cách chia sẻ thông tin và tri thức",
+        "type": "likert_scale",
+        "required": true,
+        "scale_min": 2,
+        "scale_max": 5,
+        "scale_labels": [
+          "Rất không đồng ý",
+          "Không đồng ý",
+          "Trung lập",
+          "Đồng ý",
+          "Rất đồng ý"
+        ]
+      },
+      {
+        "id": "q151",
+        "question_text": "Phát biểu về Phát triển bền vững: - Q8.83 Nhân viên phát triển hệ thống thông tin, như mạng nội bộ hay bản tin điện tử để chia sẻ thông tin và tri thức",
+        "type": "likert_scale",
+        "required": true,
+        "scale_min": 2,
+        "scale_max": 5,
+        "scale_labels": [
+          "Rất không đồng ý",
+          "Không đồng ý",
+          "Trung lập",
+          "Đồng ý",
+          "Rất đồng ý"
+        ]
+      },
+      {
+        "id": "q152",
+        "question_text": "Phát biểu về Phát triển bền vững: - Q8.84 Nhân viên quảng bá việc chia sẻ thông tin và tri thức đến các nhóm khác",
+        "type": "likert_scale",
+        "required": true,
+        "scale_min": 3,
+        "scale_max": 5,
+        "scale_labels": [
+          "Rất không đồng ý",
+          "Không đồng ý",
+          "Trung lập",
+          "Đồng ý",
+          "Rất đồng ý"
+        ]
+      },
+      {
+        "id": "q153",
+        "question_text": "Phát biểu về Phát triển bền vững: - Q8.85 Số lượng thời gian mỗi nhân viên tham gia và các chương trình đào tạo hay kết nối hàng tháng",
+        "type": "likert_scale",
+        "required": true,
+        "scale_min": 2,
+        "scale_max": 5,
+        "scale_labels": [
+          "Rất không đồng ý",
+          "Không đồng ý",
+          "Trung lập",
+          "Đồng ý",
+          "Rất đồng ý"
+        ]
+      },
+      {
+        "id": "q154",
+        "question_text": "Phát biểu về Phát triển bền vững: - Q8.86 Số lượng tri thức chia sẻ trên một khoảng thời gian đo được",
+        "type": "likert_scale",
+        "required": true,
+        "scale_min": 3,
+        "scale_max": 5,
+        "scale_labels": [
+          "Rất không đồng ý",
+          "Không đồng ý",
+          "Trung lập",
+          "Đồng ý",
+          "Rất đồng ý"
+        ]
+      },
+      {
+        "id": "q155",
+        "question_text": "Phát biểu về Phát triển bền vững: - Q8.87 Số người dùng tham gia vào hoạt động chia sẻ tri thức",
+        "type": "likert_scale",
+        "required": true,
+        "scale_min": 2,
+        "scale_max": 5,
+        "scale_labels": [
+          "Rất không đồng ý",
+          "Không đồng ý",
+          "Trung lập",
+          "Đồng ý",
+          "Rất đồng ý"
+        ]
+      },
+      {
+        "id": "q156",
+        "question_text": "Phát biểu về Phát triển bền vững: - Q8.88 Mức độ trao đổi thông tin giữa nhân viên và các bộ phận",
+        "type": "likert_scale",
+        "required": true,
+        "scale_min": 2,
+        "scale_max": 5,
+        "scale_labels": [
+          "Rất không đồng ý",
+          "Không đồng ý",
+          "Trung lập",
+          "Đồng ý",
+          "Rất đồng ý"
+        ]
+      },
+      {
+        "id": "q157",
+        "question_text": "Phát biểu về Phát triển bền vững: - Q8.89 Mức độ trao đổi thông tin với khách hàng",
+        "type": "likert_scale",
+        "required": true,
+        "scale_min": 2,
+        "scale_max": 5,
+        "scale_labels": [
+          "Rất không đồng ý",
+          "Không đồng ý",
+          "Trung lập",
+          "Đồng ý",
+          "Rất đồng ý"
+        ]
+      },
+      {
+        "id": "q158",
+        "question_text": "Phát biểu về Phát triển bền vững: - Q8.90 Đầu tư vào hệ thống quản trị tri thức mỗi năm",
+        "type": "likert_scale",
+        "required": true,
+        "scale_min": 2,
+        "scale_max": 5,
+        "scale_labels": [
+          "Rất không đồng ý",
+          "Không đồng ý",
+          "Trung lập",
+          "Đồng ý",
+          "Rất đồng ý"
+        ]
+      },
+      {
+        "id": "q159",
+        "question_text": "Phát biểu về Năng lực sáng tạo - Q9.1 Công ty chúng tôi đã giới thiệu nhiều sản phẩm/dịch vụ mới ra thị trường",
+        "type": "likert_scale",
+        "required": true,
+        "scale_min": 1,
+        "scale_max": 5,
+        "scale_labels": [
+          "Rất không đồng ý",
+          "Không đồng ý",
+          "Trung lập",
+          "Đồng ý",
+          "Rất đồng ý"
+        ]
+      },
+      {
+        "id": "q160",
+        "question_text": "Phát biểu về Năng lực sáng tạo - Q9.2 Công ty chúng tôi thường xuyên cải tiến cho các sản phẩm/dịch vụ đã có",
+        "type": "likert_scale",
+        "required": true,
+        "scale_min": 1,
+        "scale_max": 5,
+        "scale_labels": [
+          "Rất không đồng ý",
+          "Không đồng ý",
+          "Trung lập",
+          "Đồng ý",
+          "Rất đồng ý"
+        ]
+      },
+      {
+        "id": "q161",
+        "question_text": "Phát biểu về Năng lực sáng tạo - Q9.3 Công ty chúng tôi thường xuyên tìm kiếm các sản phẩm/dịch vụ mới cho thị trường.",
+        "type": "likert_scale",
+        "required": true,
+        "scale_min": 1,
+        "scale_max": 5,
+        "scale_labels": [
+          "Rất không đồng ý",
+          "Không đồng ý",
+          "Trung lập",
+          "Đồng ý",
+          "Rất đồng ý"
+        ]
+      },
+      {
+        "id": "q162",
+        "question_text": "Phát biểu về Năng lực sáng tạo - Q9.4 Chúng tôi đưa ra nhiều sản phẩm/dịch vụ mới hơn là các đối thủ cạnh tranh.",
+        "type": "likert_scale",
+        "required": true,
+        "scale_min": 1,
+        "scale_max": 5,
+        "scale_labels": [
+          "Rất không đồng ý",
+          "Không đồng ý",
+          "Trung lập",
+          "Đồng ý",
+          "Rất đồng ý"
+        ]
+      },
+      {
+        "id": "q163",
+        "question_text": "Phát biểu về Năng lực sáng tạo - Q9.5 Sản phẩm/dịch vụ mới của Công ty đã đóng góp đáng kể vào sự thay đổi của ngành.",
+        "type": "likert_scale",
+        "required": true,
+        "scale_min": 1,
+        "scale_max": 5,
+        "scale_labels": [
+          "Rất không đồng ý",
+          "Không đồng ý",
+          "Trung lập",
+          "Đồng ý",
+          "Rất đồng ý"
+        ]
+      },
+      {
+        "id": "q164",
+        "question_text": "Phát biểu về Năng lực sáng tạo - Q9.6 Công ty chúng tôi thường xuyên áp dụng các phương thức cung ứng mới nhằm tăng năng suất.",
+        "type": "likert_scale",
+        "required": true,
+        "scale_min": 1,
+        "scale_max": 5,
+        "scale_labels": [
+          "Rất không đồng ý",
+          "Không đồng ý",
+          "Trung lập",
+          "Đồng ý",
+          "Rất đồng ý"
+        ]
+      },
+      {
+        "id": "q165",
+        "question_text": "Phát biểu về Năng lực sáng tạo - Q9.7 Công ty chúng tôi thường xuyên áp dụng khoa học kỹ thuật nhằm cải tiến hiệu quả hoạt động.",
+        "type": "likert_scale",
+        "required": true,
+        "scale_min": 1,
+        "scale_max": 5,
+        "scale_labels": [
+          "Rất không đồng ý",
+          "Không đồng ý",
+          "Trung lập",
+          "Đồng ý",
+          "Rất đồng ý"
+        ]
+      },
+      {
+        "id": "q166",
+        "question_text": "Phát biểu về Năng lực sáng tạo - Q9.8 Công ty chúng tôi thường xuyên áp dụng khoa học kỹ thuật nhằm cải tiến chất lượng sản phẩm/dịch vụ hiện đang cung cấp.",
+        "type": "likert_scale",
+        "required": true,
+        "scale_min": 1,
+        "scale_max": 5,
+        "scale_labels": [
+          "Rất không đồng ý",
+          "Không đồng ý",
+          "Trung lập",
+          "Đồng ý",
+          "Rất đồng ý"
+        ]
+      },
+      {
+        "id": "q167",
+        "question_text": "Phát biểu về Năng lực sáng tạo - Q9.9 Công ty chúng tôi thực hiện các khoản đẩu tư lớn cho kỹ thuật công nghệ thông tin, phẩn cứng và phẩn mềm mới.",
+        "type": "likert_scale",
+        "required": true,
+        "scale_min": 1,
+        "scale_max": 5,
+        "scale_labels": [
+          "Rất không đồng ý",
+          "Không đồng ý",
+          "Trung lập",
+          "Đồng ý",
+          "Rất đồng ý"
+        ]
+      },
+      {
+        "id": "q168",
+        "question_text": "Phát biểu về Năng lực sáng tạo - Q9.10 Công ty chúng tôi thường xuyên đào tạo cho cán bộ công nhân viên các kiến thức công nghệ mới trong ngành.",
+        "type": "likert_scale",
+        "required": true,
+        "scale_min": 1,
+        "scale_max": 5,
+        "scale_labels": [
+          "Rất không đồng ý",
+          "Không đồng ý",
+          "Trung lập",
+          "Đồng ý",
+          "Rất đồng ý"
+        ]
+      },
+      {
+        "id": "q169",
+        "question_text": "Phát biểu về Năng lực sáng tạo - Q9.11 Công ty chúng tôi luôn đi đẩu trong việc phát triển và áp dụng các kênh phân phối mới.",
+        "type": "likert_scale",
+        "required": true,
+        "scale_min": 1,
+        "scale_max": 5,
+        "scale_labels": [
+          "Rất không đồng ý",
+          "Không đồng ý",
+          "Trung lập",
+          "Đồng ý",
+          "Rất đồng ý"
+        ]
+      },
+      {
+        "id": "q170",
+        "question_text": "Phát biểu về Năng lực sáng tạo - Q9.12 Công ty chúng tôi thường xuyên áp dụng các kỹ thuật và kênh phân phối mới cho xúc tiến thương mại.",
+        "type": "likert_scale",
+        "required": true,
+        "scale_min": 1,
+        "scale_max": 5,
+        "scale_labels": [
+          "Rất không đồng ý",
+          "Không đồng ý",
+          "Trung lập",
+          "Đồng ý",
+          "Rất đồng ý"
+        ]
+      },
+      {
+        "id": "q171",
+        "question_text": "Phát biểu về Năng lực sáng tạo - Q9.13 Công ty chúng tôi thường xuyên giới thiệu các phương pháp mới nhằm định vị dịch vụ của mình.",
+        "type": "likert_scale",
+        "required": true,
+        "scale_min": 1,
+        "scale_max": 5,
+        "scale_labels": [
+          "Rất không đồng ý",
+          "Không đồng ý",
+          "Trung lập",
+          "Đồng ý",
+          "Rất đồng ý"
+        ]
+      },
+      {
+        "id": "q172",
+        "question_text": "Phát biểu về Năng lực sáng tạo - Q9.14 Các đối thủ cạnh tranh của Công ty chúng tôi thường lấy thương pháp marketing của chúng tôi làm chuẩn.",
+        "type": "likert_scale",
+        "required": true,
+        "scale_min": 1,
+        "scale_max": 5,
+        "scale_labels": [
+          "Rất không đồng ý",
+          "Không đồng ý",
+          "Trung lập",
+          "Đồng ý",
+          "Rất đồng ý"
+        ]
+      },
+      {
+        "id": "q173",
+        "question_text": "Phát biểu về Năng lực sáng tạo - Q9.15 Phương pháp marketing mới của chúng tôi kết hợp, hài hòa với các ngành khác.",
+        "type": "likert_scale",
+        "required": true,
+        "scale_min": 1,
+        "scale_max": 5,
+        "scale_labels": [
+          "Rất không đồng ý",
+          "Không đồng ý",
+          "Trung lập",
+          "Đồng ý",
+          "Rất đồng ý"
+        ]
+      },
+      {
+        "id": "q174",
+        "question_text": "Phát biểu về Năng lực sáng tạo - Q9.16 Công ty chúng tôi thường xuyên thay đổi tổ chức nhằm nâng cao vai trò các cá nhân và cải tiến việc ra quyết định.",
+        "type": "likert_scale",
+        "required": true,
+        "scale_min": 1,
+        "scale_max": 5,
+        "scale_labels": [
+          "Rất không đồng ý",
+          "Không đồng ý",
+          "Trung lập",
+          "Đồng ý",
+          "Rất đồng ý"
+        ]
+      },
+      {
+        "id": "q175",
+        "question_text": "Phát biểu về Năng lực sáng tạo - Q9.17 Công ty chúng tôi thường xuyên áp dụng các phương thức quản lý mới nhằm quản lý tốt các mối quan hệ bên ngoài với các công ty và tổ chức công cộng khác.",
+        "type": "likert_scale",
+        "required": true,
+        "scale_min": 1,
+        "scale_max": 5,
+        "scale_labels": [
+          "Rất không đồng ý",
+          "Không đồng ý",
+          "Trung lập",
+          "Đồng ý",
+          "Rất đồng ý"
+        ]
+      },
+      {
+        "id": "q176",
+        "question_text": "Phát biểu về Năng lực sáng tạo - Q9.18 Công ty chúng tôi thường xuyên thực hiện các phương pháp làm việc và thủ tục mới.",
+        "type": "likert_scale",
+        "required": true,
+        "scale_min": 1,
+        "scale_max": 5,
+        "scale_labels": [
+          "Rất không đồng ý",
+          "Không đồng ý",
+          "Trung lập",
+          "Đồng ý",
+          "Rất đồng ý"
+        ]
+      },
+      {
+        "id": "q177",
+        "question_text": "Phát biểu về Năng lực sáng tạo - Q9.19 Các phương pháp tổ chức của Công ty chúng tôi luôn đi đầu trong lĩnh vực hoạt động.",
+        "type": "likert_scale",
+        "required": true,
+        "scale_min": 1,
+        "scale_max": 5,
+        "scale_labels": [
+          "Rất không đồng ý",
+          "Không đồng ý",
+          "Trung lập",
+          "Đồng ý",
+          "Rất đồng ý"
+        ]
+      },
+      {
+        "id": "q178",
+        "question_text": "Phát biểu về Năng lực sáng tạo - Q9.20 Công ty của chúng tôi luôn tìm kiếm các công nghệ mới, bằng sáng chế từ các công ty, nhóm nghiên cứu và trường đại học để mua bán/ trao đổi",
+        "type": "likert_scale",
+        "required": true,
+        "scale_min": 1,
+        "scale_max": 5,
+        "scale_labels": [
+          "Rất không đồng ý",
+          "Không đồng ý",
+          "Trung lập",
+          "Đồng ý",
+          "Rất đồng ý"
+        ]
+      },
+      {
+        "id": "q179",
+        "question_text": "Phát biểu về Năng lực sáng tạo - Q9.21 Công ty của chúng tôi có đầu tư chi phí để mua các tài sản trí tuệ bên ngoài tổ chức để sử dụng cho hoạt động R&D của doanh nghiệp",
+        "type": "likert_scale",
+        "required": true,
+        "scale_min": 1,
+        "scale_max": 5,
+        "scale_labels": [
+          "Rất không đồng ý",
+          "Không đồng ý",
+          "Trung lập",
+          "Đồng ý",
+          "Rất đồng ý"
+        ]
+      },
+      {
+        "id": "q180",
+        "question_text": "Phát biểu về Năng lực sáng tạo - Q10.22 Lãnh đạo và các nhà quản lý tại công ty chúng tôi luôn tạo động lực và thúc đẩy nhân viên suy nghĩ sáng tạo",
+        "type": "likert_scale",
+        "required": true,
+        "scale_min": 1,
+        "scale_max": 5,
+        "scale_labels": [
+          "Rất không đồng ý",
+          "Không đồng ý",
+          "Trung lập",
+          "Đồng ý",
+          "Rất đồng ý"
+        ]
+      },
+      {
+        "id": "q181",
+        "question_text": "Phát biểu về kết quả công việc: - Q10.1 Tôi cảm thấy rất hài lòng và thỏa mãn với công việc hiện tại",
+        "type": "likert_scale",
+        "required": true,
+        "scale_min": 1,
+        "scale_max": 5,
+        "scale_labels": [
+          "Rất không đồng ý",
+          "Không đồng ý",
+          "Trung lập",
+          "Đồng ý",
+          "Rất đồng ý"
+        ]
+      },
+      {
+        "id": "q182",
+        "question_text": "Phát biểu về kết quả công việc: - Q10.2 Hàng ngày tôi làm việc rất nhiệt tình và hăng hái.",
+        "type": "likert_scale",
+        "required": true,
+        "scale_min": 1,
+        "scale_max": 5,
+        "scale_labels": [
+          "Rất không đồng ý",
+          "Không đồng ý",
+          "Trung lập",
+          "Đồng ý",
+          "Rất đồng ý"
+        ]
+      },
+      {
+        "id": "q183",
+        "question_text": "Phát biểu về kết quả công việc: - Q10.3 Tôi thấy công việc / nghề hiện tại của mình rất thú vị và rất có ý nghĩa.",
+        "type": "likert_scale",
+        "required": true,
+        "scale_min": 1,
+        "scale_max": 5,
+        "scale_labels": [
+          "Rất không đồng ý",
+          "Không đồng ý",
+          "Trung lập",
+          "Đồng ý",
+          "Rất đồng ý"
+        ]
+      },
+      {
+        "id": "q184",
+        "question_text": "Phát biểu về kết quả công việc: - Q10.4 Tôi rất vui nếu được làm việc lâu dài với công ty mình đang làm việc.",
+        "type": "likert_scale",
+        "required": true,
+        "scale_min": 1,
+        "scale_max": 5,
+        "scale_labels": [
+          "Rất không đồng ý",
+          "Không đồng ý",
+          "Trung lập",
+          "Đồng ý",
+          "Rất đồng ý"
+        ]
+      },
+      {
+        "id": "q185",
+        "question_text": "Phát biểu về kết quả công việc: - Q10.5 Tôi thích kể với bạn bè, người thân và những người khác về nơi tôi làm việc.",
+        "type": "likert_scale",
+        "required": true,
+        "scale_min": 1,
+        "scale_max": 5,
+        "scale_labels": [
+          "Rất không đồng ý",
+          "Không đồng ý",
+          "Trung lập",
+          "Đồng ý",
+          "Rất đồng ý"
+        ]
+      },
+      {
+        "id": "q186",
+        "question_text": "Phát biểu về kết quả công việc: - Q10.6 Tôi cảm thấy những khó khăn của doanh nghiệp như chính vấn đề của cá nhân.",
+        "type": "likert_scale",
+        "required": true,
+        "scale_min": 1,
+        "scale_max": 5,
+        "scale_labels": [
+          "Rất không đồng ý",
+          "Không đồng ý",
+          "Trung lập",
+          "Đồng ý",
+          "Rất đồng ý"
+        ]
+      },
+      {
+        "id": "q187",
+        "question_text": "Phát biểu về kết quả công việc: - Q10.7 Tôi thấy cơ cấu tổ chức của doanh nghiệp rất khoa học và phù hợp.",
+        "type": "likert_scale",
+        "required": true,
+        "scale_min": 1,
+        "scale_max": 5,
+        "scale_labels": [
+          "Rất không đồng ý",
+          "Không đồng ý",
+          "Trung lập",
+          "Đồng ý",
+          "Rất đồng ý"
+        ]
+      },
+      {
+        "id": "q188",
+        "question_text": "Phát biểu về kết quả công việc: - Q10.8 Công việc được sắp xếp hợp lý, mỗi nhân viên có nhiệm vụ cụ thể.",
+        "type": "likert_scale",
+        "required": true,
+        "scale_min": 1,
+        "scale_max": 5,
+        "scale_labels": [
+          "Rất không đồng ý",
+          "Không đồng ý",
+          "Trung lập",
+          "Đồng ý",
+          "Rất đồng ý"
+        ]
+      },
+      {
+        "id": "q189",
+        "question_text": "Phát biểu về kết quả công việc: - Q10.9 Mỗi nhân viên hiểu nhiệm vụ và mục tiêu mình cần phải đạt được.",
+        "type": "likert_scale",
+        "required": true,
+        "scale_min": 1,
+        "scale_max": 5,
+        "scale_labels": [
+          "Rất không đồng ý",
+          "Không đồng ý",
+          "Trung lập",
+          "Đồng ý",
+          "Rất đồng ý"
+        ]
+      },
+      {
+        "id": "q190",
+        "question_text": "Phát biểu về kết quả công việc: - Q10.10 Rất nhiêu ý tưởng mới trong doanh nghiệp được thử nghiệm.",
+        "type": "likert_scale",
+        "required": true,
+        "scale_min": 1,
+        "scale_max": 5,
+        "scale_labels": [
+          "Rất không đồng ý",
+          "Không đồng ý",
+          "Trung lập",
+          "Đồng ý",
+          "Rất đồng ý"
+        ]
+      },
+      {
+        "id": "q191",
+        "question_text": "Phát biểu về kết quả công việc: - Q10.11 Mọi người được khuyến khích đưa ra ý tưởng mới, cách thức - phương pháp mới.",
+        "type": "likert_scale",
+        "required": true,
+        "scale_min": 1,
+        "scale_max": 5,
+        "scale_labels": [
+          "Rất không đồng ý",
+          "Không đồng ý",
+          "Trung lập",
+          "Đồng ý",
+          "Rất đồng ý"
+        ]
+      },
+      {
+        "id": "q192",
+        "question_text": "Phát biểu về kết quả công việc: - Q10.12 Doanh nghiệp có nhiều sáng kiến, ý tưởng mới mẻ, sáng tạo.",
+        "type": "likert_scale",
+        "required": true,
+        "scale_min": 1,
+        "scale_max": 5,
+        "scale_labels": [
+          "Rất không đồng ý",
+          "Không đồng ý",
+          "Trung lập",
+          "Đồng ý",
+          "Rất đồng ý"
+        ]
+      },
+      {
+        "id": "q193",
+        "question_text": "Phát biểu về kết quả công việc: - Q10.13 Doanh số bán hàng của công ty có xu hướng tăng trong 3 năm gần đây",
+        "type": "likert_scale",
+        "required": true,
+        "scale_min": 1,
+        "scale_max": 5,
+        "scale_labels": [
+          "Rất không đồng ý",
+          "Không đồng ý",
+          "Trung lập",
+          "Đồng ý",
+          "Rất đồng ý"
+        ]
+      },
+      {
+        "id": "q194",
+        "question_text": "Phát biểu về kết quả công việc: - Q10.14 Số lượng lao động của công ty tăng dần trong 3 năm gần đây",
+        "type": "likert_scale",
+        "required": true,
+        "scale_min": 1,
+        "scale_max": 5,
+        "scale_labels": [
+          "Rất không đồng ý",
+          "Không đồng ý",
+          "Trung lập",
+          "Đồng ý",
+          "Rất đồng ý"
+        ]
+      },
+      {
+        "id": "q195",
+        "question_text": "Phát biểu về kết quả công việc: - Q10.15 Doanh thu của công ty có xu hướng tăng trong 3 năm gần đây",
+        "type": "likert_scale",
+        "required": true,
+        "scale_min": 1,
+        "scale_max": 5,
+        "scale_labels": [
+          "Rất không đồng ý",
+          "Không đồng ý",
+          "Trung lập",
+          "Đồng ý",
+          "Rất đồng ý"
+        ]
+      },
+      {
+        "id": "q196",
+        "question_text": "Phát biểu về kết quả công việc: - Q10.16 Lợi nhuận ròng của công ty có xu hướng tăng trong 3 năm gần đây",
+        "type": "likert_scale",
+        "required": true,
+        "scale_min": 1,
+        "scale_max": 5,
+        "scale_labels": [
+          "Rất không đồng ý",
+          "Không đồng ý",
+          "Trung lập",
+          "Đồng ý",
+          "Rất đồng ý"
+        ]
+      },
+      {
+        "id": "q197",
+        "question_text": "Phát biểu về kết quả công việc: - Q10.17 Doanh nghiệp dễ dàng thu hút nhân viên",
+        "type": "likert_scale",
+        "required": true,
+        "scale_min": 1,
+        "scale_max": 5,
+        "scale_labels": [
+          "Rất không đồng ý",
+          "Không đồng ý",
+          "Trung lập",
+          "Đồng ý",
+          "Rất đồng ý"
+        ]
+      },
+      {
+        "id": "q198",
+        "question_text": "Phát biểu về kết quả công việc: - Q10.18 Nhân viên gắn bó lâu dài với tổ chức",
+        "type": "likert_scale",
+        "required": true,
+        "scale_min": 1,
+        "scale_max": 5,
+        "scale_labels": [
+          "Rất không đồng ý",
+          "Không đồng ý",
+          "Trung lập",
+          "Đồng ý",
+          "Rất đồng ý"
+        ]
+      },
+      {
+        "id": "q199",
+        "question_text": "Phát biểu về kết quả công việc: - Q10.19 Mức dộ hài lòng của nhân viên đối với công việc",
+        "type": "likert_scale",
+        "required": true,
+        "scale_min": 1,
+        "scale_max": 5,
+        "scale_labels": [
+          "Rất không đồng ý",
+          "Không đồng ý",
+          "Trung lập",
+          "Đồng ý",
+          "Rất đồng ý"
+        ]
+      },
+      {
+        "id": "q200",
+        "question_text": "Phát biểu về kết quả công việc: - Q10.20 Nhân viên có động lực làm việc cao",
+        "type": "likert_scale",
+        "required": true,
+        "scale_min": 1,
+        "scale_max": 5,
+        "scale_labels": [
+          "Rất không đồng ý",
+          "Không đồng ý",
+          "Trung lập",
+          "Đồng ý",
+          "Rất đồng ý"
+        ]
+      },
+      {
+        "id": "q201",
+        "question_text": "Phát biểu về kết quả công việc: - Q10.21 Các chính sách ưu đãi nhân viên",
+        "type": "likert_scale",
+        "required": true,
+        "scale_min": 1,
+        "scale_max": 5,
+        "scale_labels": [
+          "Rất không đồng ý",
+          "Không đồng ý",
+          "Trung lập",
+          "Đồng ý",
+          "Rất đồng ý"
+        ]
+      },
+      {
+        "id": "q202",
+        "question_text": "Phát biểu về kết quả công việc: - Q10.22 Dễ dàng giữ chân khách hàng hiện tại",
+        "type": "likert_scale",
+        "required": true,
+        "scale_min": 1,
+        "scale_max": 5,
+        "scale_labels": [
+          "Rất không đồng ý",
+          "Không đồng ý",
+          "Trung lập",
+          "Đồng ý",
+          "Rất đồng ý"
+        ]
+      },
+      {
+        "id": "q203",
+        "question_text": "Phát biểu về kết quả công việc: - Q10.23 Mức độ trung thành của khách hàng đối với doanh nghiệp",
+        "type": "likert_scale",
+        "required": true,
+        "scale_min": 1,
+        "scale_max": 5,
+        "scale_labels": [
+          "Rất không đồng ý",
+          "Không đồng ý",
+          "Trung lập",
+          "Đồng ý",
+          "Rất đồng ý"
+        ]
+      },
+      {
+        "id": "q204",
+        "question_text": "Phát biểu về kết quả công việc: - Q10.24 Khách hàng có thái độ tích cực đối với DN",
+        "type": "likert_scale",
+        "required": true,
+        "scale_min": 1,
+        "scale_max": 5,
+        "scale_labels": [
+          "Rất không đồng ý",
+          "Không đồng ý",
+          "Trung lập",
+          "Đồng ý",
+          "Rất đồng ý"
+        ]
+      },
+      {
+        "id": "q205",
+        "question_text": "Phát biểu về kết quả công việc: - Q10.25 Sự giới thiệu của khách hàng về DN cho người khác",
+        "type": "likert_scale",
+        "required": true,
+        "scale_min": 1,
+        "scale_max": 5,
+        "scale_labels": [
+          "Rất không đồng ý",
+          "Không đồng ý",
+          "Trung lập",
+          "Đồng ý",
+          "Rất đồng ý"
+        ]
+      },
+      {
+        "id": "q206",
+        "question_text": "Phát biểu về kết quả công việc: - Q10.26 Việc mua hàng thường xuyên và lặp lại nhiều lần",
+        "type": "likert_scale",
+        "required": true,
+        "scale_min": 2,
+        "scale_max": 5,
+        "scale_labels": [
+          "Rất không đồng ý",
+          "Không đồng ý",
+          "Trung lập",
+          "Đồng ý",
+          "Rất đồng ý"
+        ]
+      },
+      {
+        "id": "q207",
+        "question_text": "Phát biểu về kết quả công việc: - Q10.27 Giá trị mà doanh nghiệp đưa cho khách hàng",
+        "type": "likert_scale",
+        "required": true,
+        "scale_min": 2,
+        "scale_max": 5,
+        "scale_labels": [
+          "Rất không đồng ý",
+          "Không đồng ý",
+          "Trung lập",
+          "Đồng ý",
+          "Rất đồng ý"
+        ]
+      },
+      {
+        "id": "q208",
+        "question_text": "Phát biểu về kết quả công việc: - Q10.28 Chất lượng sản phẩm và dịch vụ kèm theo",
+        "type": "likert_scale",
+        "required": true,
+        "scale_min": 1,
+        "scale_max": 5,
+        "scale_labels": [
+          "Rất không đồng ý",
+          "Không đồng ý",
+          "Trung lập",
+          "Đồng ý",
+          "Rất đồng ý"
+        ]
+      },
+      {
+        "id": "q209",
+        "question_text": "Phát biểu về kết quả công việc: - Q10.29 Mức độ áp dụng những tri thức mới vào hoạt động của tổ chức",
+        "type": "likert_scale",
+        "required": true,
+        "scale_min": 2,
+        "scale_max": 5,
+        "scale_labels": [
+          "Rất không đồng ý",
+          "Không đồng ý",
+          "Trung lập",
+          "Đồng ý",
+          "Rất đồng ý"
+        ]
+      },
+      {
+        "id": "q210",
+        "question_text": "Phát biểu về kết quả công việc: - Q10.30 Sự cải tiến trong việc sử dụng tài sản",
+        "type": "likert_scale",
+        "required": true,
+        "scale_min": 2,
+        "scale_max": 5,
+        "scale_labels": [
+          "Rất không đồng ý",
+          "Không đồng ý",
+          "Trung lập",
+          "Đồng ý",
+          "Rất đồng ý"
+        ]
+      },
+      {
+        "id": "q211",
+        "question_text": "Phát biểu về kết quả công việc: - Q10.31 Hiệu quả quản trị chuỗi cung ứng",
+        "type": "likert_scale",
+        "required": true,
+        "scale_min": 2,
+        "scale_max": 5,
+        "scale_labels": [
+          "Rất không đồng ý",
+          "Không đồng ý",
+          "Trung lập",
+          "Đồng ý",
+          "Rất đồng ý"
+        ]
+      },
+      {
+        "id": "q212",
+        "question_text": "Phát biểu về kết quả công việc: - Q10.32 Mở rộng mối quan hệ khách hàng",
+        "type": "likert_scale",
+        "required": true,
+        "scale_min": 2,
+        "scale_max": 5,
+        "scale_labels": [
+          "Rất không đồng ý",
+          "Không đồng ý",
+          "Trung lập",
+          "Đồng ý",
+          "Rất đồng ý"
+        ]
+      },
+      {
+        "id": "q213",
+        "question_text": "Phát biểu về kết quả công việc: - Q10.33 Xây dựng hệ thống truyền tải thông tin trong tổ chức hiệu quả",
+        "type": "likert_scale",
+        "required": true,
+        "scale_min": 1,
+        "scale_max": 5,
+        "scale_labels": [
+          "Rất không đồng ý",
+          "Không đồng ý",
+          "Trung lập",
+          "Đồng ý",
+          "Rất đồng ý"
+        ]
+      },
+      {
+        "id": "q214",
+        "question_text": "Thông tin cá nhân. - Họ tên:",
+        "type": "text",
+        "required": true
+      },
+      {
+        "id": "q215",
+        "question_text": "Thông ti cá nhân. - Điện thoại:",
+        "type": "text",
+        "required": true
+      },
+      {
+        "id": "q216",
+        "question_text": "Thông tin cá nhân. - Email:",
+        "type": "text",
+        "required": true
+      },
+      {
+        "id": "q217",
+        "question_text": "Thông tin cá nhân. - Tên công ty:",
+        "type": "text",
+        "required": true
+      },
+      {
+        "id": "q218",
+        "question_text": "Unnamed: 217",
+        "type": "multiple_choice",
+        "required": true,
+        "options": [
+          "261. CÔNG TY TNHH HÀ NỘI SOLAR POWER",
+          "CÔNG TY TNHH GARDEN KIM ĐỘNG",
+          "CÔNG TY TNHH LINTE VIỆT NAM",
+          "CÔNG TY TNHH QMS MOLD TECH",
+          "CÔNG TY TNHH THÀNH CÔNG 89",
+          "CÔNG TY TNHH ĐẦU TƯ SẢN XUẤT VÀ THƯƠNG MẠI HÀ TÂM AN",
+          "CÔNG TY TNHH ĐẦU TƯ VÀ THƯƠNG MẠI HOÀNG THÊM"
+        ]
+      }
+    ]
+  }
+}
