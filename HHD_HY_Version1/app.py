@@ -316,11 +316,11 @@ with col4:
         st.switch_page("pages/4_Data_Analysis.py")
     st.markdown("</div>", unsafe_allow_html=True)
 
-# Thông tin thêm về HHD_HY_Version 1
+# Thông tin thêm về khảo sát động lực làm việc
 st.subheader("📌 Giới Thiệu Về Khảo sát về động lực làm việc của nhân viên")
 st.markdown("""
 <div class='dashboard-card'>
-Ứng dụng HHD_HY_Version 1 là công cụ khảo sát mạnh mẽ được thiết kế cho:
+Ứng dụng Khảo sát về động lực làm việc của nhân viên là công cụ mạnh mẽ được thiết kế cho:
 
 - **Khảo sát nhân sự**: Đánh giá mức độ hài lòng, động lực và năng suất làm việc
 - **Nghiên cứu học thuật**: Thu thập dữ liệu có cấu trúc cho các nghiên cứu
@@ -341,7 +341,7 @@ if not st.session_state.user:
     st.subheader("Hướng Dẫn Sử Dụng")
     st.markdown("""
     <div class='dashboard-card'>
-    Để sử dụng ứng dụng HHD_HY_Version 1:
+    Để sử dụng ứng dụng Khảo sát về động lực làm việc của nhân viên:
     
     1. **Đăng nhập**: Đăng nhập hoặc đăng ký tài khoản mới ở sidebar bên trái
     2. **Tạo Khảo Sát**: Vào trang 'Create Survey' để thiết kế khảo sát tùy chỉnh
@@ -355,4 +355,4 @@ if not st.session_state.user:
 
 # Footer
 st.markdown("---")
-st.markdown("<div class='footer'>📊 HHD_HY_Version 1 - Công cụ tạo biểu mẫu, thu thập dữ liệu và phân tích thống kê</div>", unsafe_allow_html=True)
+st.markdown("<div class='footer'>📊 Khảo sát về động lực làm việc của nhân viên - Công cụ tạo biểu mẫu, thu thập dữ liệu và phân tích thống kê</div>", unsafe_allow_html=True)
