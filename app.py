@@ -5,7 +5,7 @@ import json
 
 # Set page configuration
 st.set_page_config(
-    page_title="Khảo Sát Động Lực Làm Việc",
+    page_title="Khảo sát về động lực làm việc của nhân viên",
     page_icon="📊",
     layout="wide",
     initial_sidebar_state="expanded",
@@ -35,7 +35,7 @@ if 'current_survey_id' not in st.session_state:
     st.session_state.current_survey_id = None
 
 # Main page
-st.title("Khảo Sát Động Lực Làm Việc")
+st.title("Khảo sát về động lực làm việc của nhân viên")
 
 # Dashboard summary
 st.header("Bảng Điều Khiển")
@@ -133,7 +133,7 @@ with col4:
         st.switch_page("pages/4_Data_Analysis.py")
 
 # Thông tin thêm về khảo sát động lực làm việc
-st.subheader("📌 Giới Thiệu Về Khảo Sát Động Lực Làm Việc")
+st.subheader("📌 Giới Thiệu Về Khảo sát về động lực làm việc của nhân viên")
 st.markdown("""
 Ứng dụng này hiện đang chứa dữ liệu khảo sát về các yếu tố ảnh hưởng đến động lực làm việc và kết quả công việc của nhân viên, bao gồm:
 

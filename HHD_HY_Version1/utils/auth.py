@@ -267,8 +267,8 @@ def get_translation(key, lang=None):
         
     translations = {
         "app_title": {
-            "vi": "HHD_HY_Version 1",
-            "en": "HHD_HY_Version 1"
+            "vi": "Khảo sát về động lực làm việc của nhân viên",
+            "en": "Employee Work Motivation Survey"
         },
         "login": {
             "vi": "Đăng nhập",

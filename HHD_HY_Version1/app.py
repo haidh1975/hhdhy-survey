@@ -11,7 +11,7 @@ init_auth()
 
 # Set page configuration
 st.set_page_config(
-    page_title="HHD_HY_Version 1",
+    page_title="Khảo sát về động lực làm việc của nhân viên",
     page_icon="📊",
     layout="wide",
     initial_sidebar_state="expanded",
@@ -317,7 +317,7 @@ with col4:
     st.markdown("</div>", unsafe_allow_html=True)
 
 # Thông tin thêm về HHD_HY_Version 1
-st.subheader("📌 Giới Thiệu Về HHD_HY_Version 1")
+st.subheader("📌 Giới Thiệu Về Khảo sát về động lực làm việc của nhân viên")
 st.markdown("""
 <div class='dashboard-card'>
 Ứng dụng HHD_HY_Version 1 là công cụ khảo sát mạnh mẽ được thiết kế cho:
