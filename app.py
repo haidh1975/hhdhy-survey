@@ -5,7 +5,7 @@ import json
 
 # Set page configuration
 st.set_page_config(
-    page_title="Khảo sát về động lực làm việc của nhân viên",
+    page_title="Khảo sát về Ảnh hưởng của Vốn xã hội, Vốn nhân lực đến phát triển bền vững của doanh nghiệp trên địa bàn tỉnh Hưng Yên",
     page_icon="📊",
     layout="wide",
     initial_sidebar_state="expanded",
@@ -35,7 +35,7 @@ if 'current_survey_id' not in st.session_state:
     st.session_state.current_survey_id = None
 
 # Main page
-st.title("Khảo sát về động lực làm việc của nhân viên")
+st.title("Khảo sát về Ảnh hưởng của Vốn xã hội, Vốn nhân lực đến phát triển bền vững của doanh nghiệp trên địa bàn tỉnh Hưng Yên")
 
 # Dashboard summary
 st.header("Bảng Điều Khiển")
@@ -133,17 +133,17 @@ with col4:
         st.switch_page("pages/4_Data_Analysis.py")
 
 # Thông tin thêm về khảo sát động lực làm việc
-st.subheader("📌 Giới Thiệu Về Khảo sát về động lực làm việc của nhân viên")
+st.subheader("📌 Giới Thiệu Về Khảo sát về Ảnh hưởng của Vốn xã hội, Vốn nhân lực đến phát triển bền vững của doanh nghiệp trên địa bàn tỉnh Hưng Yên")
 st.markdown("""
-Ứng dụng này hiện đang chứa dữ liệu khảo sát về các yếu tố ảnh hưởng đến động lực làm việc và kết quả công việc của nhân viên, bao gồm:
+Ứng dụng này hiện đang chứa dữ liệu khảo sát về các yếu tố ảnh hưởng của Vốn xã hội, Vốn nhân lực đến phát triển bền vững của doanh nghiệp trên địa bàn tỉnh Hưng Yên, bao gồm:
 
-- **Vốn xã hội trong tổ chức**: Đánh giá mức độ tin tưởng, kết nối và hợp tác giữa các thành viên
-- **Yếu tố động lực làm việc**: Xác định các yếu tố thúc đẩy nhân viên làm việc hiệu quả
-- **Yếu tố tâm lý công việc**: Đánh giá trạng thái tâm lý, sự hài lòng và cam kết với công việc
-- **Kết quả công việc**: Đo lường hiệu suất và kết quả đạt được
-- **Thông tin nhân khẩu học**: Thu thập dữ liệu về đặc điểm của người tham gia
+- **Vốn xã hội trong doanh nghiệp**: Đánh giá mức độ tin tưởng, kết nối và hợp tác giữa các thành viên trong doanh nghiệp
+- **Vốn nhân lực của doanh nghiệp**: Đánh giá về kỹ năng, kiến thức, kinh nghiệm và khả năng đổi mới của nhân lực
+- **Phát triển bền vững của doanh nghiệp**: Đánh giá về khía cạnh kinh tế, xã hội và môi trường
+- **Các nhân tố ảnh hưởng**: Xác định các yếu tố bên trong và bên ngoài ảnh hưởng đến sự phát triển
+- **Thông tin doanh nghiệp**: Thu thập dữ liệu về quy mô, lĩnh vực hoạt động, thời gian thành lập
 
-Dữ liệu này có thể được sử dụng để phân tích và đưa ra các quyết định quản lý nhân sự hiệu quả.
+Dữ liệu này sẽ được sử dụng để phân tích và đưa ra các đề xuất cho việc phát triển bền vững của doanh nghiệp tại tỉnh Hưng Yên.
 """)
 
 # Getting started guide

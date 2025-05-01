@@ -267,8 +267,8 @@ def get_translation(key, lang=None):
         
     translations = {
         "app_title": {
-            "vi": "Khảo sát về động lực làm việc của nhân viên",
-            "en": "Employee Work Motivation Survey"
+            "vi": "Khảo sát về Ảnh hưởng của Vốn xã hội, Vốn nhân lực đến phát triển bền vững của doanh nghiệp trên địa bàn tỉnh Hưng Yên",
+            "en": "Survey on the Impact of Social Capital and Human Capital on Sustainable Development of Enterprises in Hung Yen Province"
         },
         "login": {
             "vi": "Đăng nhập",

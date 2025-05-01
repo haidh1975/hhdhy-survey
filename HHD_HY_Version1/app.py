@@ -11,7 +11,7 @@ init_auth()
 
 # Set page configuration
 st.set_page_config(
-    page_title="Khảo sát về động lực làm việc của nhân viên",
+    page_title="Khảo sát về Ảnh hưởng của Vốn xã hội, Vốn nhân lực đến phát triển bền vững của doanh nghiệp trên địa bàn tỉnh Hưng Yên",
     page_icon="📊",
     layout="wide",
     initial_sidebar_state="expanded",
@@ -317,14 +317,14 @@ with col4:
     st.markdown("</div>", unsafe_allow_html=True)
 
 # Thông tin thêm về khảo sát động lực làm việc
-st.subheader("📌 Giới Thiệu Về Khảo sát về động lực làm việc của nhân viên")
+st.subheader("📌 Giới Thiệu Về Khảo sát về Ảnh hưởng của Vốn xã hội, Vốn nhân lực đến phát triển bền vững của doanh nghiệp trên địa bàn tỉnh Hưng Yên")
 st.markdown("""
 <div class='dashboard-card'>
-Ứng dụng Khảo sát về động lực làm việc của nhân viên là công cụ mạnh mẽ được thiết kế cho:
+Ứng dụng Khảo sát về Ảnh hưởng của Vốn xã hội, Vốn nhân lực đến phát triển bền vững của doanh nghiệp trên địa bàn tỉnh Hưng Yên là công cụ mạnh mẽ được thiết kế cho:
 
-- **Khảo sát nhân sự**: Đánh giá mức độ hài lòng, động lực và năng suất làm việc
-- **Nghiên cứu học thuật**: Thu thập dữ liệu có cấu trúc cho các nghiên cứu
-- **Khảo sát khách hàng**: Đo lường sự hài lòng và góp ý của khách hàng
+- **Khảo sát doanh nghiệp**: Đánh giá vốn xã hội và vốn nhân lực trong doanh nghiệp tại Hưng Yên
+- **Nghiên cứu học thuật**: Thu thập dữ liệu có cấu trúc cho nghiên cứu về phát triển bền vững
+- **Phân tích nhân tố**: Xác định các yếu tố ảnh hưởng đến sự phát triển của doanh nghiệp
 
 Với các tính năng ưu việt:
 - Hỗ trợ song ngữ Tiếng Việt/Tiếng Anh
@@ -341,7 +341,7 @@ if not st.session_state.user:
     st.subheader("Hướng Dẫn Sử Dụng")
     st.markdown("""
     <div class='dashboard-card'>
-    Để sử dụng ứng dụng Khảo sát về động lực làm việc của nhân viên:
+    Để sử dụng ứng dụng Khảo sát về Ảnh hưởng của Vốn xã hội, Vốn nhân lực đến phát triển bền vững của doanh nghiệp trên địa bàn tỉnh Hưng Yên:
     
     1. **Đăng nhập**: Đăng nhập hoặc đăng ký tài khoản mới ở sidebar bên trái
     2. **Tạo Khảo Sát**: Vào trang 'Create Survey' để thiết kế khảo sát tùy chỉnh
