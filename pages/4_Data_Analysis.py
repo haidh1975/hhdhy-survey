@@ -699,6 +699,50 @@ else:
         # Advanced Analysis Tab
         st.subheader("Phân tích nâng cao")
         
+        # Find numeric questions for advanced analysis
+        numeric_questions = []
+        for i, question in enumerate(questions):
+            question_id = question.get("id", str(i))
+            column_name = question_id
+            
+            # Check if column exists
+            if column_name not in df.columns:
+                column_name = f"q_{i}"
+                if column_name not in df.columns:
+                    continue
+            
+            # Check if data is numeric or can be converted to numeric
+            if df[column_name].dtype in [np.int64, np.float64]:
+                numeric_questions.append({
+                    "index": i,
+                    "id": question_id,
+                    "text": question["question_text"],
+                    "column": column_name
+                })
+            else:
+                # Try to convert to numeric
+                try:
+                    numeric_values = pd.to_numeric(df[column_name], errors='coerce')
+                    if not numeric_values.isna().all():  # If not all values are NaN
+                        numeric_questions.append({
+                            "index": i,
+                            "id": question_id,
+                            "text": question["question_text"],
+                            "column": column_name,
+                            "needs_conversion": True
+                        })
+                except:
+                    pass
+        
+        # Create a clean dataframe with only numeric columns for analysis
+        numeric_df = pd.DataFrame()
+        for q in numeric_questions:
+            col_name = q["column"]
+            if q.get("needs_conversion", False):
+                numeric_df[col_name] = pd.to_numeric(df[col_name], errors='coerce')
+            else:
+                numeric_df[col_name] = df[col_name]
+        
         # Quản lý nhóm biến cho phân tích nâng cao
         with st.expander("Quản lý nhóm biến cho phân tích", expanded=False):
             st.write("Tạo và quản lý các nhóm biến để sử dụng trong các phân tích nâng cao:")
@@ -753,50 +797,6 @@ else:
             "Phân tích nhân tố khẳng định (CFA)",
             "Mô hình cấu trúc (SEM)"
         ])
-        
-        # Find numeric questions for advanced analysis
-        numeric_questions = []
-        for i, question in enumerate(questions):
-            question_id = question.get("id", str(i))
-            column_name = question_id
-            
-            # Check if column exists
-            if column_name not in df.columns:
-                column_name = f"q_{i}"
-                if column_name not in df.columns:
-                    continue
-            
-            # Check if data is numeric or can be converted to numeric
-            if df[column_name].dtype in [np.int64, np.float64]:
-                numeric_questions.append({
-                    "index": i,
-                    "id": question_id,
-                    "text": question["question_text"],
-                    "column": column_name
-                })
-            else:
-                # Try to convert to numeric
-                try:
-                    numeric_values = pd.to_numeric(df[column_name], errors='coerce')
-                    if not numeric_values.isna().all():  # If not all values are NaN
-                        numeric_questions.append({
-                            "index": i,
-                            "id": question_id,
-                            "text": question["question_text"],
-                            "column": column_name,
-                            "needs_conversion": True
-                        })
-                except:
-                    pass
-        
-        # Create a clean dataframe with only numeric columns for analysis
-        numeric_df = pd.DataFrame()
-        for q in numeric_questions:
-            col_name = q["column"]
-            if q.get("needs_conversion", False):
-                numeric_df[col_name] = pd.to_numeric(df[col_name], errors='coerce')
-            else:
-                numeric_df[col_name] = df[col_name]
         
         # 1. Cronbach's Alpha Tab
         with adv_tab1:
