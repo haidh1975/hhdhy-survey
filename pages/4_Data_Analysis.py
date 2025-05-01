@@ -699,12 +699,59 @@ else:
         # Advanced Analysis Tab
         st.subheader("Phân tích nâng cao")
         
+        # Quản lý nhóm biến cho phân tích nâng cao
+        with st.expander("Quản lý nhóm biến cho phân tích", expanded=False):
+            st.write("Tạo và quản lý các nhóm biến để sử dụng trong các phân tích nâng cao:")
+            
+            # Khởi tạo các nhóm biến trong session state nếu chưa có
+            if "variable_groups" not in st.session_state:
+                st.session_state.variable_groups = {}
+            
+            # Giao diện để tạo nhóm biến mới
+            col1, col2 = st.columns([1, 3])
+            
+            with col1:
+                new_group_name = st.text_input("Tên nhóm biến mới", key="new_group_name")
+            
+            with col2:
+                new_group_vars = st.multiselect(
+                    "Chọn các biến cho nhóm mới",
+                    options=[q["column"] for q in numeric_questions],
+                    format_func=lambda col: next((q["text"] for q in numeric_questions if q["column"] == col), col),
+                    key="new_group_vars"
+                )
+            
+            # Nút để lưu nhóm biến mới
+            if st.button("Lưu nhóm biến", key="save_var_group"):
+                if new_group_name and new_group_vars:
+                    st.session_state.variable_groups[new_group_name] = new_group_vars
+                    st.success(f"Đã lưu nhóm biến '{new_group_name}' với {len(new_group_vars)} biến")
+                else:
+                    st.warning("Vui lòng nhập tên nhóm và chọn ít nhất một biến")
+            
+            # Hiển thị các nhóm biến hiện có
+            if st.session_state.variable_groups:
+                st.subheader("Các nhóm biến hiện có")
+                
+                for group_name, variables in st.session_state.variable_groups.items():
+                    with st.expander(f"{group_name} ({len(variables)} biến)"):
+                        # Hiển thị danh sách biến trong nhóm
+                        for var in variables:
+                            var_text = next((q["text"] for q in numeric_questions if q["column"] == var), var)
+                            st.write(f"- {var_text}")
+                        
+                        # Nút để xóa nhóm biến
+                        if st.button("Xóa nhóm này", key=f"delete_{group_name}"):
+                            del st.session_state.variable_groups[group_name]
+                            st.rerun()
+        
         # Create tabs for different advanced analysis methods
-        adv_tab1, adv_tab2, adv_tab3, adv_tab4 = st.tabs([
+        adv_tab1, adv_tab2, adv_tab3, adv_tab4, adv_tab5 = st.tabs([
             "Cronbach's Alpha", 
             "Phân tích nhân tố (EFA)", 
             "Hồi quy đa biến",
-            "Phân tích nhân tố khẳng định (CFA)"
+            "Phân tích nhân tố khẳng định (CFA)",
+            "Mô hình cấu trúc (SEM)"
         ])
         
         # Find numeric questions for advanced analysis
@@ -761,12 +808,66 @@ else:
             
             # Allow user to select a group of questions for reliability analysis
             if len(numeric_questions) >= 2:
-                selected_reliability_qs = st.multiselect(
-                    "Chọn các biến để phân tích độ tin cậy",
-                    options=[q["column"] for q in numeric_questions],
-                    format_func=lambda col: next((q["text"] for q in numeric_questions if q["column"] == col), col),
-                    default=[q["column"] for q in numeric_questions[:min(5, len(numeric_questions))]]
-                )
+                # Tùy chọn sử dụng nhóm biến đã lưu
+                use_saved_group = False
+                if st.session_state.variable_groups:
+                    col1, col2 = st.columns([1, 2])
+                    with col1:
+                        use_saved_group = st.checkbox("Sử dụng nhóm biến đã lưu", key="use_saved_group_ca")
+                    
+                    if use_saved_group:
+                        with col2:
+                            selected_group = st.selectbox(
+                                "Chọn nhóm biến",
+                                options=list(st.session_state.variable_groups.keys()),
+                                key="selected_group_ca"
+                            )
+                            selected_reliability_qs = st.session_state.variable_groups.get(selected_group, [])
+                            
+                            # Hiển thị danh sách biến trong nhóm đã chọn
+                            if selected_reliability_qs:
+                                with st.expander(f"Các biến trong nhóm '{selected_group}'"):
+                                    for var in selected_reliability_qs:
+                                        var_text = next((q["text"] for q in numeric_questions if q["column"] == var), var)
+                                        st.write(f"- {var_text}")
+                    else:
+                        # Chọn biến thủ công nếu không sử dụng nhóm biến đã lưu
+                        selected_reliability_qs = st.multiselect(
+                            "Chọn các biến để phân tích độ tin cậy",
+                            options=[q["column"] for q in numeric_questions],
+                            format_func=lambda col: next((q["text"] for q in numeric_questions if q["column"] == col), col),
+                            default=[q["column"] for q in numeric_questions[:min(5, len(numeric_questions))]]
+                        )
+                        
+                        # Tùy chọn lưu nhóm biến đã chọn
+                        save_group = st.checkbox("Lưu nhóm biến này để tái sử dụng", key="save_group_ca")
+                        if save_group:
+                            group_name = st.text_input("Nhập tên nhóm biến", key="group_name_ca")
+                            if st.button("Lưu lại", key="save_btn_ca"):
+                                if group_name and selected_reliability_qs:
+                                    st.session_state.variable_groups[group_name] = selected_reliability_qs
+                                    st.success(f"Đã lưu nhóm biến '{group_name}' với {len(selected_reliability_qs)} biến")
+                                else:
+                                    st.warning("Vui lòng nhập tên nhóm và chọn ít nhất một biến")
+                else:
+                    # Không có nhóm biến nào đã lưu
+                    selected_reliability_qs = st.multiselect(
+                        "Chọn các biến để phân tích độ tin cậy",
+                        options=[q["column"] for q in numeric_questions],
+                        format_func=lambda col: next((q["text"] for q in numeric_questions if q["column"] == col), col),
+                        default=[q["column"] for q in numeric_questions[:min(5, len(numeric_questions))]]
+                    )
+                    
+                    # Tùy chọn lưu nhóm biến đã chọn
+                    save_group = st.checkbox("Lưu nhóm biến này để tái sử dụng", key="save_group_ca")
+                    if save_group:
+                        group_name = st.text_input("Nhập tên nhóm biến", key="group_name_ca")
+                        if st.button("Lưu lại", key="save_btn_ca"):
+                            if group_name and selected_reliability_qs:
+                                st.session_state.variable_groups[group_name] = selected_reliability_qs
+                                st.success(f"Đã lưu nhóm biến '{group_name}' với {len(selected_reliability_qs)} biến")
+                            else:
+                                st.warning("Vui lòng nhập tên nhóm và chọn ít nhất một biến")
                 
                 if selected_reliability_qs and len(selected_reliability_qs) >= 2:
                     # Perform Cronbach's Alpha analysis
@@ -827,12 +928,66 @@ else:
             """)
             
             if len(numeric_questions) >= 3:
-                selected_efa_qs = st.multiselect(
-                    "Chọn các biến để phân tích nhân tố",
-                    options=[q["column"] for q in numeric_questions],
-                    format_func=lambda col: next((q["text"] for q in numeric_questions if q["column"] == col), col),
-                    default=[q["column"] for q in numeric_questions[:min(5, len(numeric_questions))]]
-                )
+                # Tùy chọn sử dụng nhóm biến đã lưu
+                use_saved_group = False
+                if st.session_state.variable_groups:
+                    col1, col2 = st.columns([1, 2])
+                    with col1:
+                        use_saved_group = st.checkbox("Sử dụng nhóm biến đã lưu", key="use_saved_group_efa")
+                    
+                    if use_saved_group:
+                        with col2:
+                            selected_group = st.selectbox(
+                                "Chọn nhóm biến",
+                                options=list(st.session_state.variable_groups.keys()),
+                                key="selected_group_efa"
+                            )
+                            selected_efa_qs = st.session_state.variable_groups.get(selected_group, [])
+                            
+                            # Hiển thị danh sách biến trong nhóm đã chọn
+                            if selected_efa_qs:
+                                with st.expander(f"Các biến trong nhóm '{selected_group}'"):
+                                    for var in selected_efa_qs:
+                                        var_text = next((q["text"] for q in numeric_questions if q["column"] == var), var)
+                                        st.write(f"- {var_text}")
+                    else:
+                        # Chọn biến thủ công nếu không sử dụng nhóm biến đã lưu
+                        selected_efa_qs = st.multiselect(
+                            "Chọn các biến để phân tích nhân tố",
+                            options=[q["column"] for q in numeric_questions],
+                            format_func=lambda col: next((q["text"] for q in numeric_questions if q["column"] == col), col),
+                            default=[q["column"] for q in numeric_questions[:min(5, len(numeric_questions))]]
+                        )
+                        
+                        # Tùy chọn lưu nhóm biến đã chọn
+                        save_group = st.checkbox("Lưu nhóm biến này để tái sử dụng", key="save_group_efa")
+                        if save_group:
+                            group_name = st.text_input("Nhập tên nhóm biến", key="group_name_efa")
+                            if st.button("Lưu lại", key="save_btn_efa"):
+                                if group_name and selected_efa_qs:
+                                    st.session_state.variable_groups[group_name] = selected_efa_qs
+                                    st.success(f"Đã lưu nhóm biến '{group_name}' với {len(selected_efa_qs)} biến")
+                                else:
+                                    st.warning("Vui lòng nhập tên nhóm và chọn ít nhất một biến")
+                else:
+                    # Không có nhóm biến nào đã lưu
+                    selected_efa_qs = st.multiselect(
+                        "Chọn các biến để phân tích nhân tố",
+                        options=[q["column"] for q in numeric_questions],
+                        format_func=lambda col: next((q["text"] for q in numeric_questions if q["column"] == col), col),
+                        default=[q["column"] for q in numeric_questions[:min(5, len(numeric_questions))]]
+                    )
+                    
+                    # Tùy chọn lưu nhóm biến đã chọn
+                    save_group = st.checkbox("Lưu nhóm biến này để tái sử dụng", key="save_group_efa")
+                    if save_group:
+                        group_name = st.text_input("Nhập tên nhóm biến", key="group_name_efa")
+                        if st.button("Lưu lại", key="save_btn_efa"):
+                            if group_name and selected_efa_qs:
+                                st.session_state.variable_groups[group_name] = selected_efa_qs
+                                st.success(f"Đã lưu nhóm biến '{group_name}' với {len(selected_efa_qs)} biến")
+                            else:
+                                st.warning("Vui lòng nhập tên nhóm và chọn ít nhất một biến")
                 
                 if selected_efa_qs and len(selected_efa_qs) >= 3:
                     col1, col2 = st.columns(2)
@@ -961,22 +1116,76 @@ else:
             """)
             
             if len(numeric_questions) >= 2:
-                col1, col2 = st.columns([1, 2])
+                # Biến phụ thuộc (Y)
+                dependent_var = st.selectbox(
+                    "Chọn biến phụ thuộc (Y)",
+                    options=[q["column"] for q in numeric_questions],
+                    format_func=lambda col: next((q["text"] for q in numeric_questions if q["column"] == col), col)
+                )
                 
-                with col1:
-                    dependent_var = st.selectbox(
-                        "Chọn biến phụ thuộc (Y)",
-                        options=[q["column"] for q in numeric_questions],
-                        format_func=lambda col: next((q["text"] for q in numeric_questions if q["column"] == col), col)
-                    )
+                # Biến độc lập (X) - cho phép sử dụng nhóm biến đã lưu
+                st.subheader("Biến độc lập (X)")
                 
-                with col2:
+                use_saved_group = False
+                if st.session_state.variable_groups:
+                    use_saved_group = st.checkbox("Sử dụng nhóm biến đã lưu làm biến độc lập", key="use_saved_group_reg")
+                    
+                    if use_saved_group:
+                        selected_group = st.selectbox(
+                            "Chọn nhóm biến",
+                            options=list(st.session_state.variable_groups.keys()),
+                            key="selected_group_reg"
+                        )
+                        # Lọc biến phụ thuộc ra khỏi các biến độc lập
+                        independent_vars = [var for var in st.session_state.variable_groups.get(selected_group, []) 
+                                         if var != dependent_var]
+                        
+                        # Hiển thị danh sách biến trong nhóm đã chọn
+                        if independent_vars:
+                            with st.expander(f"Các biến độc lập từ nhóm '{selected_group}'"):
+                                for var in independent_vars:
+                                    var_text = next((q["text"] for q in numeric_questions if q["column"] == var), var)
+                                    st.write(f"- {var_text}")
+                        else:
+                            st.warning("Không có biến nào trong nhóm này có thể làm biến độc lập (loại trừ biến phụ thuộc)")
+                    else:
+                        # Chọn biến thủ công nếu không sử dụng nhóm biến đã lưu
+                        independent_vars = st.multiselect(
+                            "Chọn các biến độc lập (X)",
+                            options=[q["column"] for q in numeric_questions if q["column"] != dependent_var],
+                            format_func=lambda col: next((q["text"] for q in numeric_questions if q["column"] == col), col),
+                            default=[q["column"] for q in numeric_questions if q["column"] != dependent_var][:min(3, len(numeric_questions)-1)]
+                        )
+                        
+                        # Tùy chọn lưu nhóm biến độc lập đã chọn
+                        save_group = st.checkbox("Lưu nhóm biến này để tái sử dụng", key="save_group_reg")
+                        if save_group:
+                            group_name = st.text_input("Nhập tên nhóm biến", key="group_name_reg")
+                            if st.button("Lưu lại", key="save_btn_reg"):
+                                if group_name and independent_vars:
+                                    st.session_state.variable_groups[group_name] = independent_vars
+                                    st.success(f"Đã lưu nhóm biến '{group_name}' với {len(independent_vars)} biến")
+                                else:
+                                    st.warning("Vui lòng nhập tên nhóm và chọn ít nhất một biến")
+                else:
+                    # Không có nhóm biến nào đã lưu
                     independent_vars = st.multiselect(
                         "Chọn các biến độc lập (X)",
                         options=[q["column"] for q in numeric_questions if q["column"] != dependent_var],
                         format_func=lambda col: next((q["text"] for q in numeric_questions if q["column"] == col), col),
                         default=[q["column"] for q in numeric_questions if q["column"] != dependent_var][:min(3, len(numeric_questions)-1)]
                     )
+                    
+                    # Tùy chọn lưu nhóm biến đã chọn
+                    save_group = st.checkbox("Lưu nhóm biến này để tái sử dụng", key="save_group_reg")
+                    if save_group:
+                        group_name = st.text_input("Nhập tên nhóm biến", key="group_name_reg")
+                        if st.button("Lưu lại", key="save_btn_reg"):
+                            if group_name and independent_vars:
+                                st.session_state.variable_groups[group_name] = independent_vars
+                                st.success(f"Đã lưu nhóm biến '{group_name}' với {len(independent_vars)} biến")
+                            else:
+                                st.warning("Vui lòng nhập tên nhóm và chọn ít nhất một biến")
                 
                 if dependent_var and independent_vars:
                     # Run regression analysis
@@ -1330,3 +1539,188 @@ else:
                 st.info("Please select two different questions to compare.")
         else:
             st.info("Need at least two suitable questions (multiple choice, dropdown, likert, or numeric) for comparison.")
+            
+        # 5. Structural Equation Modeling (SEM) Tab
+        with adv_tab5:
+            st.subheader("Mô hình cấu trúc (SEM)")
+            st.write("""
+            Mô hình phương trình cấu trúc (SEM) cho phép kiểm tra mối quan hệ phức tạp giữa các biến quan sát và các biến tiềm ẩn.
+            """)
+            
+            st.info("""
+            **Lưu ý về mô hình SEM**
+            
+            Phân tích SEM đầy đủ đòi hỏi phần mềm chuyên dụng như AMOS, Mplus, hoặc lavaan (R).
+            Chức năng này hỗ trợ quản lý cấu trúc mô hình và các biến trong phân tích SEM.
+            """)
+            
+            # Tạo giao diện định nghĩa mô hình SEM
+            st.subheader("Định nghĩa mô hình SEM")
+            
+            # Khởi tạo mô hình SEM nếu chưa có
+            if "sem_model" not in st.session_state:
+                st.session_state.sem_model = {
+                    "latent_variables": {},
+                    "paths": []
+                }
+            
+            # Định nghĩa biến tiềm ẩn (latent variables) từ các nhóm biến
+            with st.expander("Định nghĩa biến tiềm ẩn (Latent Variables)", expanded=True):
+                st.write("Các biến tiềm ẩn được tạo từ nhiều biến quan sát.")
+                
+                # Tùy chọn sử dụng nhóm biến hoặc nhập mới
+                if st.session_state.variable_groups:
+                    col1, col2 = st.columns([1, 3])
+                    
+                    with col1:
+                        latent_name = st.text_input("Tên biến tiềm ẩn", key="latent_name")
+                    
+                    with col2:
+                        use_saved_group = st.checkbox("Sử dụng nhóm biến đã lưu", key="use_saved_group_sem")
+                        
+                        if use_saved_group:
+                            selected_group = st.selectbox(
+                                "Chọn nhóm biến",
+                                options=list(st.session_state.variable_groups.keys()),
+                                key="selected_group_sem"
+                            )
+                            manifest_vars = st.session_state.variable_groups.get(selected_group, [])
+                        else:
+                            # Chọn biến thủ công
+                            manifest_vars = st.multiselect(
+                                "Chọn các biến quan sát",
+                                options=[q["column"] for q in numeric_questions],
+                                format_func=lambda col: next((q["text"] for q in numeric_questions if q["column"] == col), col),
+                                key="manifest_vars_sem"
+                            )
+                    
+                    # Nút để thêm biến tiềm ẩn mới
+                    if st.button("Thêm biến tiềm ẩn", key="add_latent_btn"):
+                        if latent_name and manifest_vars:
+                            st.session_state.sem_model["latent_variables"][latent_name] = manifest_vars
+                            st.success(f"Đã thêm biến tiềm ẩn '{latent_name}' với {len(manifest_vars)} biến quan sát")
+                            # Reset fields
+                            st.session_state.latent_name = ""
+                            if not use_saved_group:
+                                st.session_state.manifest_vars_sem = []
+                        else:
+                            st.warning("Vui lòng nhập tên biến tiềm ẩn và chọn ít nhất một biến quan sát")
+                    
+                    # Hiển thị các biến tiềm ẩn đã định nghĩa
+                    if st.session_state.sem_model["latent_variables"]:
+                        st.subheader("Biến tiềm ẩn đã định nghĩa")
+                        
+                        latent_to_remove = None
+                        for latent, vars in st.session_state.sem_model["latent_variables"].items():
+                            with st.expander(f"{latent} ({len(vars)} biến)"):
+                                # Hiển thị danh sách biến
+                                for var in vars:
+                                    var_text = next((q["text"] for q in numeric_questions if q["column"] == var), var)
+                                    st.write(f"- {var_text}")
+                                
+                                # Nút xóa biến tiềm ẩn
+                                if st.button("Xóa biến tiềm ẩn này", key=f"remove_{latent}"):
+                                    latent_to_remove = latent
+                        
+                        # Xóa biến tiềm ẩn nếu được yêu cầu
+                        if latent_to_remove:
+                            del st.session_state.sem_model["latent_variables"][latent_to_remove]
+                            # Cũng xóa các đường dẫn liên quan
+                            st.session_state.sem_model["paths"] = [
+                                path for path in st.session_state.sem_model["paths"] 
+                                if path["from"] != latent_to_remove and path["to"] != latent_to_remove
+                            ]
+                            st.rerun()
+                        
+                        # Định nghĩa đường dẫn (paths) giữa các biến
+                        st.subheader("Định nghĩa mối quan hệ (Paths)")
+                        
+                        col1, col2, col3 = st.columns([2, 1, 2])
+                        
+                        with col1:
+                            from_var = st.selectbox(
+                                "Từ",
+                                options=list(st.session_state.sem_model["latent_variables"].keys()),
+                                key="from_var"
+                            )
+                        
+                        with col2:
+                            relationship = st.selectbox(
+                                "Quan hệ",
+                                options=["→", "↔"],
+                                key="relationship"
+                            )
+                        
+                        with col3:
+                            to_var = st.selectbox(
+                                "Đến",
+                                options=list(st.session_state.sem_model["latent_variables"].keys()),
+                                key="to_var"
+                            )
+                        
+                        # Nút thêm đường dẫn
+                        if st.button("Thêm mối quan hệ", key="add_path_btn"):
+                            if from_var != to_var or relationship == "↔":
+                                # Kiểm tra trùng lặp
+                                path_exists = any(
+                                    (p["from"] == from_var and p["to"] == to_var and p["type"] == relationship) or
+                                    (relationship == "↔" and p["from"] == to_var and p["to"] == from_var and p["type"] == "↔")
+                                    for p in st.session_state.sem_model["paths"]
+                                )
+                                
+                                if not path_exists:
+                                    st.session_state.sem_model["paths"].append({
+                                        "from": from_var,
+                                        "to": to_var,
+                                        "type": relationship
+                                    })
+                                    st.success(f"Đã thêm mối quan hệ: {from_var} {relationship} {to_var}")
+                                else:
+                                    st.warning("Mối quan hệ này đã tồn tại")
+                            else:
+                                st.warning("Không thể tạo mối quan hệ một chiều từ biến đến chính nó")
+                        
+                        # Hiển thị các đường dẫn đã định nghĩa
+                        if st.session_state.sem_model["paths"]:
+                            st.subheader("Mối quan hệ đã định nghĩa")
+                            
+                            for i, path in enumerate(st.session_state.sem_model["paths"]):
+                                st.write(f"{i+1}. {path['from']} {path['type']} {path['to']}")
+                            
+                            # Nút xóa tất cả đường dẫn
+                            if st.button("Xóa tất cả mối quan hệ", key="clear_paths"):
+                                st.session_state.sem_model["paths"] = []
+                                st.rerun()
+                        
+                        # Hiển thị mô hình dưới dạng mã lập trình (cho lavaan)
+                        st.subheader("Mã mô hình SEM (định dạng lavaan)")
+                        
+                        # Tạo mã cho mô hình đo lường (measurement model)
+                        measurement_code = []
+                        for latent, vars in st.session_state.sem_model["latent_variables"].items():
+                            var_names = " + ".join(vars)
+                            measurement_code.append(f"{latent} =~ {var_names}")
+                        
+                        # Tạo mã cho mô hình cấu trúc (structural model)
+                        structural_code = []
+                        for path in st.session_state.sem_model["paths"]:
+                            if path["type"] == "→":
+                                structural_code.append(f"{path['to']} ~ {path['from']}")
+                            else:  # "↔"
+                                structural_code.append(f"{path['from']} ~~ {path['to']}")
+                        
+                        # Gộp tất cả mã lại
+                        model_code = "\n".join(measurement_code + structural_code)
+                        
+                        # Hiển thị mã
+                        st.code(model_code, language="r")
+                        
+                        # Tùy chọn xuất mô hình
+                        st.download_button(
+                            label="Tải xuống mã mô hình",
+                            data=model_code,
+                            file_name="sem_model.txt",
+                            mime="text/plain"
+                        )
+                else:
+                    st.warning("Hãy tạo ít nhất một nhóm biến trước để định nghĩa biến tiềm ẩn.")
