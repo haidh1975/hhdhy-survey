@@ -256,6 +256,7 @@ if st.session_state.editing_question_index >= 0:
 if st.session_state.current_survey["questions"]:
     st.subheader("Survey Questions")
     for i, question in enumerate(st.session_state.current_survey["questions"]):
+        question_index = i  # Thêm biến question_index để tránh trùng lặp key
         with st.expander(f"Question {i+1}: {question['question_text']}", expanded=False):
             st.write(f"**Type:** {question_types[question['type']]}")
             st.write(f"**Required:** {'Yes' if question.get('required', False) else 'No'}")
@@ -268,19 +269,19 @@ if st.session_state.current_survey["questions"]:
             elif question["type"] == "likert_scale":
                 st.write(f"**Scale:** {question.get('scale_min', 1)} to {question.get('scale_max', 5)}")
                 st.write("**Labels:**")
-                for i, label in enumerate(question.get("scale_labels", [])):
-                    st.markdown(f"- {question.get('scale_min', 1) + i}: {label}")
+                for j, label in enumerate(question.get("scale_labels", [])):
+                    st.markdown(f"- {question.get('scale_min', 1) + j}: {label}")
             
             col1, col2 = st.columns(2)
             with col1:
                 # Thêm unique_key để tránh trùng lặp
-                unique_key = f"edit_{i}_{question['question_text'][:10]}"
+                unique_key = f"edit_{i}_{str(i)}_{question_index}"
                 if st.button(f"Edit Question {i+1}", key=unique_key):
                     edit_question(i)
                     st.rerun()
             with col2:
                 # Thêm unique_key để tránh trùng lặp
-                unique_key = f"delete_{i}_{question['question_text'][:10]}"
+                unique_key = f"delete_{i}_{str(i)}_{question_index}"
                 if st.button(f"Delete Question {i+1}", key=unique_key):
                     delete_question(i)
                     st.rerun()
