@@ -7,7 +7,7 @@ from io import StringIO
 import csv
 
 st.set_page_config(
-    page_title="Distribute Survey",
+    page_title="Khảo sát về Ảnh hưởng của Vốn xã hội, Vốn nhân lực đến phát triển bền vững của doanh nghiệp trên địa bàn tỉnh Hưng Yên",
     page_icon="🔗",
     layout="wide",
 )
@@ -30,7 +30,7 @@ if 'responses' not in st.session_state:
 if 'survey_link' not in st.session_state:
     st.session_state.survey_link = None
 
-st.title("Distribute Survey")
+st.title("Phân phối khảo sát - Khảo sát về Ảnh hưởng của Vốn xã hội, Vốn nhân lực đến phát triển bền vững của doanh nghiệp")
 
 if not st.session_state.surveys:
     st.info("No surveys created yet. Go to the 'Create Survey' page to create your first survey.")

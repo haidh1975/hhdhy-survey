@@ -6,7 +6,7 @@ import os
 from utils.survey_utils import save_surveys
 
 st.set_page_config(
-    page_title="Create Survey",
+    page_title="Khảo sát về Ảnh hưởng của Vốn xã hội, Vốn nhân lực đến phát triển bền vững của doanh nghiệp trên địa bàn tỉnh Hưng Yên",
     page_icon="📝",
     layout="wide",
 )
@@ -38,7 +38,7 @@ if 'current_survey_id' not in st.session_state:
 if 'editing_question_index' not in st.session_state:
     st.session_state.editing_question_index = -1
 
-st.title("Create Survey")
+st.title("Tạo khảo sát - Khảo sát về Ảnh hưởng của Vốn xã hội, Vốn nhân lực đến phát triển bền vững của doanh nghiệp")
 
 # Function to create a new survey
 def create_new_survey():
