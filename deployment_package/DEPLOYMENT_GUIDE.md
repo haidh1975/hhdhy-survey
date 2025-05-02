@@ -1,129 +1,231 @@
-# Hướng dẫn triển khai ứng dụng lên hhd.one
+# Hướng dẫn triển khai chi tiết
 
-Tài liệu này cung cấp các bước chi tiết để triển khai ứng dụng khảo sát lên nền tảng hhd.one.
+Tài liệu này cung cấp hướng dẫn chi tiết để triển khai ứng dụng khảo sát trên máy chủ web hhd.one.
 
-## Yêu cầu hệ thống
+## 1. Chuẩn bị máy chủ
 
-- Python 3.9+ 
-- Pip (trình quản lý gói Python)
-- Truy cập vào máy chủ hhd.one
+Đảm bảo máy chủ của bạn đáp ứng các yêu cầu sau:
+- Hệ điều hành: Ubuntu 20.04 LTS hoặc mới hơn
+- RAM: Tối thiểu 2GB
+- CPU: Tối thiểu 1 vCPU
+- Dung lượng đĩa: Tối thiểu 10GB
+- Tên miền đã cấu hình: hhd.one (nếu bạn dùng tên miền khác, cần điều chỉnh cấu hình tương ứng)
 
-## Các bước triển khai
+## 2. Cài đặt tự động
 
-### 1. Tải và giải nén ứng dụng
+Cách đơn giản nhất để triển khai ứng dụng là sử dụng script cài đặt tự động đã cung cấp:
 
-Giải nén tệp `survey_app_deployment.zip` vào thư mục mong muốn trên máy chủ.
+1. Tải tệp nén có chứa mã nguồn lên máy chủ:
+   ```bash
+   scp survey_app_deployment.zip user@your_server_ip:/home/user/
+   ```
+
+2. Kết nối SSH vào máy chủ:
+   ```bash
+   ssh user@your_server_ip
+   ```
+
+3. Giải nén tệp:
+   ```bash
+   unzip survey_app_deployment.zip
+   cd survey_app_deployment
+   ```
+
+4. Cấp quyền thực thi cho script cài đặt:
+   ```bash
+   chmod +x install.sh
+   ```
+
+5. Chạy script cài đặt:
+   ```bash
+   sudo ./install.sh
+   ```
+
+Script sẽ tự động:
+- Cài đặt tất cả các gói phụ thuộc cần thiết
+- Tạo môi trường ảo Python
+- Cài đặt mã nguồn và cấu hình
+- Cấu hình Nginx và Supervisor
+- Khởi động ứng dụng
+
+## 3. Cài đặt thủ công
+
+Nếu bạn muốn kiểm soát chi tiết quá trình cài đặt, bạn có thể cài đặt thủ công:
+
+### 3.1 Cài đặt các gói phụ thuộc
 
 ```bash
-unzip survey_app_deployment.zip -d /path/to/app
-cd /path/to/app
+sudo apt update
+sudo apt upgrade -y
+sudo apt install -y python3 python3-pip python3-venv nginx supervisor
 ```
 
-### 2. Cài đặt các phụ thuộc
-
-Sử dụng pip để cài đặt các thư viện cần thiết từ tệp `deployment_requirements.txt`:
+### 3.2 Tạo thư mục ứng dụng
 
 ```bash
+sudo mkdir -p /var/www/survey_app
+sudo chown $USER:$USER /var/www/survey_app
+sudo mkdir -p /var/log/survey_app
+sudo chown $USER:$USER /var/log/survey_app
+```
+
+### 3.3 Sao chép mã nguồn
+
+Giả sử bạn đã tải và giải nén mã nguồn:
+
+```bash
+cp -r /path/to/extracted/files/* /var/www/survey_app/
+cp -r /path/to/extracted/files/.streamlit /var/www/survey_app/
+```
+
+### 3.4 Tạo môi trường ảo và cài đặt các gói
+
+```bash
+cd /var/www/survey_app
+python3 -m venv venv
+source venv/bin/activate
+pip install --upgrade pip
 pip install -r deployment_requirements.txt
 ```
 
-### 3. Cấu hình máy chủ
+### 3.5 Cấu hình Supervisor
 
-Đảm bảo rằng thư mục `.streamlit` tồn tại và chứa tệp `config.toml` với cấu hình phù hợp. Tệp này đã được bao gồm trong gói triển khai.
-
-### 4. Cấu hình quyền truy cập tệp
-
-Đảm bảo rằng ứng dụng có quyền ghi vào thư mục dữ liệu:
+Tạo tệp cấu hình Supervisor:
 
 ```bash
-chmod -R 755 .
-chmod -R 777 data
+sudo cp /var/www/survey_app/supervisor_config.conf /etc/supervisor/conf.d/survey_app.conf
+sudo supervisorctl reread
+sudo supervisorctl update
 ```
 
-### 5. Khởi động ứng dụng
-
-Sử dụng một trong các phương pháp sau để khởi động ứng dụng:
-
-**Cách 1: Sử dụng Streamlit trực tiếp**
+### 3.6 Cấu hình Nginx
 
 ```bash
-streamlit run app.py --server.port=8501
+sudo cp /var/www/survey_app/nginx_config.conf /etc/nginx/sites-available/survey_app.conf
+sudo ln -sf /etc/nginx/sites-available/survey_app.conf /etc/nginx/sites-enabled/
+sudo nginx -t
+sudo systemctl restart nginx
 ```
 
-**Cách 2: Sử dụng Procfile với Gunicorn/Uvicorn (cho môi trường production)**
-
-Nếu bạn đang sử dụng Heroku hoặc nền tảng tương tự:
+### 3.7 Cấu hình HTTPS với Certbot
 
 ```bash
-web: streamlit run app.py
+sudo apt install -y certbot python3-certbot-nginx
+sudo certbot --nginx -d hhd.one -d www.hhd.one
 ```
 
-**Cách 3: Sử dụng supervisor hoặc systemd (khuyến nghị cho triển khai lâu dài)**
+## 4. Xác minh cài đặt
 
-Tạo tệp cấu hình supervisor:
+Sau khi cài đặt, bạn có thể xác minh rằng ứng dụng đang chạy:
 
-```
-[program:streamlit]
-command=streamlit run /path/to/app/app.py --server.port=8501
-directory=/path/to/app
-autostart=true
-autorestart=true
-stderr_logfile=/var/log/streamlit.err.log
-stdout_logfile=/var/log/streamlit.out.log
-user=your_user
-```
+1. Kiểm tra trạng thái Supervisor:
+   ```bash
+   sudo supervisorctl status survey_app
+   ```
 
-### 6. Cấu hình reverse proxy (nếu cần)
+2. Kiểm tra logs:
+   ```bash
+   sudo tail -f /var/log/survey_app/streamlit.out.log
+   ```
 
-Nếu bạn đang sử dụng Nginx làm reverse proxy, đây là một cấu hình mẫu:
+3. Truy cập ứng dụng web:
+   - Nếu bạn đã cấu hình tên miền: https://hhd.one
+   - Nếu chưa: http://your_server_ip:5000
 
-```nginx
-server {
-    listen 80;
-    server_name your-domain.hhd.one;
+## 5. Khắc phục sự cố
 
-    location / {
-        proxy_pass http://localhost:8501;
-        proxy_http_version 1.1;
-        proxy_set_header Upgrade $http_upgrade;
-        proxy_set_header Connection "upgrade";
-        proxy_set_header Host $host;
-        proxy_set_header X-Real-IP $remote_addr;
-    }
-}
+### 5.1 Ứng dụng không khởi động
+
+Kiểm tra logs lỗi:
+```bash
+sudo tail -f /var/log/survey_app/streamlit.err.log
 ```
 
-## Cấu trúc thư mục
+### 5.2 Vấn đề quyền truy cập
 
-- `app.py`: Điểm vào chính của ứng dụng
-- `pages/`: Các trang của ứng dụng
-- `utils/`: Các module tiện ích
-- `data/`: Thư mục lưu trữ dữ liệu
-- `attached_assets/`: Tệp Excel và tài nguyên khác
-- `.streamlit/`: Cấu hình Streamlit
+Đảm bảo quyền phù hợp cho thư mục ứng dụng:
+```bash
+sudo chown -R www-data:www-data /var/www/survey_app
+sudo chown -R www-data:www-data /var/log/survey_app
+```
 
-## Xử lý sự cố
+### 5.3 Nginx không hoạt động
 
-### Vấn đề: Ứng dụng không khởi động
+Kiểm tra cấu hình Nginx:
+```bash
+sudo nginx -t
+```
 
-Kiểm tra:
-- Python và Streamlit đã được cài đặt chính xác
-- Tất cả các phụ thuộc đã được cài đặt
-- Quyền truy cập tệp và thư mục phù hợp
+Kiểm tra logs Nginx:
+```bash
+sudo tail -f /var/log/nginx/error.log
+```
 
-### Vấn đề: Lỗi "Address already in use"
+### 5.4 Khởi động lại các dịch vụ
 
 ```bash
-lsof -i :8501  # Kiểm tra tiến trình đang sử dụng cổng
-kill -9 [PID]  # Kết thúc tiến trình
+sudo systemctl restart nginx
+sudo supervisorctl restart survey_app
 ```
 
-### Vấn đề: Dữ liệu không được lưu
+## 6. Bảo trì
 
-Kiểm tra quyền ghi vào thư mục `data/` và các tệp JSON như `surveys.json` và `responses.json`.
+### 6.1 Sao lưu dữ liệu
 
-## Liên hệ hỗ trợ
+Dữ liệu khảo sát được lưu trữ trong các tệp JSON. Hãy sao lưu chúng thường xuyên:
+```bash
+sudo cp /var/www/survey_app/surveys.json /backup/surveys_$(date +%Y%m%d).json
+sudo cp /var/www/survey_app/responses.json /backup/responses_$(date +%Y%m%d).json
+```
 
-Nếu bạn gặp vấn đề trong quá trình triển khai, vui lòng liên hệ:
-- Email: [your-email@example.com]
-- Điện thoại: [your-phone]
+### 6.2 Cập nhật mã nguồn
+
+Khi có phiên bản mới:
+```bash
+# Sao lưu dữ liệu hiện tại
+sudo cp /var/www/survey_app/surveys.json /backup/surveys_$(date +%Y%m%d).json
+sudo cp /var/www/survey_app/responses.json /backup/responses_$(date +%Y%m%d).json
+
+# Cập nhật mã nguồn (ví dụ, từ tệp nén mới)
+cd /tmp
+unzip new_survey_app.zip
+sudo cp -r new_survey_app/* /var/www/survey_app/
+
+# Cập nhật dependencies nếu cần
+cd /var/www/survey_app
+source venv/bin/activate
+pip install -r deployment_requirements.txt
+
+# Khôi phục dữ liệu nếu cần
+sudo cp /backup/surveys_$(date +%Y%m%d).json /var/www/survey_app/surveys.json
+sudo cp /backup/responses_$(date +%Y%m%d).json /var/www/survey_app/responses.json
+
+# Khởi động lại ứng dụng
+sudo supervisorctl restart survey_app
+```
+
+## 7. Tùy chỉnh
+
+### 7.1 Thay đổi cổng
+
+Nếu bạn muốn chạy ứng dụng trên cổng khác, cập nhật các tệp sau:
+- `/var/www/survey_app/.streamlit/config.toml`
+- `/etc/supervisor/conf.d/survey_app.conf`
+- `/etc/nginx/sites-available/survey_app.conf`
+
+### 7.2 Thay đổi domain
+
+Nếu bạn muốn sử dụng tên miền khác, cập nhật:
+- `/etc/nginx/sites-available/survey_app.conf`
+- Sau đó chạy lại Certbot với tên miền mới
+
+## 8. Bảo mật
+
+- Đảm bảo cập nhật hệ thống thường xuyên: `sudo apt update && sudo apt upgrade -y`
+- Cân nhắc thêm tường lửa UFW: `sudo ufw allow 80/tcp && sudo ufw allow 443/tcp && sudo ufw allow 22/tcp`
+- Kiểm tra và đảm bảo HTTPS được cấu hình đúng
+- Xem xét thêm xác thực cơ bản HTTP nếu cần hạn chế truy cập
+
+## Thông tin liên hệ
+
+Nếu bạn gặp vấn đề trong quá trình triển khai, vui lòng liên hệ support@hhd.one

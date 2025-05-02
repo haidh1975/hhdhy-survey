@@ -5,8 +5,8 @@ import datetime
 from utils.survey_utils import render_survey_form, submit_survey_response, load_surveys
 
 st.set_page_config(
-    page_title="Answer Survey",
-    page_icon="✅",
+    page_title="Khảo sát về Ảnh hưởng của Vốn xã hội, Vốn nhân lực đến phát triển bền vững của doanh nghiệp trên địa bàn tỉnh Hưng Yên",
+    page_icon="📋",
     layout="wide",
 )
 
@@ -22,7 +22,7 @@ if 'surveys' not in st.session_state:
 params = st.query_params
 
 # Title and introduction
-st.title("Answer Survey")
+st.title("Quản lý biểu mẫu - Khảo sát về Ảnh hưởng của Vốn xã hội, Vốn nhân lực đến phát triển bền vững của doanh nghiệp")
 
 # Choose survey to answer
 if "survey" in params:
@@ -34,7 +34,7 @@ if "survey" in params:
         st.session_state.active_survey_id = None
 else:
     # Allow user to select a survey from the list
-    st.subheader("Select a Survey to Answer")
+    st.subheader("Chọn biểu mẫu để quản lý")
     
     if not st.session_state.surveys:
         st.info("No surveys available yet. Please ask the survey creator to share a survey with you.")

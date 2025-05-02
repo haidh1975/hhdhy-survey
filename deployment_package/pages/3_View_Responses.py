@@ -5,7 +5,7 @@ import pandas as pd
 import datetime
 
 st.set_page_config(
-    page_title="View Responses",
+    page_title="Khảo sát về Ảnh hưởng của Vốn xã hội, Vốn nhân lực đến phát triển bền vững của doanh nghiệp trên địa bàn tỉnh Hưng Yên",
     page_icon="📊",
     layout="wide",
 )
@@ -25,7 +25,7 @@ if 'responses' not in st.session_state:
     else:
         st.session_state.responses = {}
 
-st.title("View Survey Responses")
+st.title("Xem phản hồi - Khảo sát về Ảnh hưởng của Vốn xã hội, Vốn nhân lực đến phát triển bền vững của doanh nghiệp")
 
 if not st.session_state.surveys:
     st.info("No surveys created yet. Go to the 'Create Survey' page to create your first survey.")

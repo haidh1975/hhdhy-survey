@@ -6,7 +6,7 @@ import os
 from utils.survey_utils import save_surveys
 
 st.set_page_config(
-    page_title="Create Survey",
+    page_title="Khảo sát về Ảnh hưởng của Vốn xã hội, Vốn nhân lực đến phát triển bền vững của doanh nghiệp trên địa bàn tỉnh Hưng Yên",
     page_icon="📝",
     layout="wide",
 )
@@ -19,18 +19,54 @@ if 'surveys' not in st.session_state:
     else:
         st.session_state.surveys = {}
 
-if 'current_survey' not in st.session_state:
-    st.session_state.current_survey = {
-        "title": "",
-        "description": "",
-        "questions": []
+# Tự động tạo khảo sát mẫu nếu không có khảo sát nào
+if not st.session_state.surveys:
+    default_survey_id = str(uuid.uuid4())
+    default_survey = {
+        "title": "Khảo sát về Ảnh hưởng của Vốn xã hội, Vốn nhân lực đến phát triển bền vững của doanh nghiệp trên địa bàn tỉnh Hưng Yên",
+        "description": "Khảo sát này nhằm đánh giá ảnh hưởng của vốn xã hội và vốn nhân lực đến sự phát triển bền vững của doanh nghiệp trên địa bàn tỉnh Hưng Yên",
+        "created_date": datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
+        "questions": [
+            {
+                "type": "multiple_choice",
+                "question_text": "Doanh nghiệp của bạn thuộc loại hình nào?",
+                "required": True,
+                "options": ["Doanh nghiệp tư nhân", "Công ty TNHH", "Công ty cổ phần", "Doanh nghiệp nhà nước", "Khác"]
+            },
+            {
+                "type": "likert_scale",
+                "question_text": "Vốn xã hội đóng vai trò quan trọng đối với sự phát triển của doanh nghiệp",
+                "required": True,
+                "scale_min": 1,
+                "scale_max": 5,
+                "scale_labels": ["Hoàn toàn không đồng ý", "Không đồng ý", "Trung lập", "Đồng ý", "Hoàn toàn đồng ý"]
+            },
+            {
+                "type": "likert_scale",
+                "question_text": "Vốn nhân lực có ảnh hưởng tích cực đến khả năng cạnh tranh của doanh nghiệp",
+                "required": True,
+                "scale_min": 1,
+                "scale_max": 5,
+                "scale_labels": ["Hoàn toàn không đồng ý", "Không đồng ý", "Trung lập", "Đồng ý", "Hoàn toàn đồng ý"]
+            }
+        ]
     }
-elif st.session_state.current_survey is None:
-    st.session_state.current_survey = {
-        "title": "",
-        "description": "",
-        "questions": []
-    }
+    st.session_state.surveys[default_survey_id] = default_survey
+    save_surveys(st.session_state.surveys)
+
+if 'current_survey' not in st.session_state or st.session_state.current_survey is None:
+    # Tự động tải khảo sát đầu tiên nếu có
+    if st.session_state.surveys:
+        default_survey_id = list(st.session_state.surveys.keys())[0]
+        st.session_state.current_survey = st.session_state.surveys[default_survey_id].copy()
+        st.session_state.current_survey_id = default_survey_id
+    else:
+        st.session_state.current_survey = {
+            "title": "",
+            "description": "",
+            "questions": []
+        }
+        st.session_state.current_survey_id = None
 
 if 'current_survey_id' not in st.session_state:
     st.session_state.current_survey_id = None
@@ -38,7 +74,7 @@ if 'current_survey_id' not in st.session_state:
 if 'editing_question_index' not in st.session_state:
     st.session_state.editing_question_index = -1
 
-st.title("Create Survey")
+st.title("Tạo khảo sát - Khảo sát về Ảnh hưởng của Vốn xã hội, Vốn nhân lực đến phát triển bền vững của doanh nghiệp")
 
 # Function to create a new survey
 def create_new_survey():
@@ -237,10 +273,14 @@ if st.session_state.current_survey["questions"]:
             
             col1, col2 = st.columns(2)
             with col1:
-                if st.button(f"Edit Question {i+1}", key=f"edit_{i}"):
+                # Thêm unique_key để tránh trùng lặp
+                unique_key = f"edit_{i}_{question['question_text'][:10]}"
+                if st.button(f"Edit Question {i+1}", key=unique_key):
                     edit_question(i)
                     st.rerun()
             with col2:
-                if st.button(f"Delete Question {i+1}", key=f"delete_{i}"):
+                # Thêm unique_key để tránh trùng lặp
+                unique_key = f"delete_{i}_{question['question_text'][:10]}"
+                if st.button(f"Delete Question {i+1}", key=unique_key):
                     delete_question(i)
                     st.rerun()

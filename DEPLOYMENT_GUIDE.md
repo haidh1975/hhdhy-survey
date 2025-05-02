@@ -1,214 +1,231 @@
-# Hướng Dẫn Triển Khai Ứng Dụng Khảo Sát
+# Hướng dẫn triển khai chi tiết
 
-## Tổng Quan
+Tài liệu này cung cấp hướng dẫn chi tiết để triển khai ứng dụng khảo sát trên máy chủ web hhd.one.
 
-Tài liệu này hướng dẫn cách triển khai ứng dụng khảo sát Streamlit lên máy chủ web, cụ thể là domain hhd.one. Ứng dụng này là một công cụ khảo sát toàn diện cho phép tạo, phân phối, thu thập và phân tích dữ liệu khảo sát.
+## 1. Chuẩn bị máy chủ
 
-## Yêu Cầu Hệ Thống
+Đảm bảo máy chủ của bạn đáp ứng các yêu cầu sau:
+- Hệ điều hành: Ubuntu 20.04 LTS hoặc mới hơn
+- RAM: Tối thiểu 2GB
+- CPU: Tối thiểu 1 vCPU
+- Dung lượng đĩa: Tối thiểu 10GB
+- Tên miền đã cấu hình: hhd.one (nếu bạn dùng tên miền khác, cần điều chỉnh cấu hình tương ứng)
 
-- Python 3.10+ đã cài đặt
-- Pip (quản lý gói Python)
-- Quyền truy cập SSH vào máy chủ (nếu triển khai trên máy chủ riêng)
-- Domain đã cài đặt và trỏ về máy chủ (hhd.one)
+## 2. Cài đặt tự động
 
-## Các Bước Triển Khai
+Cách đơn giản nhất để triển khai ứng dụng là sử dụng script cài đặt tự động đã cung cấp:
 
-### 1. Chuẩn Bị Môi Trường
+1. Tải tệp nén có chứa mã nguồn lên máy chủ:
+   ```bash
+   scp survey_app_deployment.zip user@your_server_ip:/home/user/
+   ```
 
-#### Trên Server Ubuntu/Debian:
+2. Kết nối SSH vào máy chủ:
+   ```bash
+   ssh user@your_server_ip
+   ```
+
+3. Giải nén tệp:
+   ```bash
+   unzip survey_app_deployment.zip
+   cd survey_app_deployment
+   ```
+
+4. Cấp quyền thực thi cho script cài đặt:
+   ```bash
+   chmod +x install.sh
+   ```
+
+5. Chạy script cài đặt:
+   ```bash
+   sudo ./install.sh
+   ```
+
+Script sẽ tự động:
+- Cài đặt tất cả các gói phụ thuộc cần thiết
+- Tạo môi trường ảo Python
+- Cài đặt mã nguồn và cấu hình
+- Cấu hình Nginx và Supervisor
+- Khởi động ứng dụng
+
+## 3. Cài đặt thủ công
+
+Nếu bạn muốn kiểm soát chi tiết quá trình cài đặt, bạn có thể cài đặt thủ công:
+
+### 3.1 Cài đặt các gói phụ thuộc
 
 ```bash
-# Cập nhật hệ thống
 sudo apt update
 sudo apt upgrade -y
-
-# Cài đặt Python và các công cụ cần thiết
 sudo apt install -y python3 python3-pip python3-venv nginx supervisor
-
-# Tạo thư mục cho ứng dụng
-sudo mkdir -p /var/www/survey_app
-sudo chown $USER:$USER /var/www/survey_app
 ```
 
-### 2. Triển Khai Mã Nguồn
-
-#### Tải lên và giải nén mã nguồn:
+### 3.2 Tạo thư mục ứng dụng
 
 ```bash
-# Giả sử bạn đã tải lên file survey_app_deployment.zip
-cd /var/www/survey_app
-unzip /path/to/survey_app_deployment.zip -d .
+sudo mkdir -p /var/www/survey_app
+sudo chown $USER:$USER /var/www/survey_app
+sudo mkdir -p /var/log/survey_app
+sudo chown $USER:$USER /var/log/survey_app
 ```
 
-#### Tạo môi trường ảo và cài đặt dependencies:
+### 3.3 Sao chép mã nguồn
+
+Giả sử bạn đã tải và giải nén mã nguồn:
+
+```bash
+cp -r /path/to/extracted/files/* /var/www/survey_app/
+cp -r /path/to/extracted/files/.streamlit /var/www/survey_app/
+```
+
+### 3.4 Tạo môi trường ảo và cài đặt các gói
 
 ```bash
 cd /var/www/survey_app
 python3 -m venv venv
 source venv/bin/activate
+pip install --upgrade pip
 pip install -r deployment_requirements.txt
 ```
 
-### 3. Cấu Hình Streamlit
+### 3.5 Cấu hình Supervisor
 
-Tạo file cấu hình Streamlit:
-
-```bash
-mkdir -p /var/www/survey_app/.streamlit
-```
-
-Tạo file `/var/www/survey_app/.streamlit/config.toml` với nội dung:
-
-```toml
-[server]
-headless = true
-enableCORS = false
-enableXsrfProtection = false
-port = 8501
-address = "0.0.0.0"
-```
-
-### 4. Cấu Hình Supervisor
-
-Tạo file cấu hình Supervisor để quản lý quy trình Streamlit:
+Tạo tệp cấu hình Supervisor:
 
 ```bash
-sudo nano /etc/supervisor/conf.d/survey_app.conf
-```
-
-Thêm nội dung sau:
-
-```ini
-[program:survey_app]
-command=/var/www/survey_app/venv/bin/streamlit run /var/www/survey_app/app.py --server.port=8501
-directory=/var/www/survey_app
-user=www-data
-autostart=true
-autorestart=true
-stopasgroup=true
-killasgroup=true
-stderr_logfile=/var/log/survey_app/streamlit.err.log
-stdout_logfile=/var/log/survey_app/streamlit.out.log
-```
-
-Tạo thư mục log:
-
-```bash
-sudo mkdir -p /var/log/survey_app
-sudo chown www-data:www-data /var/log/survey_app
-```
-
-Cập nhật và khởi động lại Supervisor:
-
-```bash
+sudo cp /var/www/survey_app/supervisor_config.conf /etc/supervisor/conf.d/survey_app.conf
 sudo supervisorctl reread
 sudo supervisorctl update
-sudo supervisorctl start survey_app
 ```
 
-### 5. Cấu Hình Nginx
-
-Tạo cấu hình Nginx cho ứng dụng:
+### 3.6 Cấu hình Nginx
 
 ```bash
-sudo nano /etc/nginx/sites-available/survey_app.conf
-```
-
-Thêm nội dung sau (điều chỉnh domain phù hợp):
-
-```nginx
-server {
-    listen 80;
-    server_name hhd.one www.hhd.one;
-
-    location / {
-        proxy_pass http://localhost:8501;
-        proxy_http_version 1.1;
-        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
-        proxy_set_header Host $host;
-        proxy_set_header Upgrade $http_upgrade;
-        proxy_set_header Connection "upgrade";
-        proxy_read_timeout 86400;
-    }
-}
-```
-
-Kích hoạt cấu hình:
-
-```bash
-sudo ln -s /etc/nginx/sites-available/survey_app.conf /etc/nginx/sites-enabled/
-sudo nginx -t  # Kiểm tra cấu hình
+sudo cp /var/www/survey_app/nginx_config.conf /etc/nginx/sites-available/survey_app.conf
+sudo ln -sf /etc/nginx/sites-available/survey_app.conf /etc/nginx/sites-enabled/
+sudo nginx -t
 sudo systemctl restart nginx
 ```
 
-### 6. Cấu Hình HTTPS (SSL)
-
-Cài đặt Certbot:
+### 3.7 Cấu hình HTTPS với Certbot
 
 ```bash
 sudo apt install -y certbot python3-certbot-nginx
-```
-
-Lấy chứng chỉ SSL:
-
-```bash
 sudo certbot --nginx -d hhd.one -d www.hhd.one
 ```
 
-Làm theo hướng dẫn trên màn hình để hoàn tất cài đặt SSL.
+## 4. Xác minh cài đặt
 
-### 7. Kiểm Tra Triển Khai
+Sau khi cài đặt, bạn có thể xác minh rằng ứng dụng đang chạy:
 
-Truy cập vào domain của bạn (https://hhd.one) để xác nhận rằng ứng dụng đang hoạt động.
+1. Kiểm tra trạng thái Supervisor:
+   ```bash
+   sudo supervisorctl status survey_app
+   ```
 
-## Quản Lý Ứng Dụng
+2. Kiểm tra logs:
+   ```bash
+   sudo tail -f /var/log/survey_app/streamlit.out.log
+   ```
 
-### Khởi động/dừng ứng dụng:
+3. Truy cập ứng dụng web:
+   - Nếu bạn đã cấu hình tên miền: https://hhd.one
+   - Nếu chưa: http://your_server_ip:5000
 
+## 5. Khắc phục sự cố
+
+### 5.1 Ứng dụng không khởi động
+
+Kiểm tra logs lỗi:
 ```bash
-sudo supervisorctl start survey_app
-sudo supervisorctl stop survey_app
-sudo supervisorctl restart survey_app
-```
-
-### Xem logs:
-
-```bash
-sudo tail -f /var/log/survey_app/streamlit.out.log
 sudo tail -f /var/log/survey_app/streamlit.err.log
 ```
 
-### Cập nhật ứng dụng:
+### 5.2 Vấn đề quyền truy cập
+
+Đảm bảo quyền phù hợp cho thư mục ứng dụng:
+```bash
+sudo chown -R www-data:www-data /var/www/survey_app
+sudo chown -R www-data:www-data /var/log/survey_app
+```
+
+### 5.3 Nginx không hoạt động
+
+Kiểm tra cấu hình Nginx:
+```bash
+sudo nginx -t
+```
+
+Kiểm tra logs Nginx:
+```bash
+sudo tail -f /var/log/nginx/error.log
+```
+
+### 5.4 Khởi động lại các dịch vụ
 
 ```bash
-cd /var/www/survey_app
-source venv/bin/activate
-# Tải và giải nén phiên bản mới
-# cập nhật các dependencies nếu cần
-pip install -r deployment_requirements.txt
+sudo systemctl restart nginx
 sudo supervisorctl restart survey_app
 ```
 
-## Khắc Phục Sự Cố
+## 6. Bảo trì
 
-### Ứng dụng không khởi động:
-- Kiểm tra logs: `sudo tail -f /var/log/survey_app/streamlit.err.log`
-- Xác minh môi trường ảo: `cd /var/www/survey_app && source venv/bin/activate`
-- Kiểm tra cài đặt: `pip list | grep streamlit`
+### 6.1 Sao lưu dữ liệu
 
-### Không thể truy cập trang web:
-- Kiểm tra trạng thái Nginx: `sudo systemctl status nginx`
-- Kiểm tra cấu hình Nginx: `sudo nginx -t`
-- Xác minh rằng Streamlit đang chạy: `sudo supervisorctl status survey_app`
+Dữ liệu khảo sát được lưu trữ trong các tệp JSON. Hãy sao lưu chúng thường xuyên:
+```bash
+sudo cp /var/www/survey_app/surveys.json /backup/surveys_$(date +%Y%m%d).json
+sudo cp /var/www/survey_app/responses.json /backup/responses_$(date +%Y%m%d).json
+```
 
-### Các vấn đề về quyền:
-- Đảm bảo thư mục ứng dụng có quyền thích hợp: `sudo chown -R www-data:www-data /var/www/survey_app`
-- Kiểm tra quyền của thư mục log: `sudo chown -R www-data:www-data /var/log/survey_app`
+### 6.2 Cập nhật mã nguồn
 
-## Liên Hệ Hỗ Trợ
+Khi có phiên bản mới:
+```bash
+# Sao lưu dữ liệu hiện tại
+sudo cp /var/www/survey_app/surveys.json /backup/surveys_$(date +%Y%m%d).json
+sudo cp /var/www/survey_app/responses.json /backup/responses_$(date +%Y%m%d).json
 
-Nếu bạn gặp vấn đề trong quá trình triển khai, vui lòng liên hệ đội hỗ trợ kỹ thuật tại: support@hhd.one
+# Cập nhật mã nguồn (ví dụ, từ tệp nén mới)
+cd /tmp
+unzip new_survey_app.zip
+sudo cp -r new_survey_app/* /var/www/survey_app/
 
----
+# Cập nhật dependencies nếu cần
+cd /var/www/survey_app
+source venv/bin/activate
+pip install -r deployment_requirements.txt
 
-Tài liệu này được cập nhật lần cuối vào: 02/05/2025
+# Khôi phục dữ liệu nếu cần
+sudo cp /backup/surveys_$(date +%Y%m%d).json /var/www/survey_app/surveys.json
+sudo cp /backup/responses_$(date +%Y%m%d).json /var/www/survey_app/responses.json
+
+# Khởi động lại ứng dụng
+sudo supervisorctl restart survey_app
+```
+
+## 7. Tùy chỉnh
+
+### 7.1 Thay đổi cổng
+
+Nếu bạn muốn chạy ứng dụng trên cổng khác, cập nhật các tệp sau:
+- `/var/www/survey_app/.streamlit/config.toml`
+- `/etc/supervisor/conf.d/survey_app.conf`
+- `/etc/nginx/sites-available/survey_app.conf`
+
+### 7.2 Thay đổi domain
+
+Nếu bạn muốn sử dụng tên miền khác, cập nhật:
+- `/etc/nginx/sites-available/survey_app.conf`
+- Sau đó chạy lại Certbot với tên miền mới
+
+## 8. Bảo mật
+
+- Đảm bảo cập nhật hệ thống thường xuyên: `sudo apt update && sudo apt upgrade -y`
+- Cân nhắc thêm tường lửa UFW: `sudo ufw allow 80/tcp && sudo ufw allow 443/tcp && sudo ufw allow 22/tcp`
+- Kiểm tra và đảm bảo HTTPS được cấu hình đúng
+- Xem xét thêm xác thực cơ bản HTTP nếu cần hạn chế truy cập
+
+## Thông tin liên hệ
+
+Nếu bạn gặp vấn đề trong quá trình triển khai, vui lòng liên hệ support@hhd.one

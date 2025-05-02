@@ -5,7 +5,7 @@ import json
 
 # Set page configuration
 st.set_page_config(
-    page_title="Khảo Sát Động Lực Làm Việc",
+    page_title="Khảo sát về Ảnh hưởng của Vốn xã hội, Vốn nhân lực đến phát triển bền vững của doanh nghiệp trên địa bàn tỉnh Hưng Yên",
     page_icon="📊",
     layout="wide",
     initial_sidebar_state="expanded",
@@ -19,6 +19,45 @@ if 'surveys' not in st.session_state:
             st.session_state.surveys = json.load(f)
     else:
         st.session_state.surveys = {}
+        
+    # Tự động tạo khảo sát mẫu nếu không có khảo sát nào
+    if not st.session_state.surveys:
+        import uuid
+        import datetime
+        from utils.survey_utils import save_surveys
+        
+        default_survey_id = str(uuid.uuid4())
+        default_survey = {
+            "title": "Khảo sát về Ảnh hưởng của Vốn xã hội, Vốn nhân lực đến phát triển bền vững của doanh nghiệp trên địa bàn tỉnh Hưng Yên",
+            "description": "Khảo sát này nhằm đánh giá ảnh hưởng của vốn xã hội và vốn nhân lực đến sự phát triển bền vững của doanh nghiệp trên địa bàn tỉnh Hưng Yên",
+            "created_date": datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
+            "questions": [
+                {
+                    "type": "multiple_choice",
+                    "question_text": "Doanh nghiệp của bạn thuộc loại hình nào?",
+                    "required": True,
+                    "options": ["Doanh nghiệp tư nhân", "Công ty TNHH", "Công ty cổ phần", "Doanh nghiệp nhà nước", "Khác"]
+                },
+                {
+                    "type": "likert_scale",
+                    "question_text": "Vốn xã hội đóng vai trò quan trọng đối với sự phát triển của doanh nghiệp",
+                    "required": True,
+                    "scale_min": 1,
+                    "scale_max": 5,
+                    "scale_labels": ["Hoàn toàn không đồng ý", "Không đồng ý", "Trung lập", "Đồng ý", "Hoàn toàn đồng ý"]
+                },
+                {
+                    "type": "likert_scale",
+                    "question_text": "Vốn nhân lực có ảnh hưởng tích cực đến khả năng cạnh tranh của doanh nghiệp",
+                    "required": True,
+                    "scale_min": 1,
+                    "scale_max": 5,
+                    "scale_labels": ["Hoàn toàn không đồng ý", "Không đồng ý", "Trung lập", "Đồng ý", "Hoàn toàn đồng ý"]
+                }
+            ]
+        }
+        st.session_state.surveys[default_survey_id] = default_survey
+        save_surveys(st.session_state.surveys)
 
 if 'responses' not in st.session_state:
     # Check if there are saved responses
@@ -35,7 +74,7 @@ if 'current_survey_id' not in st.session_state:
     st.session_state.current_survey_id = None
 
 # Main page
-st.title("Khảo Sát Động Lực Làm Việc")
+st.title("Khảo sát về Ảnh hưởng của Vốn xã hội, Vốn nhân lực đến phát triển bền vững của doanh nghiệp trên địa bàn tỉnh Hưng Yên")
 
 # Dashboard summary
 st.header("Bảng Điều Khiển")
@@ -133,17 +172,17 @@ with col4:
         st.switch_page("pages/4_Data_Analysis.py")
 
 # Thông tin thêm về khảo sát động lực làm việc
-st.subheader("📌 Giới Thiệu Về Khảo Sát Động Lực Làm Việc")
+st.subheader("📌 Giới Thiệu Về Khảo sát về Ảnh hưởng của Vốn xã hội, Vốn nhân lực đến phát triển bền vững của doanh nghiệp trên địa bàn tỉnh Hưng Yên")
 st.markdown("""
-Ứng dụng này hiện đang chứa dữ liệu khảo sát về các yếu tố ảnh hưởng đến động lực làm việc và kết quả công việc của nhân viên, bao gồm:
+Ứng dụng này hiện đang chứa dữ liệu khảo sát về các yếu tố ảnh hưởng của Vốn xã hội, Vốn nhân lực đến phát triển bền vững của doanh nghiệp trên địa bàn tỉnh Hưng Yên, bao gồm:
 
-- **Vốn xã hội trong tổ chức**: Đánh giá mức độ tin tưởng, kết nối và hợp tác giữa các thành viên
-- **Yếu tố động lực làm việc**: Xác định các yếu tố thúc đẩy nhân viên làm việc hiệu quả
-- **Yếu tố tâm lý công việc**: Đánh giá trạng thái tâm lý, sự hài lòng và cam kết với công việc
-- **Kết quả công việc**: Đo lường hiệu suất và kết quả đạt được
-- **Thông tin nhân khẩu học**: Thu thập dữ liệu về đặc điểm của người tham gia
+- **Vốn xã hội trong doanh nghiệp**: Đánh giá mức độ tin tưởng, kết nối và hợp tác giữa các thành viên trong doanh nghiệp
+- **Vốn nhân lực của doanh nghiệp**: Đánh giá về kỹ năng, kiến thức, kinh nghiệm và khả năng đổi mới của nhân lực
+- **Phát triển bền vững của doanh nghiệp**: Đánh giá về khía cạnh kinh tế, xã hội và môi trường
+- **Các nhân tố ảnh hưởng**: Xác định các yếu tố bên trong và bên ngoài ảnh hưởng đến sự phát triển
+- **Thông tin doanh nghiệp**: Thu thập dữ liệu về quy mô, lĩnh vực hoạt động, thời gian thành lập
 
-Dữ liệu này có thể được sử dụng để phân tích và đưa ra các quyết định quản lý nhân sự hiệu quả.
+Dữ liệu này sẽ được sử dụng để phân tích và đưa ra các đề xuất cho việc phát triển bền vững của doanh nghiệp tại tỉnh Hưng Yên.
 """)
 
 # Getting started guide
@@ -162,4 +201,4 @@ Sử dụng menu điều hướng bên trái để truy cập các tính năng n
 
 # Footer
 st.markdown("---")
-st.markdown("📊 Ứng Dụng Khảo Sát - Công cụ tạo biểu mẫu, thu thập dữ liệu và phân tích thống kê")
+st.markdown("📊 Khảo sát về Ảnh hưởng của Vốn xã hội, Vốn nhân lực đến phát triển bền vững của doanh nghiệp trên địa bàn tỉnh Hưng Yên - Công cụ tạo biểu mẫu, thu thập dữ liệu và phân tích thống kê")
