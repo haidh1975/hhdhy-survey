@@ -5,7 +5,7 @@ import datetime
 from utils.survey_utils import render_survey_form, submit_survey_response, load_surveys
 
 st.set_page_config(
-    page_title="Quản lý biểu mẫu",
+    page_title="Khảo sát về Ảnh hưởng của Vốn xã hội, Vốn nhân lực đến phát triển bền vững của doanh nghiệp trên địa bàn tỉnh Hưng Yên",
     page_icon="📋",
     layout="wide",
 )
@@ -22,7 +22,7 @@ if 'surveys' not in st.session_state:
 params = st.query_params
 
 # Title and introduction
-st.title("Quản lý biểu mẫu")
+st.title("Quản lý biểu mẫu - Khảo sát về Ảnh hưởng của Vốn xã hội, Vốn nhân lực đến phát triển bền vững của doanh nghiệp")
 
 # Choose survey to answer
 if "survey" in params:
