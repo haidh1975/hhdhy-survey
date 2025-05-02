@@ -19,6 +19,45 @@ if 'surveys' not in st.session_state:
             st.session_state.surveys = json.load(f)
     else:
         st.session_state.surveys = {}
+        
+    # Tự động tạo khảo sát mẫu nếu không có khảo sát nào
+    if not st.session_state.surveys:
+        import uuid
+        import datetime
+        from utils.survey_utils import save_surveys
+        
+        default_survey_id = str(uuid.uuid4())
+        default_survey = {
+            "title": "Khảo sát về Ảnh hưởng của Vốn xã hội, Vốn nhân lực đến phát triển bền vững của doanh nghiệp trên địa bàn tỉnh Hưng Yên",
+            "description": "Khảo sát này nhằm đánh giá ảnh hưởng của vốn xã hội và vốn nhân lực đến sự phát triển bền vững của doanh nghiệp trên địa bàn tỉnh Hưng Yên",
+            "created_date": datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
+            "questions": [
+                {
+                    "type": "multiple_choice",
+                    "question_text": "Doanh nghiệp của bạn thuộc loại hình nào?",
+                    "required": True,
+                    "options": ["Doanh nghiệp tư nhân", "Công ty TNHH", "Công ty cổ phần", "Doanh nghiệp nhà nước", "Khác"]
+                },
+                {
+                    "type": "likert_scale",
+                    "question_text": "Vốn xã hội đóng vai trò quan trọng đối với sự phát triển của doanh nghiệp",
+                    "required": True,
+                    "scale_min": 1,
+                    "scale_max": 5,
+                    "scale_labels": ["Hoàn toàn không đồng ý", "Không đồng ý", "Trung lập", "Đồng ý", "Hoàn toàn đồng ý"]
+                },
+                {
+                    "type": "likert_scale",
+                    "question_text": "Vốn nhân lực có ảnh hưởng tích cực đến khả năng cạnh tranh của doanh nghiệp",
+                    "required": True,
+                    "scale_min": 1,
+                    "scale_max": 5,
+                    "scale_labels": ["Hoàn toàn không đồng ý", "Không đồng ý", "Trung lập", "Đồng ý", "Hoàn toàn đồng ý"]
+                }
+            ]
+        }
+        st.session_state.surveys[default_survey_id] = default_survey
+        save_surveys(st.session_state.surveys)
 
 if 'responses' not in st.session_state:
     # Check if there are saved responses
