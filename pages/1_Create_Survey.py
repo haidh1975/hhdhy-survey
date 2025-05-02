@@ -273,10 +273,14 @@ if st.session_state.current_survey["questions"]:
             
             col1, col2 = st.columns(2)
             with col1:
-                if st.button(f"Edit Question {i+1}", key=f"edit_{i}"):
+                # Thêm unique_key để tránh trùng lặp
+                unique_key = f"edit_{i}_{question['question_text'][:10]}"
+                if st.button(f"Edit Question {i+1}", key=unique_key):
                     edit_question(i)
                     st.rerun()
             with col2:
-                if st.button(f"Delete Question {i+1}", key=f"delete_{i}"):
+                # Thêm unique_key để tránh trùng lặp
+                unique_key = f"delete_{i}_{question['question_text'][:10]}"
+                if st.button(f"Delete Question {i+1}", key=unique_key):
                     delete_question(i)
                     st.rerun()
