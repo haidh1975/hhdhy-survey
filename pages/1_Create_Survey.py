@@ -5,6 +5,9 @@ import datetime
 import os
 from utils.survey_utils import save_surveys
 from utils.auth import require_auth, get_current_user
+from utils.db_utils import create_survey_db, get_surveys_db, get_survey_by_uuid_db, update_survey_db
+from utils.models import User
+from utils.database import SessionLocal
 
 st.set_page_config(
     page_title="Khảo sát về Ảnh hưởng của Vốn xã hội, Vốn nhân lực đến phát triển bền vững của doanh nghiệp trên địa bàn tỉnh Hưng Yên",
@@ -15,48 +18,37 @@ st.set_page_config(
 # Require authentication to access this page
 require_auth()
 
-# Initialize session state variables if they don't exist
-if 'surveys' not in st.session_state:
-    if os.path.exists('surveys.json'):
-        with open('surveys.json', 'r') as f:
-            st.session_state.surveys = json.load(f)
-    else:
-        st.session_state.surveys = {}
+# Load surveys from database
+@st.cache_data(ttl=30)  # Cache for 30 seconds
+def load_surveys_from_db():
+    """Load surveys from database"""
+    surveys = get_surveys_db()
+    surveys_dict = {}
+    for survey in surveys:
+        surveys_dict[survey['uuid']] = {
+            'title': survey['title'],
+            'description': survey['description'],
+            'questions': survey['questions'],
+            'created_date': survey['created_at'][:19] if survey['created_at'] else '',
+            'created_by': survey['created_by']
+        }
+    return surveys_dict
 
-# Tự động tạo khảo sát mẫu nếu không có khảo sát nào
-if not st.session_state.surveys:
-    default_survey_id = str(uuid.uuid4())
-    default_survey = {
-        "title": "Khảo sát về Ảnh hưởng của Vốn xã hội, Vốn nhân lực đến phát triển bền vững của doanh nghiệp trên địa bàn tỉnh Hưng Yên",
-        "description": "Khảo sát này nhằm đánh giá ảnh hưởng của vốn xã hội và vốn nhân lực đến sự phát triển bền vững của doanh nghiệp trên địa bàn tỉnh Hưng Yên",
-        "created_date": datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
-        "questions": [
-            {
-                "type": "multiple_choice",
-                "question_text": "Doanh nghiệp của bạn thuộc loại hình nào?",
-                "required": True,
-                "options": ["Doanh nghiệp tư nhân", "Công ty TNHH", "Công ty cổ phần", "Doanh nghiệp nhà nước", "Khác"]
-            },
-            {
-                "type": "likert_scale",
-                "question_text": "Vốn xã hội đóng vai trò quan trọng đối với sự phát triển của doanh nghiệp",
-                "required": True,
-                "scale_min": 1,
-                "scale_max": 5,
-                "scale_labels": ["Hoàn toàn không đồng ý", "Không đồng ý", "Trung lập", "Đồng ý", "Hoàn toàn đồng ý"]
-            },
-            {
-                "type": "likert_scale",
-                "question_text": "Vốn nhân lực có ảnh hưởng tích cực đến khả năng cạnh tranh của doanh nghiệp",
-                "required": True,
-                "scale_min": 1,
-                "scale_max": 5,
-                "scale_labels": ["Hoàn toàn không đồng ý", "Không đồng ý", "Trung lập", "Đồng ý", "Hoàn toàn đồng ý"]
-            }
-        ]
-    }
-    st.session_state.surveys[default_survey_id] = default_survey
-    save_surveys(st.session_state.surveys)
+# Load surveys from database
+st.session_state.surveys = load_surveys_from_db()
+
+def get_current_user_id():
+    """Get current user ID from database"""
+    current_username = get_current_user()
+    if not current_username:
+        return None
+    
+    session = SessionLocal()
+    try:
+        user = session.query(User).filter(User.username == current_username).first()
+        return user.id if user else None
+    finally:
+        session.close()
 
 if 'current_survey' not in st.session_state or st.session_state.current_survey is None:
     # Tự động tải khảo sát đầu tiên nếu có
@@ -93,29 +85,43 @@ def create_new_survey():
 # Function to save the current survey
 def save_survey():
     if not st.session_state.current_survey["title"]:
-        st.error("Please provide a survey title.")
+        st.error("Vui lòng nhập tiêu đề khảo sát.")
         return
     
     if not st.session_state.current_survey["questions"]:
-        st.error("Please add at least one question to your survey.")
+        st.error("Vui lòng thêm ít nhất một câu hỏi vào khảo sát.")
         return
     
-    # Generate a new ID if not editing an existing survey
+    # Get current user ID
+    user_id = get_current_user_id()
+    if not user_id:
+        st.error("Không thể xác định người dùng hiện tại.")
+        return
+    
+    title = st.session_state.current_survey["title"]
+    description = st.session_state.current_survey.get("description", "")
+    questions = st.session_state.current_survey["questions"]
+    
     if st.session_state.current_survey_id is None:
-        survey_id = str(uuid.uuid4())
-        st.session_state.current_survey_id = survey_id
+        # Create new survey
+        success, message, survey_uuid = create_survey_db(title, description, questions, user_id)
+        if success:
+            st.success(f"Khảo sát '{title}' đã được tạo thành công!")
+            st.session_state.current_survey_id = survey_uuid
+            # Refresh surveys list
+            st.session_state.surveys = load_surveys_from_db()
+            create_new_survey()
+        else:
+            st.error(f"Lỗi tạo khảo sát: {message}")
     else:
-        survey_id = st.session_state.current_survey_id
-    
-    # Add creation date
-    st.session_state.current_survey["created_date"] = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-    
-    # Save the survey
-    st.session_state.surveys[survey_id] = st.session_state.current_survey
-    save_surveys(st.session_state.surveys)
-    
-    st.success(f"Survey '{st.session_state.current_survey['title']}' saved successfully!")
-    create_new_survey()
+        # Update existing survey
+        success, message = update_survey_db(st.session_state.current_survey_id, title, description, questions)
+        if success:
+            st.success(f"Khảo sát '{title}' đã được cập nhật thành công!")
+            # Refresh surveys list
+            st.session_state.surveys = load_surveys_from_db()
+        else:
+            st.error(f"Lỗi cập nhật khảo sát: {message}")
 
 # Function to add a question to the survey
 def add_question(question_type):

@@ -10,6 +10,7 @@ from utils.auth import (
     logout_user,
     is_admin
 )
+from utils.db_utils import get_surveys_db, get_system_stats_db
 
 # Set page configuration
 st.set_page_config(
@@ -22,61 +23,34 @@ st.set_page_config(
 # Initialize authentication system
 initialize_admin_user()
 
-# Initialize session state variables if they don't exist
-if 'surveys' not in st.session_state:
-    # Check if there are saved surveys
-    if os.path.exists('surveys.json'):
-        with open('surveys.json', 'r') as f:
-            st.session_state.surveys = json.load(f)
-    else:
-        st.session_state.surveys = {}
-        
-    # Tự động tạo khảo sát mẫu nếu không có khảo sát nào
-    if not st.session_state.surveys:
-        import uuid
-        import datetime
-        from utils.survey_utils import save_surveys
-        
-        default_survey_id = str(uuid.uuid4())
-        default_survey = {
-            "title": "Khảo sát về Ảnh hưởng của Vốn xã hội, Vốn nhân lực đến phát triển bền vững của doanh nghiệp trên địa bàn tỉnh Hưng Yên",
-            "description": "Khảo sát này nhằm đánh giá ảnh hưởng của vốn xã hội và vốn nhân lực đến sự phát triển bền vững của doanh nghiệp trên địa bàn tỉnh Hưng Yên",
-            "created_date": datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
-            "questions": [
-                {
-                    "type": "multiple_choice",
-                    "question_text": "Doanh nghiệp của bạn thuộc loại hình nào?",
-                    "required": True,
-                    "options": ["Doanh nghiệp tư nhân", "Công ty TNHH", "Công ty cổ phần", "Doanh nghiệp nhà nước", "Khác"]
-                },
-                {
-                    "type": "likert_scale",
-                    "question_text": "Vốn xã hội đóng vai trò quan trọng đối với sự phát triển của doanh nghiệp",
-                    "required": True,
-                    "scale_min": 1,
-                    "scale_max": 5,
-                    "scale_labels": ["Hoàn toàn không đồng ý", "Không đồng ý", "Trung lập", "Đồng ý", "Hoàn toàn đồng ý"]
-                },
-                {
-                    "type": "likert_scale",
-                    "question_text": "Vốn nhân lực có ảnh hưởng tích cực đến khả năng cạnh tranh của doanh nghiệp",
-                    "required": True,
-                    "scale_min": 1,
-                    "scale_max": 5,
-                    "scale_labels": ["Hoàn toàn không đồng ý", "Không đồng ý", "Trung lập", "Đồng ý", "Hoàn toàn đồng ý"]
-                }
-            ]
+# Load surveys from database instead of session state
+@st.cache_data(ttl=60)  # Cache for 1 minute
+def load_surveys_from_db():
+    """Load surveys from database with caching"""
+    surveys = get_surveys_db()
+    # Convert to format compatible with existing code
+    surveys_dict = {}
+    for survey in surveys:
+        surveys_dict[survey['uuid']] = {
+            'title': survey['title'],
+            'description': survey['description'],
+            'questions': survey['questions'],
+            'created_date': survey['created_at'][:19] if survey['created_at'] else '',
+            'created_by': survey['created_by']
         }
-        st.session_state.surveys[default_survey_id] = default_survey
-        save_surveys(st.session_state.surveys)
+    return surveys_dict
 
-if 'responses' not in st.session_state:
-    # Check if there are saved responses
-    if os.path.exists('responses.json'):
-        with open('responses.json', 'r') as f:
-            st.session_state.responses = json.load(f)
-    else:
-        st.session_state.responses = {}
+@st.cache_data(ttl=60)  # Cache for 1 minute  
+def load_system_stats():
+    """Load system statistics from database"""
+    return get_system_stats_db()
+
+# Load current surveys
+surveys_data = load_surveys_from_db()
+st.session_state.surveys = surveys_data
+
+# Load system stats
+stats = load_system_stats()
 
 if 'current_survey' not in st.session_state:
     st.session_state.current_survey = None
@@ -125,14 +99,15 @@ st.header("Bảng Điều Khiển")
 col1, col2, col3, col4 = st.columns(4)
 
 with col1:
-    st.metric(label="Tổng Số Khảo Sát", value=len(st.session_state.surveys))
+    total_surveys = stats.get('surveys', {}).get('total', 0)
+    st.metric(label="Tổng Số Khảo Sát", value=total_surveys)
 
 with col2:
-    total_responses = sum(len(responses) for responses in st.session_state.responses.values())
+    total_responses = stats.get('responses', {}).get('total', 0)
     st.metric(label="Tổng Số Phản Hồi", value=total_responses)
 
 with col3:
-    avg_responses = total_responses / len(st.session_state.surveys) if st.session_state.surveys else 0
+    avg_responses = total_responses / total_surveys if total_surveys > 0 else 0
     st.metric(label="Phản Hồi Trung Bình", value=f"{avg_responses:.1f}")
 
 with col4:
@@ -144,16 +119,17 @@ with col4:
 st.subheader("Khảo Sát Hiện Có")
 
 if st.session_state.surveys:
-    # Convert surveys to DataFrame for display
+    # Convert surveys to DataFrame for display using database data
     survey_data = []
-    for survey_id, survey in st.session_state.surveys.items():
-        response_count = len(st.session_state.responses.get(survey_id, []))
+    db_surveys = get_surveys_db()
+    
+    for survey in db_surveys:
         survey_data.append({
-            "ID Khảo Sát": survey_id[:8] + "...",  # Hiển thị rút gọn ID
+            "ID Khảo Sát": survey['uuid'][:8] + "...",  # Hiển thị rút gọn ID
             "Tiêu Đề": survey["title"],
-            "Ngày Tạo": survey.get("created_date", "N/A"),
+            "Ngày Tạo": survey.get("created_at", "N/A")[:10] if survey.get("created_at") else "N/A",
             "Số Câu Hỏi": len(survey["questions"]),
-            "Số Phản Hồi": response_count
+            "Số Phản Hồi": survey.get("response_count", 0)
         })
     
     survey_df = pd.DataFrame(survey_data)
@@ -182,7 +158,10 @@ if st.session_state.surveys:
         st.write(f"**Mô tả:** {selected_survey.get('description', 'Không có mô tả')}")
         st.write(f"**Ngày tạo:** {selected_survey.get('created_date', 'N/A')}")
         st.write(f"**Số câu hỏi:** {len(selected_survey['questions'])}")
-        st.write(f"**Số phản hồi:** {len(st.session_state.responses.get(selected_survey_id, []))}")
+        # Get response count from database for this survey
+        from utils.db_utils import get_responses_db
+        response_count = len(get_responses_db(selected_survey_id))
+        st.write(f"**Số phản hồi:** {response_count}")
         
         # Hiển thị một số câu hỏi mẫu từ khảo sát
         st.write("**Các câu hỏi mẫu:**")
