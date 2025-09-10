@@ -2,6 +2,7 @@
 Custom UI Components and Styling for Survey Application
 """
 import streamlit as st
+from typing import Optional
 
 def apply_custom_css():
     """Apply custom CSS styling to improve UI/UX"""
@@ -320,7 +321,7 @@ def apply_custom_css():
     </style>
     """, unsafe_allow_html=True)
 
-def create_metric_card(title: str, value: str, delta: str = None, help_text: str = None):
+def create_metric_card(title: str, value: str, delta: Optional[str] = None, help_text: Optional[str] = None):
     """Create a custom metric card"""
     delta_html = f'<div class="metric-delta">{delta}</div>' if delta else ''
     help_html = f'<div class="metric-help">{help_text}</div>' if help_text else ''

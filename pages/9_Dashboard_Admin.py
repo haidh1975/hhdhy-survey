@@ -94,7 +94,8 @@ with col1:
         
         if survey_dates:
             df_surveys = pd.DataFrame({'date': survey_dates})
-            daily_surveys = df_surveys.groupby('date').size().reset_index(name='count')
+            daily_surveys = df_surveys.groupby('date').size().reset_index()
+            daily_surveys.columns = ['date', 'count']
             
             fig_surveys = px.line(
                 daily_surveys, 
@@ -288,7 +289,7 @@ col1, col2, col3, col4 = st.columns(4)
 with col1:
     if st.button("🔄 Làm mới dữ liệu", use_container_width=True):
         st.cache_data.clear()
-        st.experimental_rerun()
+        st.rerun()
 
 with col2:
     if st.button("📊 Xem thống kê chi tiết", use_container_width=True):

@@ -69,7 +69,7 @@ class SurveyPDFGenerator:
         survey_data: Dict[str, Any],
         responses_data: List[Dict[str, Any]],
         analysis_results: Dict[str, Any],
-        charts: List[go.Figure] = None
+        charts: Optional[List[go.Figure]] = None
     ) -> bytes:
         """
         Generate comprehensive survey analysis PDF report
@@ -314,7 +314,8 @@ class SurveyPDFGenerator:
             
             if response_dates:
                 df_dates = pd.DataFrame({'date': response_dates})
-                daily_counts = df_dates.groupby('date').size().reset_index(name='count')
+                daily_counts = df_dates.groupby('date').size().reset_index()
+                daily_counts.columns = ['date', 'count']
                 
                 # Timeline table
                 timeline_header = Paragraph("TIMELINE PHẢN HỒI", self.subheader_style)
@@ -323,7 +324,7 @@ class SurveyPDFGenerator:
                 timeline_data = [['Ngày', 'Số phản hồi']]
                 for _, row in daily_counts.tail(10).iterrows():  # Show last 10 days
                     timeline_data.append([
-                        row['date'].strftime('%d/%m/%Y'),
+                        str(pd.to_datetime(row['date']).strftime('%d/%m/%Y')),
                         str(row['count'])
                     ])
                 

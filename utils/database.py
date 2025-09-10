@@ -1,6 +1,6 @@
 import os
 import logging
-from sqlalchemy import create_engine, MetaData
+from sqlalchemy import create_engine, MetaData, text
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy.exc import SQLAlchemyError
@@ -70,7 +70,7 @@ def test_connection():
     """
     try:
         session = SessionLocal()
-        session.execute("SELECT 1")
+        session.execute(text("SELECT 1"))
         session.close()
         logger.info("Database connection successful")
         return True
@@ -84,7 +84,7 @@ def execute_raw_sql(sql_query: str, params: dict = None):
     """
     try:
         session = SessionLocal()
-        result = session.execute(sql_query, params or {})
+        result = session.execute(text(sql_query), params or {})
         session.commit()
         
         # For SELECT queries, fetch results
@@ -109,7 +109,7 @@ def check_database_health():
         session = SessionLocal()
         
         # Test basic operations
-        result = session.execute("SELECT COUNT(*) FROM information_schema.tables WHERE table_schema = 'public'")
+        result = session.execute(text("SELECT COUNT(*) FROM information_schema.tables WHERE table_schema = 'public'"))
         table_count = result.scalar()
         
         session.close()
