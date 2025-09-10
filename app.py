@@ -2,6 +2,14 @@ import streamlit as st
 import pandas as pd
 import os
 import json
+from utils.auth import (
+    initialize_admin_user, 
+    is_authenticated, 
+    get_current_user, 
+    get_user_role, 
+    logout_user,
+    is_admin
+)
 
 # Set page configuration
 st.set_page_config(
@@ -10,6 +18,9 @@ st.set_page_config(
     layout="wide",
     initial_sidebar_state="expanded",
 )
+
+# Initialize authentication system
+initialize_admin_user()
 
 # Initialize session state variables if they don't exist
 if 'surveys' not in st.session_state:
@@ -72,6 +83,38 @@ if 'current_survey' not in st.session_state:
 
 if 'current_survey_id' not in st.session_state:
     st.session_state.current_survey_id = None
+
+# Sidebar authentication info
+with st.sidebar:
+    st.markdown("### 👤 Thông tin người dùng")
+    
+    if is_authenticated():
+        current_user = get_current_user()
+        user_role = get_user_role()
+        
+        st.success(f"Đã đăng nhập: **{current_user}**")
+        
+        role_display = "Quản trị viên" if user_role == "admin" else "Người dùng"
+        st.info(f"Vai trò: {role_display}")
+        
+        # Admin quick access
+        if is_admin():
+            st.markdown("### ⚙️ Quản trị viên")
+            if st.button("🔧 Panel quản trị", use_container_width=True):
+                st.switch_page("pages/8_Admin.py")
+        
+        # Logout button
+        if st.button("🚪 Đăng xuất", use_container_width=True):
+            logout_user()
+            st.rerun()
+    else:
+        st.warning("Chưa đăng nhập")
+        if st.button("🔐 Đăng nhập", use_container_width=True):
+            st.switch_page("pages/6_Login.py")
+        if st.button("📝 Đăng ký", use_container_width=True):
+            st.switch_page("pages/7_Register.py")
+    
+    st.markdown("---")
 
 # Main page
 st.title("Khảo sát về Ảnh hưởng của Vốn xã hội, Vốn nhân lực đến phát triển bền vững của doanh nghiệp trên địa bàn tỉnh Hưng Yên")

@@ -4,12 +4,16 @@ import uuid
 import datetime
 import os
 from utils.survey_utils import save_surveys
+from utils.auth import require_auth, get_current_user
 
 st.set_page_config(
     page_title="Khảo sát về Ảnh hưởng của Vốn xã hội, Vốn nhân lực đến phát triển bền vững của doanh nghiệp trên địa bàn tỉnh Hưng Yên",
     page_icon="📝",
     layout="wide",
 )
+
+# Require authentication to access this page
+require_auth()
 
 # Initialize session state variables if they don't exist
 if 'surveys' not in st.session_state:

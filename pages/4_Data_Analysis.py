@@ -8,12 +8,16 @@ import plotly.graph_objects as go
 from utils.data_analysis import calculate_statistics
 from utils.visualization import create_chart
 from utils.advanced_analysis import calculate_cronbach_alpha, perform_efa, perform_regression, simple_cfa_evaluation
+from utils.auth import require_auth, get_current_user
 
 st.set_page_config(
     page_title="Khảo sát về Ảnh hưởng của Vốn xã hội, Vốn nhân lực đến phát triển bền vững của doanh nghiệp trên địa bàn tỉnh Hưng Yên",
     page_icon="📈",
     layout="wide",
 )
+
+# Require authentication to access this page
+require_auth()
 
 # Initialize session state variables if they don't exist
 if 'surveys' not in st.session_state:
