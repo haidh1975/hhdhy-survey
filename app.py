@@ -11,6 +11,7 @@ from utils.auth import (
     is_admin
 )
 from utils.db_utils import get_surveys_db, get_system_stats_db
+from utils.ui_components import apply_custom_css, add_footer
 
 # Set page configuration
 st.set_page_config(
@@ -22,6 +23,9 @@ st.set_page_config(
 
 # Initialize authentication system
 initialize_admin_user()
+
+# Apply custom CSS styling
+apply_custom_css()
 
 # Load surveys from database instead of session state
 @st.cache_data(ttl=60)  # Cache for 1 minute
