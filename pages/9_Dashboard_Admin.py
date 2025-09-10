@@ -284,7 +284,7 @@ with tab4:
 # Quick actions
 st.header("⚡ Thao tác nhanh")
 
-col1, col2, col3, col4 = st.columns(4)
+col1, col2, col3, col4, col5 = st.columns(5)
 
 with col1:
     if st.button("🔄 Làm mới dữ liệu", use_container_width=True):
@@ -292,14 +292,18 @@ with col1:
         st.rerun()
 
 with col2:
+    if st.button("☁️ Backup Google Drive", use_container_width=True):
+        st.switch_page("pages/10_Google_Drive_Backup.py")
+
+with col3:
     if st.button("📊 Xem thống kê chi tiết", use_container_width=True):
         st.switch_page("pages/4_Data_Analysis.py")
 
-with col3:
+with col4:
     if st.button("👥 Quản lý người dùng", use_container_width=True):
         st.switch_page("pages/8_Admin.py")
 
-with col4:
+with col5:
     if st.button("🏠 Về trang chủ", use_container_width=True):
         st.switch_page("app.py")
 
