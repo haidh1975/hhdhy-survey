@@ -133,7 +133,7 @@ else:
                         # Handle multiple selection questions (checkbox)
                         if q_type == "checkbox":
                             # For checkbox responses (lists), explode the data
-                            if isinstance(df[column_name].iloc[0], list):
+                            if len(df[column_name]) > 0 and isinstance(df[column_name].iloc[0], list):
                                 exploded = df[column_name].explode()
                                 value_counts = exploded.value_counts().reset_index()
                                 value_counts.columns = ["option", "count"]
@@ -199,7 +199,7 @@ else:
                         # Map numeric values to labels if available
                         if len(scale_labels) == (scale_max - scale_min + 1):
                             label_map = {i: label for i, label in zip(range(scale_min, scale_max + 1), scale_labels)}
-                            value_counts["label"] = value_counts["rating"].map(label_map)
+                            value_counts["label"] = value_counts["rating"].map(label_map).fillna(value_counts["rating"])
                         else:
                             value_counts["label"] = value_counts["rating"]
                         
@@ -224,7 +224,11 @@ else:
                             with col3:
                                 st.metric("Std. Deviation", f"{df[column_name].std():.2f}")
                             with col4:
-                                st.metric("Most Common", df[column_name].mode()[0])
+                                mode_values = df[column_name].mode()
+                                if len(mode_values) > 0:
+                                    st.metric("Most Common", f"{mode_values.iloc[0]}")
+                                else:
+                                    st.metric("Most Common", "N/A")
                     
                     elif q_type == "number":
                         # For numeric questions
@@ -372,7 +376,7 @@ else:
                                 crosstab,
                                 labels=dict(x=q2["text"], y=q1["text"], color="Percentage (%)"),
                                 color_continuous_scale="Blues",
-                                text_auto='.1f'
+                                text_auto=True
                             )
                             st.plotly_chart(fig, use_container_width=True, key="chart_7")
                             
@@ -403,7 +407,10 @@ else:
                                 
                                 # Calculate correlation coefficient
                                 correlation = df[q1["column"]].corr(df[q2["column"]])
-                                st.metric("Correlation Coefficient", f"{correlation:.2f}")
+                                if pd.notna(correlation):
+                                    st.metric("Correlation Coefficient", f"{correlation:.2f}")
+                                else:
+                                    st.metric("Correlation Coefficient", "N/A")
                                 
                                 if abs(correlation) < 0.3:
                                     st.write("There is a weak correlation between these two variables.")
@@ -530,7 +537,7 @@ else:
                     # Try to convert to numeric if possible
                     try:
                         numeric_values = pd.to_numeric(df[column_name], errors='coerce')
-                        if numeric_values.isna().all():  # If all values are NaN after conversion
+                        if pd.isna(numeric_values).all():  # If all values are NaN after conversion
                             continue
                         # Create temporary dataframe with numeric values for statistics calculation
                         temp_df = df.copy()
@@ -723,7 +730,7 @@ else:
                 # Try to convert to numeric
                 try:
                     numeric_values = pd.to_numeric(df[column_name], errors='coerce')
-                    if not numeric_values.isna().all():  # If not all values are NaN
+                    if not pd.isna(numeric_values).all():  # If not all values are NaN
                         numeric_questions.append({
                             "index": i,
                             "id": question_id,
@@ -1220,11 +1227,15 @@ else:
                         var_df = pd.DataFrame(variables)
                         
                         # Map variable names to question texts for display
-                        var_df["variable"] = var_df["variable"].apply(
-                            lambda v: v if v == "Hằng số" else next(
-                                (q["text"] for q in numeric_questions if q["column"] == v), v
-                            )
-                        )
+                        def map_variable_name(v):
+                            if v == "Hằng số":
+                                return v
+                            for q in numeric_questions:
+                                if q["column"] == v:
+                                    return q["text"]
+                            return v
+                        
+                        var_df["variable"] = var_df["variable"].apply(map_variable_name)
                         
                         # Rename columns for display
                         var_df.columns = [
@@ -1236,17 +1247,22 @@ else:
                         var_df = var_df.loc[:, var_df.columns.notnull()]
                         
                         # Add significance markers
-                        var_df["Có ý nghĩa thống kê"] = var_df["p-value"].apply(
-                            lambda p: "✓" if p < 0.05 else "✗"
-                        )
+                        if "p-value" in var_df.columns:
+                            var_df["Có ý nghĩa thống kê"] = var_df["p-value"].apply(
+                                lambda p: "✓" if p < 0.05 else "✗"
+                            )
                         
-                        st.dataframe(var_df.style.format({
+                        # Format the dataframe
+                        format_dict = {
                             "Hệ số": "{:.3f}",
                             "Độ lệch chuẩn": "{:.3f}",
                             "t-value": "{:.3f}",
-                            "p-value": "{:.4f}",
-                            "VIF": "{:.2f}" if "VIF" in var_df.columns else None
-                        }))
+                            "p-value": "{:.4f}"
+                        }
+                        if "VIF" in var_df.columns:
+                            format_dict["VIF"] = "{:.2f}"
+                        
+                        st.dataframe(var_df.style.format(format_dict))
                         
                         # Display assumption tests
                         if "assumptions" in reg_results:
@@ -1465,7 +1481,7 @@ else:
                         labels=dict(x=q2["text"], y=q1["text"], color="Percentage"),
                         x=contingency.columns[:-1],  # Remove the 'All' column
                         y=contingency.index[:-1],    # Remove the 'All' row
-                        text_auto='.1f',
+                        text_auto=True,
                         color_continuous_scale="Blues",
                         aspect="auto"
                     )
@@ -1491,7 +1507,10 @@ else:
                     
                     # Calculate correlation
                     correlation = df[q1["column"]].corr(df[q2["column"]])
-                    st.metric("Correlation Coefficient", f"{correlation:.3f}")
+                    if pd.notna(correlation):
+                        st.metric("Correlation Coefficient", f"{correlation:.3f}")
+                    else:
+                        st.metric("Correlation Coefficient", "N/A")
                     
                     # Interpret correlation
                     if abs(correlation) < 0.3:

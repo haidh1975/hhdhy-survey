@@ -137,7 +137,7 @@ else:
                     sample_response[question_id] = f"Sample text response for question {i+1}"
                 
                 elif question["type"] == "number":
-                    sample_response[question_id] = i + 1
+                    sample_response[question_id] = str(i + 1)
                 
                 elif question["type"] in ["multiple_choice", "dropdown"]:
                     if "options" in question and question["options"]:
@@ -147,14 +147,15 @@ else:
                 
                 elif question["type"] == "checkbox":
                     if "options" in question and question["options"]:
-                        sample_response[question_id] = [question["options"][0]]
+                        sample_list = [question["options"][0]]
                         if len(question["options"]) > 1:
-                            sample_response[question_id].append(question["options"][1])
+                            sample_list.append(question["options"][1])
+                        sample_response[question_id] = ",".join(sample_list)  # Convert to string
                     else:
-                        sample_response[question_id] = ["No options available"]
+                        sample_response[question_id] = "No options available"
                 
                 elif question["type"] == "likert_scale":
-                    sample_response[question_id] = question.get("scale_min", 1)
+                    sample_response[question_id] = str(question.get("scale_min", 1))
                 
                 elif question["type"] == "date":
                     sample_response[question_id] = datetime.datetime.now().strftime("%Y-%m-%d")

@@ -120,7 +120,7 @@ def perform_efa(df, columns, n_factors=None, rotation='varimax', min_eigenvalue=
         
         # Xác định số lượng nhân tố dựa trên giá trị eigenvalue
         if n_factors is None:
-            fa_initial = FactorAnalyzer(rotation=None)
+            fa_initial = FactorAnalyzer(n_factors=len(columns), rotation=None)
             fa_initial.fit(data)
             ev, _ = fa_initial.get_eigenvalues()
             n_factors = sum(ev > min_eigenvalue)
@@ -241,7 +241,7 @@ def perform_regression(df, dependent_var, independent_vars):
             # Xây dựng mô hình phụ để tính VIF
             X_temp = X.copy()
             y_temp = X_temp[var_name]
-            X_temp = X_temp.drop(columns=[var_name])
+            X_temp = X_temp.drop(var_name, axis=1)
             
             mod_temp = sm.OLS(y_temp, X_temp).fit()
             r2_temp = mod_temp.rsquared

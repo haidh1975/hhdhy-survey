@@ -127,13 +127,14 @@ if st.session_state.surveys:
     
     # Tìm ID khảo sát từ tiêu đề
     selected_survey_id = None
+    selected_survey = None
     for survey_id, survey in st.session_state.surveys.items():
         if survey["title"] == selected_survey_title:
             selected_survey_id = survey_id
             selected_survey = survey
             break
     
-    if selected_survey_id:
+    if selected_survey_id and selected_survey:
         st.write(f"**Tiêu đề:** {selected_survey['title']}")
         st.write(f"**Mô tả:** {selected_survey.get('description', 'Không có mô tả')}")
         st.write(f"**Ngày tạo:** {selected_survey.get('created_date', 'N/A')}")

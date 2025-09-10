@@ -173,7 +173,7 @@ def create_comparison_chart(df, column1, column2, question_type1, question_type2
             labels=dict(x=column2, y=column1, color="Percentage"),
             x=contingency.columns[:-1],  # Remove the 'All' column
             y=contingency.index[:-1],    # Remove the 'All' row
-            text_auto='.1f',
+            text_auto=True,
             color_continuous_scale="Blues",
             aspect="auto",
             title=chart_title
