@@ -5,10 +5,13 @@ import pandas as pd
 import numpy as np
 import plotly.express as px
 import plotly.graph_objects as go
+import io
 from utils.data_analysis import calculate_statistics
 from utils.visualization import create_chart
 from utils.advanced_analysis import calculate_cronbach_alpha, perform_efa, perform_regression, simple_cfa_evaluation
 from utils.auth import require_auth, get_current_user
+from utils.pdf_generator import generate_survey_report
+from utils.db_utils import get_surveys_db
 
 st.set_page_config(
     page_title="Khảo sát về Ảnh hưởng của Vốn xã hội, Vốn nhân lực đến phát triển bền vững của doanh nghiệp trên địa bàn tỉnh Hưng Yên",
@@ -19,20 +22,41 @@ st.set_page_config(
 # Require authentication to access this page
 require_auth()
 
-# Initialize session state variables if they don't exist
-if 'surveys' not in st.session_state:
-    if os.path.exists('surveys.json'):
-        with open('surveys.json', 'r') as f:
-            st.session_state.surveys = json.load(f)
-    else:
-        st.session_state.surveys = {}
+# Load surveys from database
+@st.cache_data(ttl=30)
+def load_surveys_from_db():
+    """Load surveys from database"""
+    surveys = get_surveys_db()
+    surveys_dict = {}
+    for survey in surveys:
+        surveys_dict[survey['uuid']] = {
+            'title': survey['title'],
+            'description': survey['description'],
+            'questions': survey['questions'],
+            'created_date': survey['created_at'][:19] if survey['created_at'] else '',
+            'created_by': survey['created_by']
+        }
+    return surveys_dict
 
-if 'responses' not in st.session_state:
-    if os.path.exists('responses.json'):
-        with open('responses.json', 'r') as f:
-            st.session_state.responses = json.load(f)
-    else:
-        st.session_state.responses = {}
+# Load surveys from database
+st.session_state.surveys = load_surveys_from_db()
+
+# Load responses from database  
+@st.cache_data(ttl=30)
+def load_responses_from_db():
+    """Load all responses from database"""
+    from utils.db_utils import get_responses_db
+    responses = {}
+    surveys = get_surveys_db()
+    
+    for survey in surveys:
+        survey_responses = get_responses_db(survey['uuid'])
+        # Convert to format compatible with existing code
+        responses[survey['uuid']] = [r['response_data'] for r in survey_responses]
+    
+    return responses
+
+st.session_state.responses = load_responses_from_db()
 
 st.title("Phân tích dữ liệu - Khảo sát về Ảnh hưởng của Vốn xã hội, Vốn nhân lực đến phát triển bền vững của doanh nghiệp")
 
@@ -59,10 +83,54 @@ else:
         
         # Overview metrics
         st.subheader("Overview")
-        col1, col2, col3 = st.columns(3)
+        col1, col2, col3, col4 = st.columns(4)
         
         with col1:
             st.metric("Total Responses", len(survey_responses))
+        
+        # PDF Report Download Button
+        with col4:
+            st.markdown("### 📄 Xuất báo cáo")
+            if st.button("📊 Tải báo cáo PDF", use_container_width=True):
+                with st.spinner("Đang tạo báo cáo PDF..."):
+                    try:
+                        pdf_content = generate_survey_report(selected_survey_id)
+                        if pdf_content:
+                            # Create download button
+                            st.download_button(
+                                label="📥 Tải xuống báo cáo",
+                                data=pdf_content,
+                                file_name=f"bao_cao_khao_sat_{selected_survey_id[:8]}.pdf",
+                                mime="application/pdf",
+                                use_container_width=True
+                            )
+                            st.success("Báo cáo PDF đã được tạo thành công!")
+                        else:
+                            st.error("Không thể tạo báo cáo PDF. Vui lòng thử lại sau.")
+                    except Exception as e:
+                        st.error(f"Lỗi tạo báo cáo PDF: {str(e)}")
+                        
+            # Quick export options
+            if st.button("📊 Xuất dữ liệu Excel", use_container_width=True):
+                # Convert responses to Excel format
+                try:
+                    df_export = pd.DataFrame(survey_responses)
+                    # Convert to Excel bytes
+                    excel_buffer = io.BytesIO()
+                    with pd.ExcelWriter(excel_buffer, engine='openpyxl') as writer:
+                        df_export.to_excel(writer, sheet_name='Survey_Responses', index=False)
+                    excel_buffer.seek(0)
+                    
+                    st.download_button(
+                        label="📥 Tải xuống Excel",
+                        data=excel_buffer.getvalue(),
+                        file_name=f"du_lieu_khao_sat_{selected_survey_id[:8]}.xlsx",
+                        mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+                        use_container_width=True
+                    )
+                    st.success("File Excel đã sẵn sàng tải xuống!")
+                except Exception as e:
+                    st.error(f"Lỗi xuất Excel: {str(e)}")
         
         # Add completion time if available
         if "start_time" in df.columns and "end_time" in df.columns:
