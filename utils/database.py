@@ -1,7 +1,10 @@
 import os
 import logging
 from sqlalchemy import create_engine, MetaData, text
-from sqlalchemy.ext.declarative import declarative_base
+try:
+    from sqlalchemy.orm import declarative_base  # SQLAlchemy 2.0+
+except ImportError:
+    from sqlalchemy.ext.declarative import declarative_base  # SQLAlchemy <2.0
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy.exc import SQLAlchemyError
 
