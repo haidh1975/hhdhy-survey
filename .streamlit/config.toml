@@ -2,8 +2,11 @@
 headless = true
 enableCORS = false
 enableXsrfProtection = false
-port = 5000
+port = 5001
 address = "0.0.0.0"
+
+[browser]
+gatherUsageStats = false
 
 [theme]
 primaryColor = "#0066cc"
