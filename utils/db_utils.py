@@ -214,8 +214,14 @@ def update_survey_db(survey_uuid: str, title: str, description: str, questions: 
         survey.updated_at = datetime.now()
         
         session.commit()
+        # Invalidate cache after update
+        try:
+            from utils.cache_utils import invalidate_survey_cache
+            invalidate_survey_cache(survey_uuid)
+        except Exception:
+            pass
         return True, "Cập nhật khảo sát thành công"
-        
+
     except Exception as e:
         session.rollback()
         logger.error(f"Error updating survey: {e}")
@@ -254,10 +260,17 @@ def save_response_db(survey_uuid: str, response_data: Dict, user_id: Optional[in
         
         session.add(response)
         session.commit()
-        
+
+        # Cache-aside: invalidate stale cache after write
+        try:
+            from utils.cache_utils import invalidate_survey_cache
+            invalidate_survey_cache(survey_uuid)
+        except Exception:
+            pass
+
         logger.info(f"Saved response for survey {survey_uuid}")
         return True, "Phản hồi được lưu thành công"
-        
+
     except Exception as e:
         session.rollback()
         logger.error(f"Error saving response: {e}")
@@ -309,6 +322,32 @@ def create_default_admin():
         logger.error(f"Error creating default admin: {e}")
     finally:
         session.close()
+
+def change_password_db(username: str, old_password: str, new_password: str) -> tuple[bool, str]:
+    """Đổi mật khẩu người dùng"""
+    session = SessionLocal()
+    try:
+        if len(new_password) < 6:
+            return False, "Mật khẩu mới phải có ít nhất 6 ký tự"
+
+        user = session.query(User).filter(User.username == username).first()
+        if not user:
+            return False, "Người dùng không tồn tại"
+
+        if user.password_hash != hash_password(old_password):
+            return False, "Mật khẩu hiện tại không đúng"
+
+        user.password_hash = hash_password(new_password)
+        session.commit()
+        return True, "Đổi mật khẩu thành công"
+
+    except Exception as e:
+        session.rollback()
+        logger.error(f"Error changing password: {e}")
+        return False, f"Lỗi đổi mật khẩu: {str(e)}"
+    finally:
+        session.close()
+
 
 def get_system_stats_db() -> Dict[str, Any]:
     """Get system statistics"""

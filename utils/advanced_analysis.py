@@ -1,3 +1,13 @@
+"""
+Advanced statistical analysis utilities for HHD-HY Survey App.
+
+Algorithms sourced / cross-referenced with:
+  - GeeksforGeeks (Cronbach's α, VIF, IQR outlier detection)
+  - Papers With Code / sklearn documentation (standardised β, PCA scree)
+  - statsmodels documentation (OLS, Durbin-Watson, Breusch-Pagan)
+  - SciPy documentation (Shapiro-Wilk, Pearson/Spearman correlation, t-test, ANOVA)
+"""
+
 import pandas as pd
 import numpy as np
 from sklearn.linear_model import LinearRegression
@@ -6,6 +16,7 @@ from sklearn.metrics import r2_score, mean_squared_error
 from factor_analyzer import FactorAnalyzer
 from factor_analyzer.factor_analyzer import calculate_bartlett_sphericity, calculate_kmo
 import statsmodels.api as sm
+from scipy import stats as sp_stats
 import logging
 
 logging.basicConfig(level=logging.INFO)
@@ -411,3 +422,286 @@ def simple_cfa_evaluation(df, factor_structure):
             "error": str(e),
             "success": False
         }
+
+
+# ─── NEW: Correlation matrix with p-values ───────────────────────────────────
+def calculate_correlation_matrix(df: pd.DataFrame, columns: list, method: str = "pearson") -> dict:
+    """
+    Tính ma trận tương quan kèm p-value cho từng cặp biến.
+
+    Thuật toán tham khảo: GeeksforGeeks — Pearson & Spearman correlation,
+    scipy.stats documentation.
+
+    Args:
+        df       : DataFrame chứa dữ liệu
+        columns  : Danh sách cột cần phân tích
+        method   : 'pearson' hoặc 'spearman'
+
+    Returns:
+        dict với 'corr_matrix', 'pvalue_matrix', 'n', 'method', 'success'
+    """
+    try:
+        data = df[columns].dropna()
+        n = len(data)
+        if n < 3:
+            return {"error": "Cần ít nhất 3 quan sát để tính tương quan.", "success": False}
+
+        corr_func = sp_stats.pearsonr if method == "pearson" else sp_stats.spearmanr
+
+        k = len(columns)
+        corr_arr = np.ones((k, k))
+        pval_arr = np.zeros((k, k))
+
+        for i in range(k):
+            for j in range(k):
+                if i == j:
+                    corr_arr[i, j] = 1.0
+                    pval_arr[i, j] = 0.0
+                elif i < j:
+                    if method == "spearman":
+                        res = sp_stats.spearmanr(data.iloc[:, i], data.iloc[:, j])
+                        r, p = res.correlation, res.pvalue
+                    else:
+                        r, p = sp_stats.pearsonr(data.iloc[:, i], data.iloc[:, j])
+                    corr_arr[i, j] = corr_arr[j, i] = r
+                    pval_arr[i, j] = pval_arr[j, i] = p
+
+        corr_df = pd.DataFrame(corr_arr, index=columns, columns=columns)
+        pval_df = pd.DataFrame(pval_arr, index=columns, columns=columns)
+
+        return {
+            "corr_matrix": corr_df,
+            "pvalue_matrix": pval_df,
+            "n": n,
+            "method": method,
+            "success": True,
+        }
+    except Exception as e:
+        logger.error(f"Lỗi tính correlation matrix: {e}")
+        return {"error": str(e), "success": False}
+
+
+# ─── NEW: Descriptive statistics with normality test ─────────────────────────
+def calculate_descriptive_stats(df: pd.DataFrame, columns: list) -> dict:
+    """
+    Thống kê mô tả nâng cao: mean, median, std, skewness, kurtosis,
+    IQR, outlier count (IQR rule), và kiểm định chuẩn (Shapiro-Wilk).
+
+    Thuật toán:
+      - IQR outlier detection: GeeksforGeeks / Tukey's fences (Q1 − 1.5·IQR, Q3 + 1.5·IQR)
+      - Shapiro-Wilk: scipy.stats.shapiro (suitable for n ≤ 5000)
+
+    Returns:
+        dict với 'stats' (list of per-variable dicts) và 'success'
+    """
+    try:
+        data = df[columns].apply(pd.to_numeric, errors="coerce")
+        results = []
+
+        for col in columns:
+            series = data[col].dropna()
+            if len(series) < 3:
+                continue
+
+            q1 = series.quantile(0.25)
+            q3 = series.quantile(0.75)
+            iqr = q3 - q1
+            lower_fence = q1 - 1.5 * iqr
+            upper_fence = q3 + 1.5 * iqr
+            n_outliers = int(((series < lower_fence) | (series > upper_fence)).sum())
+
+            # Shapiro-Wilk (use up to 5000 samples)
+            sw_sample = series.sample(min(len(series), 5000), random_state=42)
+            sw_stat, sw_p = sp_stats.shapiro(sw_sample)
+            is_normal = sw_p > 0.05
+
+            results.append({
+                "column": col,
+                "n": int(len(series)),
+                "mean": float(series.mean()),
+                "median": float(series.median()),
+                "std": float(series.std()),
+                "min": float(series.min()),
+                "max": float(series.max()),
+                "q1": float(q1),
+                "q3": float(q3),
+                "iqr": float(iqr),
+                "skewness": float(series.skew()),
+                "kurtosis": float(series.kurtosis()),
+                "n_outliers": n_outliers,
+                "shapiro_stat": float(sw_stat),
+                "shapiro_p": float(sw_p),
+                "is_normal": is_normal,
+            })
+
+        return {"stats": results, "success": True}
+    except Exception as e:
+        logger.error(f"Lỗi tính descriptive stats: {e}")
+        return {"error": str(e), "success": False}
+
+
+# ─── NEW: t-test / ANOVA for group comparison ────────────────────────────────
+def perform_group_comparison(
+    df: pd.DataFrame, value_col: str, group_col: str
+) -> dict:
+    """
+    So sánh giá trị trung bình giữa các nhóm.
+    - 2 nhóm  → independent-samples t-test (Welch)
+    - ≥ 3 nhóm → one-way ANOVA + Tukey HSD post-hoc
+
+    Tham khảo: scipy.stats.ttest_ind, scipy.stats.f_oneway,
+    statsmodels.stats.multicomp.pairwise_tukeyhsd
+
+    Returns:
+        dict với 'test_type', 'statistic', 'p_value', 'group_stats',
+        optionally 'posthoc', và 'success'
+    """
+    try:
+        data = df[[value_col, group_col]].dropna()
+        groups = data.groupby(group_col)[value_col].apply(list)
+        group_names = list(groups.index)
+        n_groups = len(group_names)
+
+        if n_groups < 2:
+            return {"error": "Cần ít nhất 2 nhóm để so sánh.", "success": False}
+
+        group_arrays = [np.array(g) for g in groups]
+
+        # Group-level stats
+        group_stats = []
+        for name, arr in zip(group_names, group_arrays):
+            group_stats.append({
+                "group": str(name),
+                "n": len(arr),
+                "mean": float(np.mean(arr)),
+                "std": float(np.std(arr, ddof=1)),
+                "median": float(np.median(arr)),
+            })
+
+        if n_groups == 2:
+            stat, p = sp_stats.ttest_ind(*group_arrays, equal_var=False)  # Welch's t-test
+            result = {
+                "test_type": "Welch's t-test",
+                "statistic": float(stat),
+                "p_value": float(p),
+                "significant": p < 0.05,
+                "group_stats": group_stats,
+                "success": True,
+            }
+        else:
+            stat, p = sp_stats.f_oneway(*group_arrays)
+            result = {
+                "test_type": "One-way ANOVA",
+                "statistic": float(stat),
+                "p_value": float(p),
+                "significant": p < 0.05,
+                "group_stats": group_stats,
+                "success": True,
+            }
+            # Tukey HSD post-hoc
+            try:
+                from statsmodels.stats.multicomp import pairwise_tukeyhsd
+                tukey = pairwise_tukeyhsd(data[value_col], data[group_col], alpha=0.05)
+                posthoc_rows = []
+                for row in tukey.summary().data[1:]:
+                    posthoc_rows.append({
+                        "group1": str(row[0]),
+                        "group2": str(row[1]),
+                        "mean_diff": float(row[2]),
+                        "p_adj": float(row[3]),
+                        "reject": bool(row[6]),
+                    })
+                result["posthoc"] = posthoc_rows
+            except Exception:
+                pass
+
+        return result
+    except Exception as e:
+        logger.error(f"Lỗi so sánh nhóm: {e}")
+        return {"error": str(e), "success": False}
+
+
+# ─── NEW: regression with standardised β (beta) coefficients ─────────────────
+def perform_regression_with_beta(df: pd.DataFrame, dependent_var: str, independent_vars: list) -> dict:
+    """
+    Hồi quy OLS kèm hệ số hồi quy chuẩn hoá (β) để so sánh tầm quan trọng
+    tương đối của các biến độc lập.
+
+    β_i = b_i × (SD_Xi / SD_Y)  — công thức chuẩn hoá từ sklearn/statsmodels docs.
+
+    Returns:
+        Kết quả từ perform_regression() với thêm 'beta_coefficients'
+    """
+    base = perform_regression(df, dependent_var, independent_vars)
+    if not base.get("success"):
+        return base
+
+    try:
+        data = df[[dependent_var] + independent_vars].dropna().apply(pd.to_numeric, errors="coerce").dropna()
+        sd_y = data[dependent_var].std()
+
+        beta_dict = {}
+        for v_stat in base["variables"]:
+            var_name = v_stat["variable"]
+            if var_name == "Hằng số":
+                continue
+            # Find matching column
+            col = next((c for c in independent_vars if c == var_name), None)
+            if col is None:
+                # try matching by text via numeric_questions mapping (caller responsibility)
+                continue
+            sd_x = data[col].std()
+            beta = v_stat["coefficient"] * (sd_x / sd_y) if sd_y != 0 else np.nan
+            beta_dict[var_name] = float(beta)
+
+        base["beta_coefficients"] = beta_dict
+    except Exception as e:
+        logger.warning(f"Không thể tính beta: {e}")
+
+    return base
+
+
+# ─── NEW: Response quality / completeness check ──────────────────────────────
+def check_response_quality(df: pd.DataFrame, columns: list) -> dict:
+    """
+    Kiểm tra chất lượng dữ liệu:
+      - Tỷ lệ missing (%) theo từng cột
+      - Phát hiện straight-lining (tất cả câu trả lời giống nhau trong 1 row)
+      - Phát hiện outlier tổng thể bằng IQR (trên row sum)
+
+    Tham khảo: Survey methodology best practices (Academic Survey Research).
+
+    Returns:
+        dict với 'missing_pct', 'straightline_count', 'row_outliers', 'success'
+    """
+    try:
+        data = df[columns].apply(pd.to_numeric, errors="coerce")
+        n = len(data)
+
+        # Missing percentage per column
+        missing_pct = (data.isnull().sum() / n * 100).round(1).to_dict()
+
+        # Straight-lining: rows where all non-null values are identical
+        def is_straightline(row):
+            vals = row.dropna()
+            return len(vals) > 1 and vals.nunique() == 1
+
+        straightline_count = int(data.apply(is_straightline, axis=1).sum())
+
+        # Outlier rows: IQR on row-wise mean score
+        row_means = data.mean(axis=1)
+        q1, q3 = row_means.quantile(0.25), row_means.quantile(0.75)
+        iqr = q3 - q1
+        row_outliers = int(((row_means < q1 - 1.5 * iqr) | (row_means > q3 + 1.5 * iqr)).sum())
+
+        return {
+            "missing_pct": missing_pct,
+            "straightline_count": straightline_count,
+            "row_outliers": row_outliers,
+            "n_responses": n,
+            "overall_completeness": float(100 - data.isnull().values.mean() * 100),
+            "success": True,
+        }
+    except Exception as e:
+        logger.error(f"Lỗi kiểm tra chất lượng dữ liệu: {e}")
+        return {"error": str(e), "success": False}

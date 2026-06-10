@@ -1,243 +1,220 @@
 import streamlit as st
-import os
-import json
 import datetime
-from utils.survey_utils import render_survey_form, submit_survey_response, load_surveys
+from utils.db_utils import get_surveys_db, get_survey_by_uuid_db, save_response_db
+from utils.i18n import t, get_lang, render_language_selector
 
 st.set_page_config(
-    page_title="Khảo sát về Ảnh hưởng của Vốn xã hội, Vốn nhân lực đến phát triển bền vững của doanh nghiệp trên địa bàn tỉnh Hưng Yên",
+    page_title="HHD-HY — Trả lời Khảo sát / Answer Survey",
     page_icon="📋",
     layout="wide",
 )
 
-# Initialize session state variables if they don't exist
-if 'surveys' not in st.session_state:
-    if os.path.exists('surveys.json'):
-        with open('surveys.json', 'r') as f:
-            st.session_state.surveys = json.load(f)
-    else:
-        st.session_state.surveys = {}
+render_language_selector()
 
-# Get survey id from query params if available
+
+@st.cache_data(ttl=30)
+def load_surveys_from_db():
+    surveys = get_surveys_db()
+    surveys_dict = {}
+    for s in surveys:
+        surveys_dict[s["uuid"]] = {
+            "title": s["title"],
+            "description": s["description"],
+            "questions": s["questions"],
+        }
+    return surveys_dict
+
+
+# Tải khảo sát từ database
+surveys_data = load_surveys_from_db()
+st.session_state.surveys = surveys_data
+
+# Lấy survey_id từ query params nếu có (dùng khi chia sẻ link)
 params = st.query_params
 
-# Title and introduction
-st.title("Quản lý biểu mẫu - Khảo sát về Ảnh hưởng của Vốn xã hội, Vốn nhân lực đến phát triển bền vững của doanh nghiệp")
+st.title(t("answer_survey_page"))
+st.markdown("---")
 
-# Choose survey to answer
+# Xác định khảo sát cần hiển thị
 if "survey" in params:
     survey_id = params.get("survey")
-    if survey_id in st.session_state.surveys:
+    if survey_id in surveys_data:
         st.session_state.active_survey_id = survey_id
     else:
-        st.error("Survey not found. Please select a valid survey.")
+        no_survey_msg = "Không tìm thấy khảo sát. Vui lòng chọn một khảo sát hợp lệ." \
+                        if get_lang() == "vi" else "Survey not found. Please select a valid survey."
+        st.error(no_survey_msg)
         st.session_state.active_survey_id = None
 else:
-    # Allow user to select a survey from the list
-    st.subheader("Chọn biểu mẫu để quản lý")
-    
-    if not st.session_state.surveys:
-        st.info("No surveys available yet. Please ask the survey creator to share a survey with you.")
+    st.subheader(t("choose_survey_to_answer"))
+
+    if not surveys_data:
+        no_survey_info = "Chưa có khảo sát nào. Hãy liên hệ người tạo để nhận đường link." \
+                         if get_lang() == "vi" else "No surveys available. Contact the survey creator for a link."
+        st.info(no_survey_info)
     else:
-        survey_options = list(st.session_state.surveys.keys())
+        survey_options = list(surveys_data.keys())
         selected_survey = st.selectbox(
-            "Choose a survey",
+            t("choose_survey_to_answer"),
             options=survey_options,
-            format_func=lambda x: st.session_state.surveys[x]["title"],
-            index=0 if survey_options else None
+            format_func=lambda x: surveys_data[x]["title"],
+            index=0 if survey_options else None,
         )
-        
+
         if selected_survey:
             st.session_state.active_survey_id = selected_survey
-            
-            # Option to generate a shareable link
-            survey_url = f"{st.get_option('browser.serverAddress')}:5000/Answer_Survey?survey={selected_survey}"
-            st.subheader("Share this survey")
-            st.code(survey_url, language="text")
-            
-            # Create a button to copy the link
-            st.markdown(f'''
-            <input type="text" value="{survey_url}" id="survey_link" readonly style="width:100%;padding:8px;">
-            <button onclick="copyLink()" style="margin-top:10px;">Copy Link</button>
-            <script>
-            function copyLink() {{
-              var copyText = document.getElementById("survey_link");
-              copyText.select();
-              copyText.setSelectionRange(0, 99999);
-              navigator.clipboard.writeText(copyText.value);
-              alert("Link copied to clipboard!");
-            }}
-            </script>
-            ''', unsafe_allow_html=True)
 
-# Display the selected survey for answering
-if hasattr(st.session_state, 'active_survey_id') and st.session_state.active_survey_id in st.session_state.surveys:
-    survey_id = st.session_state.active_survey_id
-    survey = st.session_state.surveys[survey_id]
-    
+            # Hiển thị link chia sẻ
+            try:
+                base_url = st.get_option("browser.serverAddress") or "localhost"
+                port = st.get_option("server.port") or 5000
+                survey_url = f"http://{base_url}:{port}/5_Answer_Survey?survey={selected_survey}"
+                share_label = "🔗 Chia sẻ khảo sát này" if get_lang() == "vi" else "🔗 Share this survey"
+                st.subheader(share_label)
+                st.code(survey_url, language="text")
+            except Exception:
+                pass
+
+# Hiển thị form khảo sát
+active_id = st.session_state.get("active_survey_id")
+
+if active_id and active_id in surveys_data:
+    survey = surveys_data[active_id]
+
     st.markdown("---")
-    
-    # Check if the user has already submitted a response
-    if hasattr(st.session_state, f'submitted_{survey_id}') and st.session_state[f'submitted_{survey_id}']:
-        st.success("Thank you for your response! Your answers have been recorded.")
-        
-        if st.button("Submit Another Response"):
-            st.session_state[f'submitted_{survey_id}'] = False
+
+    # Kiểm tra đã nộp chưa
+    submitted_key = f"submitted_{active_id}"
+    if st.session_state.get(submitted_key):
+        st.success(t("thank_you"))
+        st.balloons()
+        if st.button(t("submit_another")):
+            st.session_state[submitted_key] = False
             st.rerun()
     else:
-        # Display the survey form
         st.header(survey["title"])
-        st.write(survey["description"])
-        
-        # Function to handle survey submission
-        def handle_submit(response):
-            if submit_survey_response(survey_id, response):
-                st.session_state[f'submitted_{survey_id}'] = True
-                st.success("Thank you for your response! Your answers have been recorded.")
-                st.balloons()
-            else:
-                st.error("There was an error submitting your response. Please try again.")
-        
-        # Create the form
-        with st.form(key=f"survey_response_form_{survey_id}"):
+        if survey.get("description"):
+            st.write(survey["description"])
+        st.markdown("---")
+
+        with st.form(key=f"survey_form_{active_id}"):
             responses = {}
-            
-            # Render questions
+
             for i, question in enumerate(survey["questions"]):
-                st.write(f"**{i+1}. {question['question_text']}**")
-                
-                if question.get('required', False):
-                    st.markdown("*Required*")
-                
-                question_id = question.get("id", str(i))
-                
-                # Render different input types based on question type
-                if question["type"] == "text":
-                    responses[question_id] = st.text_input(
-                        "Your answer", 
-                        key=f"q_{i}",
-                        placeholder="Enter your answer here"
+                q_id = question.get("id", str(i))
+                required_mark = f" **{t('required_mark')}**" if question.get("required") else ""
+                st.markdown(f"**{i + 1}. {question['question_text']}{required_mark}**")
+
+                q_type = question["type"]
+
+                if q_type == "text":
+                    responses[q_id] = st.text_input(
+                        t("your_answer"), key=f"q_{i}", placeholder=t("enter_answer")
                     )
-                
-                elif question["type"] == "paragraph":
-                    responses[question_id] = st.text_area(
-                        "Your answer", 
-                        key=f"q_{i}",
-                        placeholder="Enter your answer here"
+
+                elif q_type == "paragraph":
+                    responses[q_id] = st.text_area(
+                        t("your_answer"), key=f"q_{i}", placeholder=t("enter_answer")
                     )
-                
-                elif question["type"] == "number":
-                    responses[question_id] = st.number_input(
-                        "Your answer", 
-                        key=f"q_{i}"
-                    )
-                
-                elif question["type"] == "multiple_choice":
-                    if "options" in question and question["options"]:
-                        responses[question_id] = st.radio(
-                            "Select one option", 
-                            options=question["options"],
-                            key=f"q_{i}"
+
+                elif q_type == "number":
+                    responses[q_id] = st.number_input(t("your_answer"), key=f"q_{i}")
+
+                elif q_type == "multiple_choice":
+                    if question.get("options"):
+                        responses[q_id] = st.radio(
+                            t("select_one"), options=question["options"], key=f"q_{i}"
                         )
                     else:
-                        st.warning("No options defined for this question")
-                        responses[question_id] = "No options available"
-                
-                elif question["type"] == "checkbox":
-                    if "options" in question and question["options"]:
-                        responses[question_id] = st.multiselect(
-                            "Select all that apply", 
-                            options=question["options"],
-                            key=f"q_{i}"
+                        no_opts = "Câu hỏi này chưa có đáp án." if get_lang() == "vi" else "This question has no options."
+                        st.warning(no_opts)
+                        responses[q_id] = ""
+
+                elif q_type == "checkbox":
+                    if question.get("options"):
+                        responses[q_id] = st.multiselect(
+                            t("select_all"), options=question["options"], key=f"q_{i}"
                         )
                     else:
-                        st.warning("No options defined for this question")
-                        responses[question_id] = []
-                
-                elif question["type"] == "dropdown":
-                    if "options" in question and question["options"]:
-                        responses[question_id] = st.selectbox(
-                            "Select an option", 
-                            options=question["options"],
-                            key=f"q_{i}"
+                        no_opts = "Câu hỏi này chưa có đáp án." if get_lang() == "vi" else "This question has no options."
+                        st.warning(no_opts)
+                        responses[q_id] = []
+
+                elif q_type == "dropdown":
+                    if question.get("options"):
+                        responses[q_id] = st.selectbox(
+                            t("select_one"), options=question["options"], key=f"q_{i}"
                         )
                     else:
-                        st.warning("No options defined for this question")
-                        responses[question_id] = "No options available"
-                
-                elif question["type"] == "likert_scale":
+                        no_opts = "Câu hỏi này chưa có đáp án." if get_lang() == "vi" else "This question has no options."
+                        st.warning(no_opts)
+                        responses[q_id] = ""
+
+                elif q_type == "likert_scale":
                     scale_min = question.get("scale_min", 1)
                     scale_max = question.get("scale_max", 5)
-                    
-                    # Đảm bảo scale_max luôn lớn hơn scale_min ít nhất 1 đơn vị
                     if scale_max <= scale_min:
                         scale_max = scale_min + 1
-                    
-                    responses[question_id] = st.slider(
-                        "Your rating",
+
+                    responses[q_id] = st.slider(
+                        t("your_rating"),
                         min_value=scale_min,
                         max_value=scale_max,
                         value=scale_min,
-                        key=f"q_{i}"
-                    )
-                    
-                    # Display scale labels if they exist
-                    if "scale_labels" in question:
-                        scale_labels = question["scale_labels"]
-                        if len(scale_labels) == (scale_max - scale_min + 1):
-                            # Create columns for each label
-                            cols = st.columns(len(scale_labels))
-                            for j, (val, label) in enumerate(zip(range(scale_min, scale_max + 1), scale_labels)):
-                                with cols[j]:
-                                    st.write(f"{val}: {label}")
-                
-                elif question["type"] == "date":
-                    responses[question_id] = st.date_input(
-                        "Your answer",
-                        key=f"q_{i}"
-                    )
-                
-                elif question["type"] == "email":
-                    responses[question_id] = st.text_input(
-                        "Your email",
                         key=f"q_{i}",
-                        placeholder="name@example.com"
                     )
-                
-                elif question["type"] == "phone":
-                    responses[question_id] = st.text_input(
-                        "Your phone number",
-                        key=f"q_{i}",
-                        placeholder="e.g., 123-456-7890"
+
+                    scale_labels = question.get("scale_labels", [])
+                    if len(scale_labels) == (scale_max - scale_min + 1):
+                        cols = st.columns(len(scale_labels))
+                        for j, label in enumerate(scale_labels):
+                            with cols[j]:
+                                st.caption(f"{scale_min + j}: {label}")
+
+                elif q_type == "date":
+                    date_val = st.date_input(t("your_answer"), key=f"q_{i}")
+                    responses[q_id] = str(date_val)
+
+                elif q_type == "email":
+                    email_label = "Email" if get_lang() == "en" else "Email của bạn"
+                    responses[q_id] = st.text_input(
+                        email_label, key=f"q_{i}", placeholder="ten@example.com"
                     )
-                
-                st.write("---")
-            
-            # Add timestamp to responses
+
+                elif q_type == "phone":
+                    phone_label = "Phone number" if get_lang() == "en" else "Số điện thoại của bạn"
+                    phone_placeholder = "e.g. 0912345678" if get_lang() == "en" else "VD: 0912345678"
+                    responses[q_id] = st.text_input(
+                        phone_label, key=f"q_{i}", placeholder=phone_placeholder
+                    )
+
+                st.markdown("---")
+
             responses["timestamp"] = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-            
-            # Submit button
-            submitted = st.form_submit_button("Submit Response")
-            
+
+            submitted = st.form_submit_button(t("submit_response"), use_container_width=True)
+
             if submitted:
-                # Validate required fields
-                missing_required = []
+                # Kiểm tra các câu bắt buộc
+                missing = []
                 for i, question in enumerate(survey["questions"]):
-                    question_id = question.get("id", str(i))
-                    if question.get('required', False):
-                        if question_id not in responses or not responses[question_id]:
-                            missing_required.append(question["question_text"])
-                
-                if missing_required:
-                    error_msg = "Please fill in the following required questions:\n"
-                    for q in missing_required:
-                        error_msg += f"- {q}\n"
-                    st.error(error_msg)
+                    q_id = question.get("id", str(i))
+                    if question.get("required"):
+                        val = responses.get(q_id)
+                        if val is None or val == "" or val == []:
+                            missing.append(f"{i + 1}. {question['question_text']}")
+
+                if missing:
+                    st.error(
+                        t("required_missing") + "\n"
+                        + "\n".join(f"- {q}" for q in missing)
+                    )
                 else:
-                    # Submit the response
-                    if submit_survey_response(survey_id, responses):
-                        st.session_state[f'submitted_{survey_id}'] = True
-                        st.success("Thank you for your response! Your answers have been recorded.")
-                        st.balloons()
+                    success, message = save_response_db(active_id, responses)
+                    if success:
+                        st.session_state[submitted_key] = True
+                        st.rerun()
                     else:
-                        st.error("There was an error submitting your response. Please try again.")
+                        err_save = f"Lỗi khi lưu phản hồi: {message}" if get_lang() == "vi" \
+                                   else f"Error saving response: {message}"
+                        st.error(err_save)

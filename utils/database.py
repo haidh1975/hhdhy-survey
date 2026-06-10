@@ -9,19 +9,32 @@ from sqlalchemy.exc import SQLAlchemyError
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
-# Database configuration
+# Database configuration — hỗ trợ PostgreSQL (production) và SQLite (local dev)
 DATABASE_URL = os.getenv('DATABASE_URL')
 
 if not DATABASE_URL:
-    raise ValueError("DATABASE_URL environment variable is not set")
+    # Fallback sang SQLite cho môi trường local
+    _db_dir = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "data")
+    os.makedirs(_db_dir, exist_ok=True)
+    DATABASE_URL = f"sqlite:///{os.path.join(_db_dir, 'survey_app.db')}"
+    logger.warning(f"DATABASE_URL không được đặt, dùng SQLite: {DATABASE_URL}")
 
-# Create engine
-engine = create_engine(
-    DATABASE_URL,
-    pool_pre_ping=True,
-    pool_recycle=300,
-    echo=False  # Set to True for SQL logging in development
-)
+_is_sqlite = DATABASE_URL.startswith("sqlite")
+
+# Create engine với cấu hình phù hợp từng loại DB
+if _is_sqlite:
+    engine = create_engine(
+        DATABASE_URL,
+        connect_args={"check_same_thread": False},
+        echo=False,
+    )
+else:
+    engine = create_engine(
+        DATABASE_URL,
+        pool_pre_ping=True,
+        pool_recycle=300,
+        echo=False,
+    )
 
 # Create metadata and base
 metadata = MetaData()
@@ -103,23 +116,28 @@ def execute_raw_sql(sql_query: str, params: dict = None):
 # Database health check
 def check_database_health():
     """
-    Check database health and return status
+    Check database health and return status (tương thích cả PostgreSQL và SQLite)
     """
     try:
         session = SessionLocal()
-        
-        # Test basic operations
-        result = session.execute(text("SELECT COUNT(*) FROM information_schema.tables WHERE table_schema = 'public'"))
+
+        if _is_sqlite:
+            result = session.execute(text("SELECT COUNT(*) FROM sqlite_master WHERE type='table'"))
+        else:
+            result = session.execute(text(
+                "SELECT COUNT(*) FROM information_schema.tables WHERE table_schema = 'public'"
+            ))
         table_count = result.scalar()
-        
+
         session.close()
-        
+
         return {
             "status": "healthy",
             "tables_count": table_count,
-            "connection": "active"
+            "connection": "active",
+            "db_type": "SQLite" if _is_sqlite else "PostgreSQL"
         }
-        
+
     except Exception as e:
         return {
             "status": "unhealthy",

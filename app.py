@@ -2,20 +2,23 @@ import streamlit as st
 import pandas as pd
 import os
 import json
+import plotly.graph_objects as go
+import plotly.express as px
 from utils.auth import (
-    initialize_admin_user, 
-    is_authenticated, 
-    get_current_user, 
-    get_user_role, 
+    initialize_admin_user,
+    is_authenticated,
+    get_current_user,
+    get_user_role,
     logout_user,
     is_admin
 )
 from utils.db_utils import get_surveys_db, get_system_stats_db
 from utils.ui_components import apply_custom_css, add_footer
+from utils.i18n import t, get_lang, render_language_selector
 
 # Set page configuration
 st.set_page_config(
-    page_title="Khảo sát về Ảnh hưởng của Vốn xã hội, Vốn nhân lực đến phát triển bền vững của doanh nghiệp trên địa bàn tỉnh Hưng Yên",
+    page_title="HHD-HY — Bản quyền thuộc về Đỗ Hữu Hải",
     page_icon="📊",
     layout="wide",
     initial_sidebar_state="expanded",
@@ -64,87 +67,120 @@ if 'current_survey_id' not in st.session_state:
 
 # Sidebar authentication info
 with st.sidebar:
-    st.markdown("### 👤 Thông tin người dùng")
-    
+    st.markdown(f"### 👤 {t('user_info')}")
+
     if is_authenticated():
         current_user = get_current_user()
         user_role = get_user_role()
-        
-        st.success(f"Đã đăng nhập: **{current_user}**")
-        
-        role_display = "Quản trị viên" if user_role == "admin" else "Người dùng"
-        st.info(f"Vai trò: {role_display}")
-        
+
+        st.success(f"{t('logged_in_as')} **{current_user}**")
+
+        role_display = t("role_admin") if user_role == "admin" else t("role_user")
+        st.info(f"{t('role')} {role_display}")
+
         # Admin quick access
         if is_admin():
-            st.markdown("### ⚙️ Quản trị viên")
-            if st.button("🔧 Panel quản trị", use_container_width=True):
+            st.markdown(f"### ⚙️ {t('role_admin')}")
+            if st.button(t("admin_panel_short"), use_container_width=True):
                 st.switch_page("pages/8_Admin.py")
-        
+
         # Logout button
-        if st.button("🚪 Đăng xuất", use_container_width=True):
+        if st.button(f"🚪 {t('logout')}", use_container_width=True):
             logout_user()
             st.rerun()
     else:
-        st.warning("Chưa đăng nhập")
-        if st.button("🔐 Đăng nhập", use_container_width=True):
+        st.warning(t("not_logged_in"))
+        if st.button(f"🔐 {t('login')}", use_container_width=True):
             st.switch_page("pages/6_Login.py")
-        if st.button("📝 Đăng ký", use_container_width=True):
+        if st.button(f"📝 {t('register')}", use_container_width=True):
             st.switch_page("pages/7_Register.py")
-    
-    st.markdown("---")
+
+    # Language selector
+    render_language_selector()
 
 # Main page
-st.title("Khảo sát về Ảnh hưởng của Vốn xã hội, Vốn nhân lực đến phát triển bền vững của doanh nghiệp trên địa bàn tỉnh Hưng Yên")
+st.title(f"📊 {t('app_name')} — {t('app_subtitle')}")
 
 # Dashboard summary
-st.header("Bảng Điều Khiển")
+st.header(t("dashboard"))
 
 col1, col2, col3, col4 = st.columns(4)
 
 with col1:
     total_surveys = stats.get('surveys', {}).get('total', 0)
-    st.metric(label="Tổng Số Khảo Sát", value=total_surveys)
+    st.metric(label=t("total_surveys"), value=total_surveys)
 
 with col2:
     total_responses = stats.get('responses', {}).get('total', 0)
-    st.metric(label="Tổng Số Phản Hồi", value=total_responses)
+    st.metric(label=t("total_responses"), value=total_responses)
 
 with col3:
     avg_responses = total_responses / total_surveys if total_surveys > 0 else 0
-    st.metric(label="Phản Hồi Trung Bình", value=f"{avg_responses:.1f}")
+    st.metric(label=t("avg_responses"), value=f"{avg_responses:.1f}")
 
 with col4:
-    # Tính tổng số câu hỏi trong tất cả các khảo sát
     total_questions = sum(len(survey["questions"]) for survey in st.session_state.surveys.values())
-    st.metric(label="Tổng Số Câu Hỏi", value=total_questions)
+    st.metric(label=t("total_questions"), value=total_questions)
+
+# ── Response trend sparkline ─────────────────────────────────────────────────
+if stats.get('surveys', {}).get('total', 0) > 0:
+    db_surveys_all = get_surveys_db()
+    if db_surveys_all:
+        _trend_title = "📈 Phản hồi theo từng khảo sát" if get_lang() == "vi" else "📈 Responses per Survey"
+        st.subheader(_trend_title)
+        survey_resp_data = [
+            {"title": s["title"][:28] + ("…" if len(s["title"]) > 28 else ""),
+             "responses": s.get("response_count", 0)}
+            for s in db_surveys_all
+        ]
+        df_sparkline = pd.DataFrame(survey_resp_data)
+        if not df_sparkline.empty and df_sparkline["responses"].sum() > 0:
+            fig_spark = go.Figure(go.Bar(
+                x=df_sparkline["title"],
+                y=df_sparkline["responses"],
+                marker_color="#0066cc",
+                text=df_sparkline["responses"],
+                textposition="outside",
+            ))
+            fig_spark.update_layout(
+                xaxis_tickangle=-30,
+                yaxis_title="",
+                height=260,
+                margin=dict(t=10, b=70, l=30, r=10),
+                xaxis_title="",
+                paper_bgcolor="rgba(0,0,0,0)",
+                plot_bgcolor="rgba(0,0,0,0)",
+            )
+            st.plotly_chart(fig_spark, use_container_width=True)
+
+st.markdown("---")
 
 # Recent surveys section
-st.subheader("Khảo Sát Hiện Có")
+st.subheader(t("available_surveys"))
 
 if st.session_state.surveys:
     # Convert surveys to DataFrame for display using database data
     survey_data = []
     db_surveys = get_surveys_db()
-    
+
     for survey in db_surveys:
         survey_data.append({
-            "ID Khảo Sát": survey['uuid'][:8] + "...",  # Hiển thị rút gọn ID
-            "Tiêu Đề": survey["title"],
-            "Ngày Tạo": survey.get("created_at", "N/A")[:10] if survey.get("created_at") else "N/A",
-            "Số Câu Hỏi": len(survey["questions"]),
-            "Số Phản Hồi": survey.get("response_count", 0)
+            t("survey_id"): survey['uuid'][:8] + "...",
+            t("survey_title_short"): survey["title"],
+            t("created_date"): survey.get("created_at", "N/A")[:10] if survey.get("created_at") else "N/A",
+            t("num_questions"): len(survey["questions"]),
+            t("num_responses"): survey.get("response_count", 0)
         })
-    
+
     survey_df = pd.DataFrame(survey_data)
     st.dataframe(survey_df, use_container_width=True)
-    
+
     # Hiển thị thông tin chi tiết về khảo sát
-    st.subheader("Thông Tin Chi Tiết Khảo Sát")
-    
+    st.subheader(t("survey_detail"))
+
     # Chọn một khảo sát để xem chi tiết
     selected_survey_title = st.selectbox(
-        "Chọn khảo sát:",
+        t("select_survey"),
         options=[survey["title"] for survey in st.session_state.surveys.values()]
     )
     
@@ -158,74 +194,93 @@ if st.session_state.surveys:
             break
     
     if selected_survey_id and selected_survey:
-        st.write(f"**Tiêu đề:** {selected_survey['title']}")
-        st.write(f"**Mô tả:** {selected_survey.get('description', 'Không có mô tả')}")
-        st.write(f"**Ngày tạo:** {selected_survey.get('created_date', 'N/A')}")
-        st.write(f"**Số câu hỏi:** {len(selected_survey['questions'])}")
-        # Get response count from database for this survey
+        st.write(f"**{t('survey_title')}:** {selected_survey['title']}")
+        st.write(f"**{t('survey_description')}:** {selected_survey.get('description', 'Không có mô tả')}")
+        st.write(f"**{t('created_date')}:** {selected_survey.get('created_date', 'N/A')}")
+        st.write(f"**{t('num_questions')}:** {len(selected_survey['questions'])}")
         from utils.db_utils import get_responses_db
         response_count = len(get_responses_db(selected_survey_id))
-        st.write(f"**Số phản hồi:** {response_count}")
-        
-        # Hiển thị một số câu hỏi mẫu từ khảo sát
-        st.write("**Các câu hỏi mẫu:**")
-        sample_questions = selected_survey['questions'][:5]  # Lấy 5 câu hỏi đầu tiên
+        st.write(f"**{t('num_responses')}:** {response_count}")
+
+        _sample_label = "Câu hỏi mẫu" if get_lang() == "vi" else "Sample questions"
+        st.write(f"**{_sample_label}:**")
+        sample_questions = selected_survey['questions'][:5]
         for i, question in enumerate(sample_questions):
             st.write(f"{i+1}. {question['question_text']} ({question['type']})")
-        
+
         if len(selected_survey['questions']) > 5:
-            st.write(f"... và {len(selected_survey['questions']) - 5} câu hỏi khác")
+            _more = f"... và {len(selected_survey['questions']) - 5} câu hỏi khác" if get_lang() == "vi" \
+                    else f"... and {len(selected_survey['questions']) - 5} more questions"
+            st.write(_more)
 else:
-    st.info("Chưa có khảo sát nào được tạo. Vào trang 'Create Survey' để bắt đầu.")
+    st.info(t("no_surveys_yet"))
 
 # Quick action buttons
-st.subheader("Các Tác Vụ Nhanh")
+st.subheader(t("quick_actions"))
 col1, col2, col3, col4 = st.columns(4)
 
 with col1:
-    if st.button("➕ Tạo Khảo Sát Mới", use_container_width=True):
+    if st.button(t("create_new_survey"), use_container_width=True):
         st.switch_page("pages/1_Create_Survey.py")
 
 with col2:
-    if st.button("📝 Trả Lời Khảo Sát", use_container_width=True):
+    if st.button(t("answer_survey"), use_container_width=True):
         st.switch_page("pages/5_Answer_Survey.py")
 
 with col3:
-    if st.button("🔗 Chia Sẻ Khảo Sát", use_container_width=True):
+    if st.button(t("share_survey"), use_container_width=True):
         st.switch_page("pages/2_Distribute_Survey.py")
 
 with col4:
-    if st.button("📊 Phân Tích Dữ Liệu", use_container_width=True):
+    if st.button(t("data_analysis"), use_container_width=True):
         st.switch_page("pages/4_Data_Analysis.py")
 
-# Thông tin thêm về khảo sát động lực làm việc
-st.subheader("📌 Giới Thiệu Về Khảo sát về Ảnh hưởng của Vốn xã hội, Vốn nhân lực đến phát triển bền vững của doanh nghiệp trên địa bàn tỉnh Hưng Yên")
-st.markdown("""
-Ứng dụng này hiện đang chứa dữ liệu khảo sát về các yếu tố ảnh hưởng của Vốn xã hội, Vốn nhân lực đến phát triển bền vững của doanh nghiệp trên địa bàn tỉnh Hưng Yên, bao gồm:
+# About section
+st.subheader(f"📌 {t('app_title_full')}")
+if get_lang() == "vi":
+    st.markdown("""
+Ứng dụng này thu thập và phân tích dữ liệu khảo sát về các yếu tố ảnh hưởng đến phát triển bền vững, bao gồm:
 
-- **Vốn xã hội trong doanh nghiệp**: Đánh giá mức độ tin tưởng, kết nối và hợp tác giữa các thành viên trong doanh nghiệp
-- **Vốn nhân lực của doanh nghiệp**: Đánh giá về kỹ năng, kiến thức, kinh nghiệm và khả năng đổi mới của nhân lực
-- **Phát triển bền vững của doanh nghiệp**: Đánh giá về khía cạnh kinh tế, xã hội và môi trường
-- **Các nhân tố ảnh hưởng**: Xác định các yếu tố bên trong và bên ngoài ảnh hưởng đến sự phát triển
-- **Thông tin doanh nghiệp**: Thu thập dữ liệu về quy mô, lĩnh vực hoạt động, thời gian thành lập
+- **Vốn xã hội trong doanh nghiệp**: Mức độ tin tưởng, kết nối và hợp tác nội bộ
+- **Vốn nhân lực**: Kỹ năng, kiến thức, kinh nghiệm và khả năng đổi mới
+- **Phát triển bền vững**: Các khía cạnh kinh tế, xã hội và môi trường
+- **Các nhân tố ảnh hưởng**: Yếu tố bên trong và bên ngoài doanh nghiệp
+- **Thông tin doanh nghiệp**: Quy mô, lĩnh vực, thời gian thành lập
+""")
+else:
+    st.markdown("""
+This application collects and analyzes survey data on factors affecting sustainable business development, including:
 
-Dữ liệu này sẽ được sử dụng để phân tích và đưa ra các đề xuất cho việc phát triển bền vững của doanh nghiệp tại tỉnh Hưng Yên.
+- **Social Capital**: Trust, connectivity, and internal cooperation levels
+- **Human Capital**: Skills, knowledge, experience, and innovation capacity
+- **Sustainable Development**: Economic, social, and environmental dimensions
+- **Influencing Factors**: Internal and external business factors
+- **Business Information**: Scale, sector, and establishment period
 """)
 
 # Getting started guide
-st.subheader("Hướng Dẫn Sử Dụng")
-st.markdown("""
-Để sử dụng ứng dụng hiệu quả:
-
-1. **Tạo Khảo Sát**: Vào trang 'Create Survey' để thiết kế khảo sát với nhiều loại câu hỏi khác nhau.
-2. **Chia Sẻ Khảo Sát**: Chia sẻ khảo sát thông qua đường link hoặc mã QR từ trang 'Distribute Survey'.
-3. **Trả Lời Khảo Sát**: Điền khảo sát hoặc chia sẻ cho người khác để thu thập phản hồi.
-4. **Xem Phản Hồi**: Kiểm tra tất cả phản hồi nhận được cho khảo sát của bạn tại trang 'View Responses'.
-5. **Phân Tích Dữ Liệu**: Vào trang 'Data Analysis' để trực quan hóa và phân tích dữ liệu khảo sát.
+st.subheader(t("getting_started"))
+if get_lang() == "vi":
+    st.markdown("""
+1. **Tạo Khảo Sát**: Thiết kế khảo sát với nhiều loại câu hỏi khác nhau.
+2. **Chia Sẻ Khảo Sát**: Chia sẻ qua đường link hoặc mã QR.
+3. **Trả Lời Khảo Sát**: Điền khảo sát để thu thập phản hồi.
+4. **Xem Phản Hồi**: Kiểm tra tất cả phản hồi nhận được.
+5. **Phân Tích Dữ Liệu**: Trực quan hóa và phân tích dữ liệu thống kê.
 
 Sử dụng menu điều hướng bên trái để truy cập các tính năng này.
+""")
+else:
+    st.markdown("""
+1. **Create Survey**: Design surveys with various question types.
+2. **Share Survey**: Share via link or QR code.
+3. **Answer Survey**: Fill in the survey to collect responses.
+4. **View Responses**: Check all responses received.
+5. **Data Analysis**: Visualize and statistically analyze data.
+
+Use the left navigation menu to access these features.
 """)
 
 # Footer
 st.markdown("---")
-st.markdown("📊 Khảo sát về Ảnh hưởng của Vốn xã hội, Vốn nhân lực đến phát triển bền vững của doanh nghiệp trên địa bàn tỉnh Hưng Yên - Công cụ tạo biểu mẫu, thu thập dữ liệu và phân tích thống kê")
+st.markdown(f"📊 **{t('footer_system')}** — {t('footer_copy')}")

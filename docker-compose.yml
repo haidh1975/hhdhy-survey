@@ -1,0 +1,88 @@
+# ─────────────────────────────────────────────────────────────────────────────
+#  docker-compose.yml — HHD-HY Survey System
+#  Hỗ trợ 2 profiles:
+#    - default (sqlite): dùng SQLite local, không cần DB riêng
+#    - postgres         : dùng PostgreSQL, phù hợp production
+#
+#  Cách dùng:
+#    SQLite  : docker compose up -d
+#    Postgres: docker compose --profile postgres up -d
+# ─────────────────────────────────────────────────────────────────────────────
+
+version: '3.9'
+
+services:
+
+  # ── Main App ──────────────────────────────────────────────────────────────
+  hhdhy-app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      target: production
+    container_name: hhdhy-survey
+    image: hhdhy-survey:latest
+    ports:
+      - "80:8501"           # Truy cập qua http://hhd.one
+      - "8501:8501"         # Hoặc http://hhd.one:8501
+    volumes:
+      # Mount thư mục data để giữ dữ liệu SQLite giữa các lần restart
+      - hhdhy-data:/app/data
+    environment:
+      # Dùng SQLite mặc định. Để dùng PostgreSQL:
+      # DATABASE_URL: postgresql://hhduser:password@hhdhy-db:5432/hhdhy
+      - DATABASE_URL=${DATABASE_URL:-}
+      - TZ=Asia/Ho_Chi_Minh
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8501/_stcore/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+    networks:
+      - hhdhy-network
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.hhdhy.rule=Host(`hhd.one`)"
+      - "traefik.http.routers.hhdhy.entrypoints=websecure"
+      - "traefik.http.routers.hhdhy.tls.certresolver=letsencrypt"
+
+  # ── PostgreSQL (optional — chỉ dùng khi cần production DB) ──────────────
+  hhdhy-db:
+    image: postgres:15-alpine
+    container_name: hhdhy-postgres
+    profiles:
+      - postgres          # Chỉ chạy khi: docker compose --profile postgres up
+    environment:
+      POSTGRES_DB: hhdhy
+      POSTGRES_USER: hhduser
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-HHDSurvey2026!}
+      PGDATA: /var/lib/postgresql/data/pgdata
+    volumes:
+      - hhdhy-pgdata:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U hhduser -d hhdhy"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - hhdhy-network
+
+# ── Volumes ──────────────────────────────────────────────────────────────────
+volumes:
+  hhdhy-data:
+    driver: local
+    driver_opts:
+      type: none
+      o: bind
+      device: ./docker-data/sqlite
+  hhdhy-pgdata:
+    driver: local
+
+# ── Networks ─────────────────────────────────────────────────────────────────
+networks:
+  hhdhy-network:
+    driver: bridge

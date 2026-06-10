@@ -1,40 +1,43 @@
 import streamlit as st
 from utils.auth import login_user, is_authenticated
+from utils.i18n import t, render_language_selector
 
 st.set_page_config(
-    page_title="Đăng nhập - Khảo sát về Ảnh hưởng của Vốn xã hội, Vốn nhân lực",
+    page_title="HHD-HY — Đăng nhập / Login",
     page_icon="🔐",
     layout="wide",
 )
 
+render_language_selector()
+
 # If already authenticated, redirect to main page
 if is_authenticated():
-    st.success("Bạn đã đăng nhập!")
-    if st.button("Về trang chủ"):
+    st.success("Bạn đã đăng nhập!" if st.session_state.get("lang", "vi") == "vi" else "You are already logged in!")
+    if st.button(t("home")):
         st.switch_page("app.py")
     st.stop()
 
-st.title("🔐 Đăng nhập")
+st.title(t("login_title"))
 
 # Create columns for better layout
 col1, col2, col3 = st.columns([1, 2, 1])
 
 with col2:
-    st.markdown("### Đăng nhập vào hệ thống khảo sát")
-    
+    st.markdown(f"### {t('login_subtitle')}")
+
     # Login form
     with st.form("login_form"):
-        username = st.text_input("Tên đăng nhập", placeholder="Nhập tên đăng nhập của bạn")
-        password = st.text_input("Mật khẩu", type="password", placeholder="Nhập mật khẩu")
-        
+        username = st.text_input(t("username"), placeholder=t("username_placeholder"))
+        password = st.text_input(t("password"), type="password", placeholder=t("password_placeholder"))
+
         col_login, col_register = st.columns(2)
-        
+
         with col_login:
-            login_clicked = st.form_submit_button("Đăng nhập", use_container_width=True, type="primary")
-        
+            login_clicked = st.form_submit_button(t("login"), use_container_width=True, type="primary")
+
         with col_register:
-            register_clicked = st.form_submit_button("Đăng ký tài khoản mới", use_container_width=True)
-    
+            register_clicked = st.form_submit_button(t("register_new"), use_container_width=True)
+
     # Handle login
     if login_clicked:
         if username and password:
@@ -45,31 +48,22 @@ with col2:
             else:
                 st.error(message)
         else:
-            st.error("Vui lòng nhập đầy đủ tên đăng nhập và mật khẩu")
-    
+            st.error(t("fill_all_fields"))
+
     # Handle register redirect
     if register_clicked:
         st.switch_page("pages/7_Register.py")
-    
+
     # Demo accounts info
     st.markdown("---")
-    st.markdown("### 🔧 Tài khoản demo")
-    st.info("""
-    **Tài khoản quản trị viên:**
-    - Tên đăng nhập: `admin`
-    - Mật khẩu: `admin123`
-    
-    **Hoặc tạo tài khoản người dùng mới bằng cách nhấn "Đăng ký tài khoản mới"**
-    """)
+    st.markdown(f"### {t('demo_account')}")
+    st.info(t("demo_admin_info"))
 
 # Footer
 st.markdown("---")
 st.markdown(
-    """
-    <div style='text-align: center; color: #666;'>
-        <p>Khảo sát về Ảnh hưởng của Vốn xã hội, Vốn nhân lực đến phát triển bền vững của doanh nghiệp</p>
-        <p>Hệ thống bảo mật cho phép quản lý khảo sát một cách an toàn</p>
-    </div>
-    """, 
-    unsafe_allow_html=True
+    f"<div style='text-align: center; color: #666;'>"
+    f"<p><strong>HHD-HY</strong> — {t('footer_copy')}</p>"
+    f"</div>",
+    unsafe_allow_html=True,
 )

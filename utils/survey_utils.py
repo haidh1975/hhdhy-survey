@@ -224,28 +224,21 @@ def render_survey_form(survey, submit_action=None):
 
 def submit_survey_response(survey_id, response):
     """
-    Submit a survey response.
-    
+    Submit a survey response vào database.
+
     Args:
-        survey_id (str): Survey ID
-        response (dict): Response data
-        
+        survey_id (str): UUID của khảo sát
+        response (dict): Dữ liệu phản hồi
+
     Returns:
-        bool: Success status
+        bool: True nếu thành công
     """
     try:
-        # Load existing responses
-        responses = load_responses()
-        
-        # Add response to the appropriate survey
-        if survey_id not in responses:
-            responses[survey_id] = []
-        
-        responses[survey_id].append(response)
-        
-        # Save updated responses
-        save_responses(responses)
-        return True
+        from utils.db_utils import save_response_db
+        success, message = save_response_db(survey_id, response)
+        if not success:
+            st.error(f"Lỗi lưu phản hồi: {message}")
+        return success
     except Exception as e:
-        st.error(f"Error saving response: {e}")
+        st.error(f"Lỗi lưu phản hồi: {e}")
         return False

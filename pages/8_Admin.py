@@ -1,18 +1,23 @@
 import streamlit as st
 import pandas as pd
 from utils.auth import (
-    require_admin, 
-    get_all_users, 
-    update_user_status, 
+    require_admin,
+    get_all_users,
+    update_user_status,
     change_user_role,
-    get_current_user
+    get_current_user,
+    change_password,
 )
+from utils.database import check_database_health
+from utils.i18n import render_language_selector, t, get_lang
 
 st.set_page_config(
-    page_title="Quản trị hệ thống - Khảo sát về Ảnh hưởng của Vốn xã hội, Vốn nhân lực",
+    page_title="HHD-HY — Quản trị hệ thống / Admin",
     page_icon="⚙️",
     layout="wide",
 )
+
+render_language_selector()
 
 # Require admin authentication
 require_admin()
@@ -129,18 +134,48 @@ if users:
 else:
     st.info("Không có người dùng nào trong hệ thống.")
 
-# System information
+# Đổi mật khẩu cho tài khoản admin đang đăng nhập
+st.header("🔑 Đổi mật khẩu tài khoản của bạn")
+
+with st.expander("Nhấn để đổi mật khẩu"):
+    with st.form("change_password_form"):
+        old_pw = st.text_input("Mật khẩu hiện tại", type="password")
+        new_pw = st.text_input("Mật khẩu mới", type="password")
+        confirm_pw = st.text_input("Xác nhận mật khẩu mới", type="password")
+        change_btn = st.form_submit_button("Đổi mật khẩu")
+
+    if change_btn:
+        if not old_pw or not new_pw or not confirm_pw:
+            st.error("Vui lòng điền đầy đủ tất cả các trường")
+        elif new_pw != confirm_pw:
+            st.error("Mật khẩu mới và xác nhận không khớp")
+        elif len(new_pw) < 6:
+            st.error("Mật khẩu mới phải có ít nhất 6 ký tự")
+        else:
+            ok, msg = change_password(current_user, old_pw, new_pw)
+            if ok:
+                st.success(msg)
+            else:
+                st.error(msg)
+
+# Thông tin hệ thống
 st.header("Thông tin hệ thống")
 
+db_health = check_database_health()
 col1, col2 = st.columns(2)
 
 with col1:
     st.subheader("Cấu hình hệ thống")
-    st.info("""
-    **Phiên bản**: 1.0.0  
-    **Hệ thống xác thực**: File-based JSON  
-    **Lưu trữ dữ liệu**: Local JSON files  
-    **Phân quyền**: Admin/User roles  
+    db_type = db_health.get("db_type", "PostgreSQL")
+    db_status = db_health.get("status", "unknown")
+    db_tables = db_health.get("tables_count", "?")
+    status_icon = "✅" if db_status == "healthy" else "❌"
+    st.info(f"""
+    **Phiên bản**: 2.0.0
+    **Cơ sở dữ liệu**: {db_type} {status_icon}
+    **Số bảng**: {db_tables}
+    **Xác thực**: Database-based (SHA-256)
+    **Phân quyền**: Admin/User roles
     """)
 
 with col2:
@@ -148,9 +183,9 @@ with col2:
     st.warning("""
     **Lưu ý bảo mật**:
     - Mật khẩu được mã hóa SHA-256
-    - Session được quản lý tự động
-    - Cần backup định kỳ file dữ liệu
-    - Khuyến nghị sử dụng HTTPS trong production
+    - Session được quản lý qua Streamlit session_state
+    - Khuyến nghị dùng PostgreSQL trong production
+    - Nên bật HTTPS khi triển khai thực tế
     """)
 
 # Quick actions

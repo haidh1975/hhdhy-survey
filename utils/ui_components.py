@@ -344,10 +344,20 @@ def create_status_badge(status: str):
 
 def add_footer():
     """Add a footer to the page"""
-    footer_html = """
+    try:
+        from utils.i18n import t
+        system_label = t("footer_system")
+        copy_label = t("footer_copy")
+        version_label = t("version")
+    except Exception:
+        system_label = "Hệ thống Khảo sát HHD-HY"
+        copy_label = "© Bản quyền thuộc về Đỗ Hữu Hải"
+        version_label = "Phiên bản 2.0"
+
+    footer_html = f"""
     <div class="footer">
-        <p><strong>Hệ thống Khảo sát Hưng Yên</strong> - Phiên bản 2.0</p>
-        <p>© 2024 - Nghiên cứu Vốn xã hội và Vốn nhân lực</p>
+        <p><strong>{system_label}</strong> — {version_label}</p>
+        <p>{copy_label}</p>
     </div>
     """
     st.markdown(footer_html, unsafe_allow_html=True)

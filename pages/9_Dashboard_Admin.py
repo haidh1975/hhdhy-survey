@@ -6,9 +6,10 @@ from datetime import datetime, timedelta
 from utils.auth import require_admin, get_current_user
 from utils.db_utils import get_system_stats_db, get_surveys_db, get_all_users_db
 from utils.database import check_database_health
+from utils.i18n import render_language_selector, t, get_lang
 
 st.set_page_config(
-    page_title="Dashboard Quản trị Nâng cao - Khảo sát Hưng Yên",
+    page_title="HHD-HY — Dashboard Quản trị / Admin Dashboard",
     page_icon="📈",
     layout="wide",
 )
@@ -16,8 +17,13 @@ st.set_page_config(
 # Require admin authentication
 require_admin()
 
-st.title("📈 Dashboard Quản trị Nâng cao")
-st.markdown("Theo dõi và phân tích toàn diện hệ thống khảo sát")
+render_language_selector()
+
+_title = "📈 Dashboard Quản trị Nâng cao" if get_lang() == "vi" else "📈 Advanced Admin Dashboard"
+_subtitle = "Theo dõi và phân tích toàn diện hệ thống khảo sát" if get_lang() == "vi" \
+            else "Comprehensive monitoring and analysis of the survey system"
+st.title(_title)
+st.markdown(_subtitle)
 
 # Load data with caching
 @st.cache_data(ttl=60)
@@ -37,35 +43,35 @@ users = data['users']
 db_health = data['db_health']
 
 # Top metrics row
-st.header("📊 Tổng quan hệ thống")
+_sys_overview = "📊 Tổng quan hệ thống" if get_lang() == "vi" else "📊 System Overview"
+st.header(_sys_overview)
 
 col1, col2, col3, col4, col5 = st.columns(5)
 
+total_users = stats.get('users', {}).get('total', 0)
+active_users = stats.get('users', {}).get('active', 0)
+total_surveys = stats.get('surveys', {}).get('total', 0)
+active_surveys = stats.get('surveys', {}).get('active', 0)
+total_responses = stats.get('responses', {}).get('total', 0)
+admin_count = stats.get('users', {}).get('admin_count', 0)
+
 with col1:
-    total_users = stats.get('users', {}).get('total', 0)
-    active_users = stats.get('users', {}).get('active', 0)
-    st.metric(
-        "Người dùng", 
-        total_users,
-        delta=f"{active_users} hoạt động"
-    )
+    _lbl = "Người dùng" if get_lang() == "vi" else "Users"
+    _delta = f"{active_users} hoạt động" if get_lang() == "vi" else f"{active_users} active"
+    st.metric(_lbl, total_users, delta=_delta)
 
 with col2:
-    total_surveys = stats.get('surveys', {}).get('total', 0)
-    active_surveys = stats.get('surveys', {}).get('active', 0)
-    st.metric(
-        "Khảo sát", 
-        total_surveys,
-        delta=f"{active_surveys} đang hoạt động"
-    )
+    _lbl = "Khảo sát" if get_lang() == "vi" else "Surveys"
+    _delta = f"{active_surveys} đang hoạt động" if get_lang() == "vi" else f"{active_surveys} active"
+    st.metric(_lbl, total_surveys, delta=_delta)
 
 with col3:
-    total_responses = stats.get('responses', {}).get('total', 0)
-    st.metric("Tổng phản hồi", total_responses)
+    _lbl = "Tổng phản hồi" if get_lang() == "vi" else "Total Responses"
+    st.metric(_lbl, total_responses)
 
 with col4:
-    admin_count = stats.get('users', {}).get('admin_count', 0)
-    st.metric("Quản trị viên", admin_count)
+    _lbl = "Quản trị viên" if get_lang() == "vi" else "Admins"
+    st.metric(_lbl, admin_count)
 
 with col5:
     db_status = db_health.get('status', 'unknown')
@@ -78,63 +84,97 @@ st.markdown("---")
 col1, col2 = st.columns(2)
 
 with col1:
-    st.subheader("📈 Xu hướng tạo khảo sát")
-    
+    _trend_title = "📈 Xu hướng phản hồi theo khảo sát" if get_lang() == "vi" else "📈 Responses per Survey"
+    st.subheader(_trend_title)
+
     if surveys:
-        # Create survey creation timeline
-        survey_dates = []
-        for survey in surveys:
-            created_at = survey.get('created_at', '')
-            if created_at:
-                try:
-                    date = datetime.fromisoformat(created_at.replace('Z', '+00:00')).date()
-                    survey_dates.append(date)
-                except:
-                    continue
-        
-        if survey_dates:
-            df_surveys = pd.DataFrame({'date': survey_dates})
-            daily_surveys = df_surveys.groupby('date').size().reset_index()
-            daily_surveys.columns = ['date', 'count']
-            
-            fig_surveys = px.line(
-                daily_surveys, 
-                x='date', 
-                y='count',
-                title="Số khảo sát được tạo theo ngày",
-                markers=True
+        # Bar chart: responses per survey (Pareto-style)
+        # Reference: GeeksforGeeks Pareto Chart pattern
+        survey_resp_data = sorted(
+            [{"title": s["title"][:30], "responses": s.get("response_count", 0)} for s in surveys],
+            key=lambda x: x["responses"],
+            reverse=True
+        )
+        df_resp_bar = pd.DataFrame(survey_resp_data)
+        if not df_resp_bar.empty:
+            fig_bar = go.Figure()
+            fig_bar.add_trace(go.Bar(
+                x=df_resp_bar["title"],
+                y=df_resp_bar["responses"],
+                marker=dict(
+                    color=df_resp_bar["responses"],
+                    colorscale="Blues",
+                    showscale=False,
+                ),
+                text=df_resp_bar["responses"],
+                textposition="outside",
+            ))
+            # Add cumulative % line (Pareto)
+            total_r = df_resp_bar["responses"].sum()
+            if total_r > 0:
+                cum_pct = (df_resp_bar["responses"].cumsum() / total_r * 100).tolist()
+                fig_bar.add_trace(go.Scatter(
+                    x=df_resp_bar["title"],
+                    y=cum_pct,
+                    mode="lines+markers",
+                    name="Tích lũy %" if get_lang() == "vi" else "Cumulative %",
+                    yaxis="y2",
+                    line=dict(color="#ff7f0e", width=2),
+                ))
+                fig_bar.update_layout(
+                    yaxis2=dict(
+                        overlaying="y", side="right",
+                        range=[0, 110],
+                        title="%" ,
+                        showgrid=False,
+                    )
+                )
+            fig_bar.update_layout(
+                xaxis_tickangle=-30,
+                xaxis_title="",
+                yaxis_title="Số phản hồi" if get_lang() == "vi" else "Responses",
+                showlegend=False,
+                height=320,
+                margin=dict(t=20, b=80),
             )
-            fig_surveys.update_layout(
-                xaxis_title="Ngày",
-                yaxis_title="Số khảo sát",
-                showlegend=False
-            )
-            st.plotly_chart(fig_surveys, use_container_width=True)
+            st.plotly_chart(fig_bar, use_container_width=True)
         else:
-            st.info("Chưa có dữ liệu về timeline tạo khảo sát")
+            st.info("Chưa có phản hồi nào." if get_lang() == "vi" else "No responses yet.")
     else:
-        st.info("Chưa có khảo sát nào được tạo")
+        st.info("Chưa có khảo sát nào." if get_lang() == "vi" else "No surveys yet.")
 
 with col2:
-    st.subheader("👥 Phân bố người dùng")
-    
+    _user_dist_title = "👥 Phân bố người dùng" if get_lang() == "vi" else "👥 User Distribution"
+    st.subheader(_user_dist_title)
+
     if users:
-        # User role distribution
+        # User role + status donut chart
         user_roles = {}
         for user in users:
             role = user.get('role', 'user')
             user_roles[role] = user_roles.get(role, 0) + 1
-        
-        role_labels = {'admin': 'Quản trị viên', 'user': 'Người dùng'}
-        
-        fig_users = px.pie(
+
+        role_labels_vi = {'admin': 'Quản trị viên', 'user': 'Người dùng'}
+        role_labels_en = {'admin': 'Administrator', 'user': 'User'}
+        role_labels = role_labels_vi if get_lang() == "vi" else role_labels_en
+
+        fig_users = go.Figure(data=[go.Pie(
+            labels=[role_labels.get(r, r) for r in user_roles],
             values=list(user_roles.values()),
-            names=[role_labels.get(role, role) for role in user_roles.keys()],
-            title="Phân bố vai trò người dùng"
+            hole=0.45,
+            textinfo="label+percent",
+            marker=dict(colors=["#0066cc", "#6eaee0"]),
+        )])
+        _pie_title = "Vai trò người dùng" if get_lang() == "vi" else "User Roles"
+        fig_users.update_layout(
+            title=_pie_title,
+            height=320,
+            showlegend=True,
+            margin=dict(t=40, b=10),
         )
         st.plotly_chart(fig_users, use_container_width=True)
     else:
-        st.info("Chưa có người dùng nào trong hệ thống")
+        st.info("Chưa có người dùng nào." if get_lang() == "vi" else "No users yet.")
 
 # Detailed analytics
 st.header("📋 Phân tích chi tiết")

@@ -3,19 +3,27 @@ import os
 import json
 from datetime import datetime
 from utils.auth import require_admin, get_current_user
-from utils.google_drive_backup import (
-    GoogleDriveManager, 
-    is_google_drive_configured,
-    get_google_drive_config_status,
-    setup_google_drive_instructions,
-    create_full_backup,
-    backup_surveys_to_drive,
-    backup_responses_to_drive,
-    backup_users_to_drive
-)
+from utils.i18n import render_language_selector, t, get_lang
+
+# Import Google Drive utilities với fallback an toàn
+try:
+    from utils.google_drive_backup import (
+        GoogleDriveManager,
+        is_google_drive_configured,
+        get_google_drive_config_status,
+        setup_google_drive_instructions,
+        create_full_backup,
+        backup_surveys_to_drive,
+        backup_responses_to_drive,
+        backup_users_to_drive,
+    )
+    _GOOGLE_LIBS_OK = True
+except ImportError as _google_err:
+    _GOOGLE_LIBS_OK = False
+    _GOOGLE_ERR_MSG = str(_google_err)
 
 st.set_page_config(
-    page_title="Google Drive Backup - Khảo sát Hưng Yên",
+    page_title="HHD-HY — Google Drive Backup",
     page_icon="☁️",
     layout="wide",
 )
@@ -23,8 +31,24 @@ st.set_page_config(
 # Require admin authentication
 require_admin()
 
+render_language_selector()
+
+backup_subtitle = "Sao lưu dữ liệu khảo sát lên Google Drive" if get_lang() == "vi" \
+                  else "Back up survey data to Google Drive"
 st.title("☁️ Google Drive Backup")
-st.markdown("Sao lưu dữ liệu khảo sát lên Google Drive")
+st.markdown(backup_subtitle)
+
+# Kiểm tra thư viện Google API
+if not _GOOGLE_LIBS_OK:
+    st.error(f"❌ Thiếu thư viện Google API: `{_GOOGLE_ERR_MSG}`")
+    st.info("""
+    **Cách khắc phục — chạy lệnh sau trong terminal:**
+    ```
+    pip install google-api-python-client google-auth-httplib2 google-auth-oauthlib
+    ```
+    Sau đó khởi động lại ứng dụng.
+    """)
+    st.stop()
 
 # Check Google Drive configuration status
 config_status = get_google_drive_config_status()

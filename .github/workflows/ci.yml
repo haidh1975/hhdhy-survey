@@ -1,0 +1,85 @@
+# ─────────────────────────────────────────────────────────────────────────────
+#  GitHub Actions CI — HHD-HY Survey System
+#  Chạy tự động mỗi khi push lên main hoặc tạo Pull Request
+#  Kiểm tra: syntax Python, imports, Docker build
+# ─────────────────────────────────────────────────────────────────────────────
+
+name: HHD-HY CI
+
+on:
+  push:
+    branches: [main, master, develop]
+  pull_request:
+    branches: [main, master]
+
+jobs:
+
+  # ── Syntax & Import checks ──────────────────────────────────────────────────
+  lint-and-test:
+    name: Python Syntax Check
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Python 3.11
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+          cache: "pip"
+
+      - name: Install dependencies
+        run: |
+          pip install --upgrade pip
+          pip install -r requirements.txt
+
+      - name: Check Python syntax (all files)
+        run: |
+          python -m py_compile app.py
+          for f in pages/*.py; do python -m py_compile "$f"; done
+          for f in utils/*.py; do python -m py_compile "$f"; done
+          echo "All files syntax OK"
+
+      - name: Test utils modules import
+        run: |
+          python -c "from utils.i18n import t, get_lang, render_language_selector; print('i18n OK')"
+          python -c "from utils.ai_insights import generate_survey_insights; print('ai_insights OK')"
+          python -c "from utils.search_utils import search_responses; print('search_utils OK')"
+          python -c "from utils.nlp_utils import word_frequency, batch_sentiment; print('nlp_utils OK')"
+          python -c "from utils.cache_utils import get_app_cache; print('cache_utils OK')"
+          python -c "from utils.export_utils import download_buttons; print('export_utils OK')"
+
+  # ── Docker build check ───────────────────────────────────────────────────────
+  docker-build:
+    name: Docker Build Test
+    runs-on: ubuntu-latest
+    needs: lint-and-test
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Build Docker image (test only — no push)
+        uses: docker/build-push-action@v5
+        with:
+          context: .
+          file: ./Dockerfile
+          push: false
+          tags: hhdhy-survey:ci-test
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+
+  # ── Deploy notification (optional) ──────────────────────────────────────────
+  # Bỏ comment khi muốn tự động deploy lên Streamlit Cloud
+  # streamlit-deploy:
+  #   name: Notify Streamlit Cloud
+  #   runs-on: ubuntu-latest
+  #   needs: [lint-and-test]
+  #   if: github.ref == 'refs/heads/main'
+  #   steps:
+  #     - name: Trigger Streamlit redeploy
+  #       run: echo "Streamlit Cloud tự động redeploy khi push lên main"

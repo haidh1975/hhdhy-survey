@@ -8,19 +8,26 @@ import plotly.graph_objects as go
 import io
 from utils.data_analysis import calculate_statistics
 from utils.visualization import create_chart
-from utils.advanced_analysis import calculate_cronbach_alpha, perform_efa, perform_regression, simple_cfa_evaluation
+from utils.advanced_analysis import (
+    calculate_cronbach_alpha, perform_efa, perform_regression, simple_cfa_evaluation,
+    calculate_correlation_matrix, calculate_descriptive_stats,
+    perform_group_comparison, check_response_quality,
+)
 from utils.auth import require_auth, get_current_user
 from utils.pdf_generator import generate_survey_report
 from utils.db_utils import get_surveys_db
+from utils.i18n import render_language_selector, t, get_lang
 
 st.set_page_config(
-    page_title="Khảo sát về Ảnh hưởng của Vốn xã hội, Vốn nhân lực đến phát triển bền vững của doanh nghiệp trên địa bàn tỉnh Hưng Yên",
+    page_title="HHD-HY — Phân Tích Dữ Liệu / Data Analysis",
     page_icon="📈",
     layout="wide",
 )
 
 # Require authentication to access this page
 require_auth()
+
+render_language_selector()
 
 # Load surveys from database
 @st.cache_data(ttl=30)
@@ -58,35 +65,70 @@ def load_responses_from_db():
 
 st.session_state.responses = load_responses_from_db()
 
-st.title("Phân tích dữ liệu - Khảo sát về Ảnh hưởng của Vốn xã hội, Vốn nhân lực đến phát triển bền vững của doanh nghiệp")
+_title_vi = "📈 Phân Tích Dữ Liệu Khảo Sát"
+_title_en = "📈 Survey Data Analysis"
+st.title(_title_vi if get_lang() == "vi" else _title_en)
 
+_no_survey_vi = "Chưa có khảo sát nào. Hãy vào trang **Tạo Khảo Sát** để bắt đầu."
+_no_survey_en = "No surveys yet. Go to **Create Survey** to get started."
 if not st.session_state.surveys:
-    st.info("No surveys created yet. Go to the 'Create Survey' page to create your first survey.")
+    st.info(_no_survey_vi if get_lang() == "vi" else _no_survey_en)
 else:
     # Survey selection
+    _sel_vi = "Chọn khảo sát để phân tích"
+    _sel_en = "Select a survey to analyze"
     selected_survey_id = st.selectbox(
-        "Select a survey to analyze",
+        _sel_vi if get_lang() == "vi" else _sel_en,
         options=list(st.session_state.surveys.keys()),
         format_func=lambda x: st.session_state.surveys[x]["title"]
     )
-    
+
     selected_survey = st.session_state.surveys[selected_survey_id]
     survey_responses = st.session_state.responses.get(selected_survey_id, [])
-    
-    st.subheader(f"Analysis for: {selected_survey['title']}")
-    
+
+    _for_vi = f"Phân tích: {selected_survey['title']}"
+    _for_en = f"Analysis for: {selected_survey['title']}"
+    st.subheader(_for_vi if get_lang() == "vi" else _for_en)
+
+    _no_resp_vi = "Chưa có phản hồi nào cho khảo sát này."
+    _no_resp_en = "No responses received for this survey yet."
     if not survey_responses:
-        st.info("No responses received for this survey yet.")
+        st.info(_no_resp_vi if get_lang() == "vi" else _no_resp_en)
     else:
         # Convert responses to DataFrame
         df = pd.DataFrame(survey_responses)
-        
+
         # Overview metrics
-        st.subheader("Overview")
+        _overview_vi = "Tổng quan"
+        _overview_en = "Overview"
+        st.subheader(_overview_vi if get_lang() == "vi" else _overview_en)
         col1, col2, col3, col4 = st.columns(4)
-        
+
         with col1:
-            st.metric("Total Responses", len(survey_responses))
+            _tot_vi = "Tổng phản hồi"
+            _tot_en = "Total Responses"
+            st.metric(_tot_vi if get_lang() == "vi" else _tot_en, len(survey_responses))
+
+        with col2:
+            # Numeric questions count
+            numeric_q_count = sum(
+                1 for q in selected_survey.get("questions", [])
+                if q["type"] in ["likert_scale", "number"]
+            )
+            _nq_vi = "Câu hỏi số"
+            _nq_en = "Numeric Questions"
+            st.metric(_nq_vi if get_lang() == "vi" else _nq_en, numeric_q_count)
+
+        with col3:
+            # Response completeness
+            resp_cols = [c for c in df.columns if c != "timestamp"]
+            if resp_cols:
+                completeness = round(df[resp_cols].notna().values.mean() * 100, 1)
+            else:
+                completeness = 100.0
+            _comp_vi = "Độ đầy đủ dữ liệu"
+            _comp_en = "Data Completeness"
+            st.metric(_comp_vi if get_lang() == "vi" else _comp_en, f"{completeness}%")
         
         # PDF Report Download Button
         with col4:
@@ -150,34 +192,44 @@ else:
                 pass
         
         # Question analysis
-        st.subheader("Question Analysis")
-        
+        _qa_vi = "📊 Phân tích câu hỏi"
+        _qa_en = "📊 Question Analysis"
+        st.subheader(_qa_vi if get_lang() == "vi" else _qa_en)
+
         # Create tabs for different visualization methods
-        tab1, tab2, tab3, tab4, tab5 = st.tabs(["Charts", "Statistics", "Comparisons", "Summary Table", "Response Breakdown"])
+        _tab_labels = (
+            ["📊 Biểu đồ", "📋 Thống kê", "🔀 So sánh", "📑 Bảng tóm tắt", "🔢 Phân tích chi tiết",
+             "🔗 Ma trận tương quan", "🧪 Kiểm định nhóm"]
+            if get_lang() == "vi" else
+            ["📊 Charts", "📋 Statistics", "🔀 Comparisons", "📑 Summary Table", "🔢 Response Breakdown",
+             "🔗 Correlation Matrix", "🧪 Group Tests"]
+        )
+        tab1, tab2, tab3, tab4, tab5, tab_corr, tab_group = st.tabs(_tab_labels)
         
         with tab1:
             # Select questions to visualize
             questions = selected_survey["questions"]
-            
+
             question_ids = []
             question_texts = []
             question_types = []
-            
+
             for i, question in enumerate(questions):
                 question_id = question.get("id", str(i))
                 question_ids.append(question_id)
                 question_texts.append(question["question_text"])
                 question_types.append(question["type"])
-            
+
             question_df = pd.DataFrame({
                 "id": question_ids,
                 "text": question_texts,
                 "type": question_types
             })
-            
-            # Allow selecting multiple questions to compare
+
+            _sel_q_vi = "Chọn câu hỏi cần biểu đồ hoá"
+            _sel_q_en = "Select questions to visualize"
             selected_questions = st.multiselect(
-                "Select questions to visualize",
+                _sel_q_vi if get_lang() == "vi" else _sel_q_en,
                 options=question_df.index.tolist(),
                 format_func=lambda i: question_df.loc[i, "text"],
                 default=[0] if len(question_df) > 0 else []
@@ -869,14 +921,137 @@ else:
                             st.rerun()
         
         # Create tabs for different advanced analysis methods
-        adv_tab1, adv_tab2, adv_tab3, adv_tab4, adv_tab5 = st.tabs([
-            "Cronbach's Alpha", 
-            "Phân tích nhân tố (EFA)", 
-            "Hồi quy đa biến",
-            "Phân tích nhân tố khẳng định (CFA)",
-            "Mô hình cấu trúc (SEM)"
-        ])
+        _adv_labels = (
+            ["📊 Thống kê mô tả", "🔑 Cronbach's Alpha",
+             "🧩 Phân tích nhân tố (EFA)", "📈 Hồi quy đa biến",
+             "✅ CFA", "🔗 Mô hình SEM"]
+            if get_lang() == "vi" else
+            ["📊 Descriptive Stats", "🔑 Cronbach's Alpha",
+             "🧩 EFA", "📈 Regression",
+             "✅ CFA", "🔗 SEM"]
+        )
+        adv_tab_desc, adv_tab1, adv_tab2, adv_tab3, adv_tab4, adv_tab5 = st.tabs(_adv_labels)
         
+        # 0. Descriptive Statistics Tab
+        with adv_tab_desc:
+            _desc_title = "📊 Thống kê mô tả nâng cao" if get_lang() == "vi" else "📊 Advanced Descriptive Statistics"
+            st.subheader(_desc_title)
+
+            _desc_info = (
+                "Bao gồm: mean, median, std, skewness, kurtosis, IQR, số outlier, và kiểm định chuẩn Shapiro-Wilk."
+                if get_lang() == "vi" else
+                "Includes: mean, median, std, skewness, kurtosis, IQR, outlier count, and Shapiro-Wilk normality test."
+            )
+            st.info(_desc_info)
+
+            if numeric_questions:
+                _desc_vars = "Chọn biến để mô tả" if get_lang() == "vi" else "Select variables to describe"
+                desc_vars = st.multiselect(
+                    _desc_vars,
+                    options=[q["column"] for q in numeric_questions],
+                    format_func=lambda c: next((q["text"] for q in numeric_questions if q["column"] == c), c),
+                    default=[q["column"] for q in numeric_questions[:min(8, len(numeric_questions))]],
+                    key="desc_vars_sel",
+                )
+                if desc_vars:
+                    desc_result = calculate_descriptive_stats(numeric_df, desc_vars)
+                    if desc_result.get("success"):
+                        stats_list = desc_result["stats"]
+                        label_map_d = {q["column"]: q["text"][:50] for q in numeric_questions}
+
+                        if get_lang() == "vi":
+                            col_labels = ["Biến", "N", "Mean", "Median", "Std", "Min", "Max",
+                                          "Skewness", "Kurtosis", "Outliers", "Chuẩn? (p>0.05)"]
+                        else:
+                            col_labels = ["Variable", "N", "Mean", "Median", "Std", "Min", "Max",
+                                          "Skewness", "Kurtosis", "Outliers", "Normal? (p>0.05)"]
+
+                        rows = []
+                        for s in stats_list:
+                            rows.append([
+                                label_map_d.get(s["column"], s["column"]),
+                                s["n"],
+                                round(s["mean"], 3),
+                                round(s["median"], 3),
+                                round(s["std"], 3),
+                                round(s["min"], 3),
+                                round(s["max"], 3),
+                                round(s["skewness"], 3),
+                                round(s["kurtosis"], 3),
+                                s["n_outliers"],
+                                "✅" if s["is_normal"] else "❌",
+                            ])
+
+                        desc_df = pd.DataFrame(rows, columns=col_labels)
+                        st.dataframe(desc_df, use_container_width=True)
+
+                        # Highlight variables with outliers
+                        outlier_vars = [r[0] for r in rows if r[9] > 0]
+                        non_normal_vars = [r[0] for r in rows if r[10] == "❌"]
+
+                        if outlier_vars:
+                            _out_warn = f"⚠️ Biến có outlier (IQR rule): {', '.join(outlier_vars[:5])}" \
+                                        if get_lang() == "vi" else \
+                                        f"⚠️ Variables with outliers (IQR rule): {', '.join(outlier_vars[:5])}"
+                            st.warning(_out_warn)
+
+                        if non_normal_vars:
+                            _nn_info = f"📌 Phân phối không chuẩn (Shapiro-Wilk p<0.05): {', '.join(non_normal_vars[:5])}" \
+                                       if get_lang() == "vi" else \
+                                       f"📌 Non-normal distribution (Shapiro-Wilk p<0.05): {', '.join(non_normal_vars[:5])}"
+                            st.info(_nn_info)
+
+                        # Distribution chart for selected variable
+                        if len(desc_vars) >= 1:
+                            _hist_sel = "Chọn biến để xem phân phối" if get_lang() == "vi" else "Select variable to view distribution"
+                            hist_var = st.selectbox(
+                                _hist_sel,
+                                options=desc_vars,
+                                format_func=lambda c: label_map_d.get(c, c),
+                                key="hist_var_sel",
+                            )
+                            fig_hist = go.Figure()
+                            fig_hist.add_trace(go.Histogram(
+                                x=numeric_df[hist_var].dropna(),
+                                nbinsx=15,
+                                marker_color="#0066cc",
+                                opacity=0.8,
+                                name=label_map_d.get(hist_var, hist_var),
+                            ))
+                            # Overlay normal curve
+                            from scipy.stats import norm as _norm
+                            _mu = numeric_df[hist_var].mean()
+                            _sigma = numeric_df[hist_var].std()
+                            _x_range = np.linspace(
+                                numeric_df[hist_var].min(), numeric_df[hist_var].max(), 100
+                            )
+                            _bin_width = max(
+                                (numeric_df[hist_var].max() - numeric_df[hist_var].min()) / 15, 1e-9
+                            )
+                            _y_norm = _norm.pdf(_x_range, _mu, _sigma) * \
+                                      len(numeric_df[hist_var].dropna()) * _bin_width
+                            fig_hist.add_trace(go.Scatter(
+                                x=_x_range, y=_y_norm,
+                                mode="lines",
+                                line=dict(color="red", width=2, dash="dash"),
+                                name="Normal curve",
+                            ))
+                            fig_hist.update_layout(
+                                title=label_map_d.get(hist_var, hist_var),
+                                xaxis_title="Value",
+                                yaxis_title="Frequency",
+                                height=320,
+                                margin=dict(t=40, b=30),
+                            )
+                            st.plotly_chart(fig_hist, use_container_width=True)
+                    else:
+                        st.error(desc_result.get("error", "Error"))
+                else:
+                    _info_desc = "Chọn ít nhất 1 biến." if get_lang() == "vi" else "Select at least 1 variable."
+                    st.info(_info_desc)
+            else:
+                st.warning("Cần ít nhất 1 biến số." if get_lang() == "vi" else "Need at least 1 numeric variable.")
+
         # 1. Cronbach's Alpha Tab
         with adv_tab1:
             st.subheader("Phân tích độ tin cậy - Cronbach's Alpha")
@@ -1487,6 +1662,230 @@ else:
             else:
                 st.warning("Cần ít nhất 3 biến số để thực hiện phân tích CFA.")
         
+        # ── Tab: Correlation Matrix ─────────────────────────────────────────────
+        with tab_corr:
+            _corr_title_vi = "🔗 Ma Trận Tương Quan"
+            _corr_title_en = "🔗 Correlation Matrix"
+            st.subheader(_corr_title_vi if get_lang() == "vi" else _corr_title_en)
+
+            _corr_info_vi = """
+Ma trận tương quan cho thấy mức độ tương quan tuyến tính giữa các biến số.
+- |r| ≥ 0.7 → Tương quan mạnh
+- 0.3 ≤ |r| < 0.7 → Tương quan trung bình
+- |r| < 0.3 → Tương quan yếu
+*Dấu * (p < 0.05) và ** (p < 0.01) chỉ mức ý nghĩa thống kê.*
+"""
+            _corr_info_en = """
+The correlation matrix shows linear relationships between numeric variables.
+- |r| ≥ 0.7 → Strong
+- 0.3 ≤ |r| < 0.7 → Moderate
+- |r| < 0.3 → Weak
+*Significance: * (p < 0.05), ** (p < 0.01)*
+"""
+            st.markdown(_corr_info_vi if get_lang() == "vi" else _corr_info_en)
+
+            if len(numeric_questions) >= 2:
+                _method_vi = "Phương pháp tương quan"
+                _method_en = "Correlation method"
+                corr_method = st.radio(
+                    _method_vi if get_lang() == "vi" else _method_en,
+                    ["pearson", "spearman"],
+                    horizontal=True,
+                )
+
+                _sel_vars_vi = "Chọn các biến để tính tương quan"
+                _sel_vars_en = "Select variables for correlation"
+                corr_vars = st.multiselect(
+                    _sel_vars_vi if get_lang() == "vi" else _sel_vars_en,
+                    options=[q["column"] for q in numeric_questions],
+                    format_func=lambda c: next((q["text"] for q in numeric_questions if q["column"] == c), c),
+                    default=[q["column"] for q in numeric_questions[:min(8, len(numeric_questions))]],
+                )
+
+                if len(corr_vars) >= 2:
+                    corr_result = calculate_correlation_matrix(numeric_df, corr_vars, method=corr_method)
+                    if corr_result.get("success"):
+                        corr_mat = corr_result["corr_matrix"]
+                        pval_mat = corr_result["pvalue_matrix"]
+
+                        # Map column names to question texts for display
+                        label_map = {q["column"]: q["text"][:35] for q in numeric_questions}
+                        display_corr = corr_mat.rename(index=label_map, columns=label_map)
+
+                        # Heatmap using Plotly
+                        fig_corr = go.Figure(data=go.Heatmap(
+                            z=display_corr.values,
+                            x=display_corr.columns.tolist(),
+                            y=display_corr.index.tolist(),
+                            colorscale="RdBu",
+                            zmid=0,
+                            zmin=-1, zmax=1,
+                            text=np.round(display_corr.values, 2),
+                            texttemplate="%{text}",
+                            colorbar=dict(title="r"),
+                        ))
+                        fig_corr.update_layout(
+                            title=f"Ma trận tương quan ({corr_method})" if get_lang() == "vi"
+                                  else f"Correlation Matrix ({corr_method})",
+                            xaxis=dict(tickangle=-45),
+                            height=max(400, len(corr_vars) * 55),
+                        )
+                        st.plotly_chart(fig_corr, use_container_width=True)
+
+                        # Show significant pairs
+                        sig_pairs = []
+                        for i_idx, r in enumerate(corr_vars):
+                            for j_idx, c in enumerate(corr_vars):
+                                if i_idx >= j_idx:
+                                    continue
+                                r_val = corr_mat.iloc[i_idx, j_idx]
+                                p_val = pval_mat.iloc[i_idx, j_idx]
+                                if p_val < 0.05:
+                                    sig_pairs.append({
+                                        "Biến 1" if get_lang() == "vi" else "Variable 1": label_map.get(r, r),
+                                        "Biến 2" if get_lang() == "vi" else "Variable 2": label_map.get(c, c),
+                                        "r": round(r_val, 3),
+                                        "p-value": round(p_val, 4),
+                                        "Mức ý nghĩa" if get_lang() == "vi" else "Sig.":
+                                            "**" if p_val < 0.01 else "*",
+                                    })
+
+                        if sig_pairs:
+                            _sig_vi = f"Các cặp tương quan có ý nghĩa thống kê (n={corr_result['n']})"
+                            _sig_en = f"Statistically significant pairs (n={corr_result['n']})"
+                            st.subheader(_sig_vi if get_lang() == "vi" else _sig_en)
+                            st.dataframe(pd.DataFrame(sig_pairs), use_container_width=True)
+                    else:
+                        st.error(corr_result.get("error", "Lỗi không xác định"))
+                else:
+                    _info_vi = "Chọn ít nhất 2 biến để tính ma trận tương quan."
+                    _info_en = "Select at least 2 variables to compute the correlation matrix."
+                    st.info(_info_vi if get_lang() == "vi" else _info_en)
+            else:
+                _warn_vi = "Cần ít nhất 2 biến số để tính ma trận tương quan."
+                _warn_en = "Need at least 2 numeric variables for correlation matrix."
+                st.warning(_warn_vi if get_lang() == "vi" else _warn_en)
+
+        # ── Tab: Group Tests ────────────────────────────────────────────────────
+        with tab_group:
+            _grp_title_vi = "🧪 Kiểm Định So Sánh Nhóm"
+            _grp_title_en = "🧪 Group Comparison Tests"
+            st.subheader(_grp_title_vi if get_lang() == "vi" else _grp_title_en)
+
+            _grp_info_vi = """
+So sánh giá trị trung bình giữa các nhóm:
+- **2 nhóm** → Welch's t-test (không giả định phương sai bằng nhau)
+- **≥ 3 nhóm** → One-way ANOVA + Tukey HSD post-hoc
+"""
+            _grp_info_en = """
+Compare means across groups:
+- **2 groups** → Welch's t-test (unequal variance)
+- **≥ 3 groups** → One-way ANOVA + Tukey HSD post-hoc
+"""
+            st.markdown(_grp_info_vi if get_lang() == "vi" else _grp_info_en)
+
+            # Find categorical questions (group variable)
+            cat_questions = [
+                q for q in selected_survey.get("questions", [])
+                if q["type"] in ["multiple_choice", "dropdown"]
+            ]
+
+            if numeric_questions and cat_questions:
+                col_g1, col_g2 = st.columns(2)
+
+                with col_g1:
+                    _val_vi = "Biến giá trị (số)"
+                    _val_en = "Value variable (numeric)"
+                    value_col = st.selectbox(
+                        _val_vi if get_lang() == "vi" else _val_en,
+                        options=[q["column"] for q in numeric_questions],
+                        format_func=lambda c: next((q["text"] for q in numeric_questions if q["column"] == c), c),
+                        key="grp_value_col",
+                    )
+
+                with col_g2:
+                    _grp_vi = "Biến nhóm (phân loại)"
+                    _grp_en = "Group variable (categorical)"
+                    grp_q = st.selectbox(
+                        _grp_vi if get_lang() == "vi" else _grp_en,
+                        options=cat_questions,
+                        format_func=lambda q: q["question_text"],
+                        key="grp_cat_q",
+                    )
+                    grp_col = grp_q.get("id", "")
+                    if grp_col not in df.columns:
+                        grp_col = ""
+
+                if value_col and grp_col:
+                    grp_result = perform_group_comparison(df, value_col, grp_col)
+                    if grp_result.get("success"):
+                        # Summary cards
+                        c1, c2, c3 = st.columns(3)
+                        with c1:
+                            st.metric(
+                                "Kiểm định" if get_lang() == "vi" else "Test",
+                                grp_result["test_type"]
+                            )
+                        with c2:
+                            st.metric(
+                                "Thống kê F/t" if get_lang() == "vi" else "Statistic",
+                                f"{grp_result['statistic']:.3f}"
+                            )
+                        with c3:
+                            pv = grp_result["p_value"]
+                            sig_label = "✅ Có ý nghĩa (p<0.05)" if pv < 0.05 else "❌ Không ý nghĩa"
+                            if get_lang() == "en":
+                                sig_label = "✅ Significant (p<0.05)" if pv < 0.05 else "❌ Not significant"
+                            st.metric("p-value", f"{pv:.4f}", delta=sig_label)
+
+                        # Group stats chart
+                        gs_df = pd.DataFrame(grp_result["group_stats"])
+                        fig_grp = go.Figure()
+                        fig_grp.add_trace(go.Bar(
+                            x=gs_df["group"].astype(str),
+                            y=gs_df["mean"],
+                            error_y=dict(type="data", array=gs_df["std"].tolist(), visible=True),
+                            marker_color="#0066cc",
+                            name="Mean ± SD",
+                        ))
+                        x_label = next((q["text"] for q in cat_questions if q.get("id") == grp_col), grp_col)
+                        y_label = next((q["text"] for q in numeric_questions if q["column"] == value_col), value_col)
+                        fig_grp.update_layout(
+                            xaxis_title=x_label,
+                            yaxis_title=y_label,
+                            title="Mean ± SD by group",
+                            height=350,
+                        )
+                        st.plotly_chart(fig_grp, use_container_width=True)
+
+                        # Post-hoc table if available
+                        if "posthoc" in grp_result and grp_result["posthoc"]:
+                            _ph_vi = "Kiểm định post-hoc Tukey HSD"
+                            _ph_en = "Tukey HSD Post-hoc Tests"
+                            st.subheader(_ph_vi if get_lang() == "vi" else _ph_en)
+                            ph_df = pd.DataFrame(grp_result["posthoc"])
+                            ph_df.columns = (
+                                ["Nhóm 1", "Nhóm 2", "Chênh lệch TB", "p điều chỉnh", "Khác nhau?"]
+                                if get_lang() == "vi" else
+                                ["Group 1", "Group 2", "Mean Diff", "p-adj", "Significant?"]
+                            )
+                            ph_df["Khác nhau?" if get_lang() == "vi" else "Significant?"] = \
+                                ph_df["Khác nhau?" if get_lang() == "vi" else "Significant?"].map(
+                                    {True: "✅", False: "❌"}
+                                )
+                            st.dataframe(ph_df, use_container_width=True)
+                    else:
+                        st.error(grp_result.get("error", "Lỗi không xác định"))
+                else:
+                    _info_vi = "Chọn biến giá trị và biến nhóm hợp lệ."
+                    _info_en = "Select a valid value variable and group variable."
+                    st.info(_info_vi if get_lang() == "vi" else _info_en)
+            else:
+                _warn_vi = "Cần ít nhất 1 biến số và 1 biến phân loại để so sánh nhóm."
+                _warn_en = "Need at least 1 numeric and 1 categorical variable for group comparison."
+                st.warning(_warn_vi if get_lang() == "vi" else _warn_en)
+
+        # ── OLD Cross-question analysis (below tabs) ────────────────────────────
         # Cross-question analysis
         st.subheader("Cross-Question Analysis")
         

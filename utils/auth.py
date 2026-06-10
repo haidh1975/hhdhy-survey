@@ -87,9 +87,15 @@ def require_auth(redirect_page: str = "pages/6_Login.py") -> bool:
     Returns True if authenticated, False otherwise
     """
     if not is_authenticated():
-        st.error("Bạn cần đăng nhập để truy cập trang này")
-        if st.button("Đi đến trang đăng nhập"):
-            st.switch_page(redirect_page)
+        try:
+            from utils.i18n import t, get_lang
+            st.error(t("login_required"))
+            if st.button(t("go_to_login")):
+                st.switch_page(redirect_page)
+        except Exception:
+            st.error("Bạn cần đăng nhập để truy cập trang này")
+            if st.button("Đi đến trang đăng nhập"):
+                st.switch_page(redirect_page)
         st.stop()
         return False
     return True
@@ -101,12 +107,16 @@ def require_admin() -> bool:
     """
     if not require_auth():
         return False
-    
+
     if not is_admin():
-        st.error("Bạn không có quyền truy cập trang này (chỉ dành cho quản trị viên)")
+        try:
+            from utils.i18n import t
+            st.error(t("admin_required"))
+        except Exception:
+            st.error("Bạn không có quyền truy cập trang này (chỉ dành cho quản trị viên)")
         st.stop()
         return False
-    
+
     return True
 
 def initialize_admin_user() -> None:
@@ -144,10 +154,9 @@ def change_user_role(username: str, new_role: str) -> Tuple[bool, str]:
     return change_user_role_db(username, new_role)
 
 def change_password(username: str, old_password: str, new_password: str) -> Tuple[bool, str]:
-    """Change user password - TODO: Implement with database"""
-    # This would need to be implemented with database functions
-    # For now, return not implemented
-    return False, "Tính năng đổi mật khẩu chưa được triển khai với database"
+    """Đổi mật khẩu người dùng"""
+    from utils.db_utils import change_password_db
+    return change_password_db(username, old_password, new_password)
 
 # Legacy functions for backward compatibility (using JSON files as fallback)
 def load_users() -> Dict:

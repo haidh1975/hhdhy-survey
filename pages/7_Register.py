@@ -1,129 +1,146 @@
 import streamlit as st
 from utils.auth import create_user, is_authenticated
+from utils.i18n import t, get_lang, render_language_selector
 
 st.set_page_config(
-    page_title="Đăng ký - Khảo sát về Ảnh hưởng của Vốn xã hội, Vốn nhân lực",
+    page_title="HHD-HY — Đăng ký / Register",
     page_icon="📝",
     layout="wide",
 )
 
+render_language_selector()
+
 # If already authenticated, redirect to main page
 if is_authenticated():
-    st.success("Bạn đã đăng nhập!")
-    if st.button("Về trang chủ"):
+    already_msg = "Bạn đã đăng nhập!" if get_lang() == "vi" else "You are already logged in!"
+    st.success(already_msg)
+    if st.button(t("home")):
         st.switch_page("app.py")
     st.stop()
 
-st.title("📝 Đăng ký tài khoản")
+reg_title = "📝 Đăng ký tài khoản" if get_lang() == "vi" else "📝 Register Account"
+st.title(reg_title)
 
 # Create columns for better layout
 col1, col2, col3 = st.columns([1, 2, 1])
 
 with col2:
-    st.markdown("### Tạo tài khoản mới")
-    
+    new_acc_label = "Tạo tài khoản mới" if get_lang() == "vi" else "Create a new account"
+    st.markdown(f"### {new_acc_label}")
+
     # Registration form
     with st.form("register_form"):
+        uname_help = "Tên đăng nhập phải có ít nhất 3 ký tự" if get_lang() == "vi" else "Username must be at least 3 characters"
+        uname_placeholder = "Tối thiểu 3 ký tự" if get_lang() == "vi" else "Minimum 3 characters"
         username = st.text_input(
-            "Tên đăng nhập", 
-            placeholder="Tối thiểu 3 ký tự", 
-            help="Tên đăng nhập phải có ít nhất 3 ký tự và không chứa ký tự đặc biệt"
+            t("username"),
+            placeholder=uname_placeholder,
+            help=uname_help,
         )
-        
+
+        email_help = "Email dùng để khôi phục mật khẩu" if get_lang() == "vi" else "Email used for password recovery"
         email = st.text_input(
-            "Email", 
+            "Email",
             placeholder="example@domain.com",
-            help="Email sẽ được sử dụng để khôi phục mật khẩu và nhận thông báo"
+            help=email_help,
         )
-        
+
+        pw_help = "Mật khẩu phải có ít nhất 6 ký tự" if get_lang() == "vi" else "Password must be at least 6 characters"
+        pw_placeholder = "Tối thiểu 6 ký tự" if get_lang() == "vi" else "Minimum 6 characters"
         password = st.text_input(
-            "Mật khẩu", 
-            type="password", 
-            placeholder="Tối thiểu 6 ký tự",
-            help="Mật khẩu phải có ít nhất 6 ký tự"
+            t("password"),
+            type="password",
+            placeholder=pw_placeholder,
+            help=pw_help,
         )
-        
+
+        confirm_label = "Xác nhận mật khẩu" if get_lang() == "vi" else "Confirm Password"
+        confirm_placeholder = "Nhập lại mật khẩu" if get_lang() == "vi" else "Re-enter password"
         password_confirm = st.text_input(
-            "Xác nhận mật khẩu", 
-            type="password", 
-            placeholder="Nhập lại mật khẩu"
+            confirm_label,
+            type="password",
+            placeholder=confirm_placeholder,
         )
-        
-        # Terms and conditions
-        agree_terms = st.checkbox(
-            "Tôi đồng ý với các điều khoản sử dụng và chính sách bảo mật",
-            help="Bạn cần đồng ý với điều khoản để tạo tài khoản"
-        )
-        
+
+        terms_label = "Tôi đồng ý với các điều khoản sử dụng và chính sách bảo mật" if get_lang() == "vi" \
+                      else "I agree to the Terms of Service and Privacy Policy"
+        agree_terms = st.checkbox(terms_label)
+
         col_register, col_login = st.columns(2)
-        
+
+        register_label = "Đăng ký" if get_lang() == "vi" else "Register"
+        login_label = "Đã có tài khoản? Đăng nhập" if get_lang() == "vi" else "Already have an account? Login"
         with col_register:
-            register_clicked = st.form_submit_button("Đăng ký", use_container_width=True, type="primary")
-        
+            register_clicked = st.form_submit_button(register_label, use_container_width=True, type="primary")
+
         with col_login:
-            login_clicked = st.form_submit_button("Đã có tài khoản? Đăng nhập", use_container_width=True)
-    
+            login_clicked = st.form_submit_button(login_label, use_container_width=True)
+
     # Handle registration
     if register_clicked:
-        # Validate form
         if not all([username, email, password, password_confirm]):
-            st.error("Vui lòng điền đầy đủ tất cả các trường")
+            err_fill = "Vui lòng điền đầy đủ tất cả các trường" if get_lang() == "vi" else "Please fill in all fields"
+            st.error(err_fill)
         elif password != password_confirm:
-            st.error("Mật khẩu xác nhận không khớp")
+            err_pw = "Mật khẩu xác nhận không khớp" if get_lang() == "vi" else "Passwords do not match"
+            st.error(err_pw)
         elif not agree_terms:
-            st.error("Bạn cần đồng ý với điều khoản sử dụng")
+            err_terms = "Bạn cần đồng ý với điều khoản sử dụng" if get_lang() == "vi" else "You must agree to the terms"
+            st.error(err_terms)
         else:
-            # Create user
             success, message = create_user(username, password, email)
             if success:
                 st.success(message)
-                st.success("Bạn có thể đăng nhập ngay bây giờ!")
-                if st.button("Đi đến trang đăng nhập"):
+                ok_msg = "Bạn có thể đăng nhập ngay bây giờ!" if get_lang() == "vi" else "You can log in now!"
+                st.success(ok_msg)
+                go_login = "Đi đến trang đăng nhập" if get_lang() == "vi" else "Go to login page"
+                if st.button(go_login):
                     st.switch_page("pages/6_Login.py")
             else:
                 st.error(message)
-    
+
     # Handle login redirect
     if login_clicked:
         st.switch_page("pages/6_Login.py")
-    
+
     # Terms and conditions expandable section
-    with st.expander("📋 Điều khoản sử dụng và Chính sách bảo mật"):
-        st.markdown("""
-        ### Điều khoản sử dụng
-        
-        1. **Mục đích sử dụng**: Hệ thống này được thiết kế để tạo và quản lý khảo sát nghiên cứu khoa học.
-        
-        2. **Trách nhiệm người dùng**:
-           - Sử dụng hệ thống một cách có trách nhiệm
-           - Không tạo nội dung có hại, bất hợp pháp hoặc vi phạm đạo đức
-           - Bảo mật thông tin đăng nhập cá nhân
-        
-        3. **Quyền hạn**: 
-           - Người dùng thường có thể tạo và quản lý khảo sát của mình
-           - Quản trị viên có quyền giám sát và quản lý toàn bộ hệ thống
-        
-        ### Chính sách bảo mật
-        
-        1. **Thu thập thông tin**: Chúng tôi chỉ thu thập thông tin cần thiết để vận hành hệ thống.
-        
-        2. **Bảo vệ dữ liệu**: 
-           - Mật khẩu được mã hóa trước khi lưu trữ
-           - Dữ liệu khảo sát được bảo vệ bằng hệ thống phân quyền
-        
-        3. **Chia sẻ thông tin**: Thông tin cá nhân không được chia sẻ với bên thứ ba.
-        
-        4. **Quyền của người dùng**: Bạn có quyền yêu cầu xóa tài khoản và dữ liệu cá nhân.
-        """)
+    terms_expander_label = "📋 Điều khoản sử dụng và Chính sách bảo mật" if get_lang() == "vi" \
+                           else "📋 Terms of Service and Privacy Policy"
+    with st.expander(terms_expander_label):
+        if get_lang() == "vi":
+            st.markdown("""
+### Điều khoản sử dụng
+
+1. **Mục đích sử dụng**: Hệ thống được thiết kế để tạo và quản lý khảo sát nghiên cứu khoa học.
+2. **Trách nhiệm người dùng**: Sử dụng hệ thống có trách nhiệm, không tạo nội dung vi phạm pháp luật.
+3. **Bảo mật thông tin**: Người dùng có trách nhiệm bảo mật thông tin đăng nhập cá nhân.
+
+### Chính sách bảo mật
+
+1. **Thu thập thông tin**: Chỉ thu thập thông tin cần thiết để vận hành hệ thống.
+2. **Bảo vệ dữ liệu**: Mật khẩu được mã hóa; dữ liệu khảo sát được bảo vệ bằng phân quyền.
+3. **Chia sẻ thông tin**: Thông tin cá nhân không được chia sẻ với bên thứ ba.
+""")
+        else:
+            st.markdown("""
+### Terms of Service
+
+1. **Purpose**: This system is designed for creating and managing scientific research surveys.
+2. **User responsibility**: Use the system responsibly; do not create unlawful content.
+3. **Security**: Users are responsible for keeping their login credentials secure.
+
+### Privacy Policy
+
+1. **Data collection**: Only data necessary for system operation is collected.
+2. **Data protection**: Passwords are encrypted; survey data is protected by access control.
+3. **Data sharing**: Personal information is not shared with third parties.
+""")
 
 # Footer
 st.markdown("---")
 st.markdown(
-    """
-    <div style='text-align: center; color: #666;'>
-        <p>Khảo sát về Ảnh hưởng của Vốn xã hội, Vốn nhân lực đến phát triển bền vững của doanh nghiệp</p>
-        <p>Đăng ký để tham gia vào hệ thống khảo sát an toàn và chuyên nghiệp</p>
-    </div>
-    """, 
-    unsafe_allow_html=True
+    f"<div style='text-align: center; color: #666;'>"
+    f"<p><strong>HHD-HY</strong> — {t('footer_copy')}</p>"
+    f"</div>",
+    unsafe_allow_html=True,
 )

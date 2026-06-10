@@ -1,0 +1,50 @@
+# ── Python artifacts ───────────────────────────────────────────────────────────
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+*.tmp.*
+
+# ── Database (sẽ dùng Docker volume thay thế) ──────────────────────────────────
+data/
+*.db
+*.sqlite
+*.sqlite3
+docker-data/
+
+# ── Dev environment ───────────────────────────────────────────────────────────
+.env
+.venv/
+venv/
+ENV/
+
+# ── Git & IDE ─────────────────────────────────────────────────────────────────
+.git/
+.gitignore
+.gitattributes
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# ── Tests & Logs ─────────────────────────────────────────────────────────────
+*.log
+streamlit_log.txt
+.pytest_cache/
+htmlcov/
+.coverage
+
+# ── Old versions ─────────────────────────────────────────────────────────────
+HHD_HY_Version1/
+deployment_package/
+
+# ── OS ────────────────────────────────────────────────────────────────────────
+.DS_Store
+Thumbs.db
+
+# ── Credentials ───────────────────────────────────────────────────────────────
+credentials.json
+token.json
+*.pem
+*.key
+service_account*.json
